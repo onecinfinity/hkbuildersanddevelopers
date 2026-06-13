@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Projects We Market | HK Builders & Developers</title>
+  <link rel="stylesheet" href="/assets/css/loader.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer"/>
+  <script src="/assets/js/loader.js"></script>
+  <style>
+    :root{--navy:#0a1628;--navy-mid:#0e1e38;--navy-light:#152844;--gold:#c9a84c;--gold-light:#e2c97e;--gold-pale:#f0dfa0;--white:#ffffff;--white-muted:rgba(255,255,255,0.55);--gold-gradient:linear-gradient(135deg,#c9a84c 0%,#f0dfa0 50%,#c9a84c 100%);}
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+    html{scroll-behavior:smooth;}
+    body{background:var(--navy);color:var(--white);font-family:'Jost',sans-serif;font-weight:300;overflow-x:hidden;cursor:none;}
+    .cursor{position:fixed;width:10px;height:10px;background:var(--gold);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:transform 0.1s ease;}
+    .cursor-ring{position:fixed;width:36px;height:36px;border:1px solid rgba(201,168,76,0.5);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:all 0.15s ease;}
+    body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:1;opacity:0.4;}
+    .gold-top-bar{position:fixed;top:0;left:0;right:0;height:2px;background:var(--gold-gradient);z-index:9999;transform-origin:left;transform:scaleX(0);transition:transform 0.1s linear;}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(30px);}to{opacity:1;transform:translateY(0);}}
+    @keyframes blink{0%,100%{opacity:1}50%{opacity:0.3}}
+    @keyframes gridShift{0%{transform:translateY(0);}100%{transform:translateY(80px);}}
+
+    /* NAV */
+    nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:22px 60px;display:flex;align-items:center;justify-content:space-between;transition:all 0.4s ease;}
+    nav.scrolled{background:rgba(10,22,40,0.95);backdrop-filter:blur(20px);padding:14px 60px;border-bottom:1px solid rgba(201,168,76,0.15);}
+    .nav-logo{display:flex;align-items:center;gap:14px;text-decoration:none;}
+    .nav-logo-mark{width:48px;height:48px;border:1.5px solid var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-weight:700;font-size:18px;background:var(--gold-gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+    .nav-logo-text .name{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:16px;background:var(--gold-gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:2px;text-transform:uppercase;}
+    .nav-logo-text .sub{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--white-muted);}
+    .nav-links{display:flex;align-items:center;gap:40px;list-style:none;}
+    .nav-links a{text-decoration:none;font-size:12px;letter-spacing:2.5px;text-transform:uppercase;color:var(--white-muted);position:relative;transition:color 0.3s ease;}
+    .nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:1px;background:var(--gold);transition:width 0.3s ease;}
+    .nav-links a:hover,.nav-links a.active{color:var(--gold-light);}
+    .nav-links a:hover::after,.nav-links a.active::after{width:100%;}
+    .nav-cta{padding:10px 28px;border:1px solid var(--gold);color:var(--gold)!important;font-size:11px!important;letter-spacing:2px;text-transform:uppercase;text-decoration:none;transition:all 0.3s ease!important;}
+    .nav-cta::after{display:none!important;}
+    .nav-cta:hover{background:var(--gold)!important;color:var(--navy)!important;}
+    .hamburger{display:none;flex-direction:column;gap:5px;cursor:none;}
+    .hamburger span{display:block;width:28px;height:1.5px;background:var(--gold);}
+    .mobile-menu{position:fixed;inset:0;background:var(--navy);z-index:999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:40px;transform:translateX(100%);transition:transform 0.5s cubic-bezier(0.16,1,0.3,1);}
+    .mobile-menu.open{transform:translateX(0);}
+    .mobile-menu a{font-family:'Cormorant Garamond',serif;font-size:40px;font-weight:300;text-decoration:none;color:var(--white);transition:color 0.3s ease;}
+    .mobile-menu a:hover{color:var(--gold);}
+
+    /* PAGE HERO */
+    .page-hero{padding:180px 60px 100px;position:relative;overflow:hidden;}
+    .page-hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse at 60% 40%,rgba(201,168,76,0.07) 0%,transparent 60%),linear-gradient(135deg,#0a1628,#0e2040);}
+    .page-hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(201,168,76,0.05) 1px,transparent 1px),linear-gradient(90deg,rgba(201,168,76,0.05) 1px,transparent 1px);background-size:80px 80px;animation:gridShift 20s linear infinite;}
+    .page-hero-photo{position:absolute;right:0;top:0;bottom:0;width:45%;height:100%;object-fit:cover;opacity:0.28;z-index:0;}
+    .page-hero-photo-overlay{position:absolute;right:0;top:0;bottom:0;width:45%;z-index:0;background:linear-gradient(90deg,#0a1628 0%,rgba(10,22,40,0.6) 35%,rgba(10,22,40,0.15) 100%);}
+    .page-hero-content{position:relative;z-index:2;max-width:800px;}
+    .eyebrow{display:flex;align-items:center;gap:16px;margin-bottom:24px;}
+    .eyebrow-line{width:40px;height:1px;background:var(--gold-gradient);}
+    .eyebrow span{font-size:10px;letter-spacing:4px;text-transform:uppercase;background:var(--gold-gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-weight:500;}
+    .page-title{font-family:'Cormorant Garamond',serif;font-size:clamp(48px,7vw,90px);font-weight:300;line-height:1.0;}
+    .page-title em{font-style:italic;background:var(--gold-gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+    .page-subtitle{font-size:15px;line-height:1.8;color:var(--white-muted);max-width:500px;margin-top:24px;}
+
+    /* FEATURED SECTION */
+    .featured-section{padding:100px 60px;background:var(--navy);}
+    .featured-inner{max-width:1400px;margin:0 auto;}
+    .featured-label{display:inline-flex;align-items:center;gap:10px;padding:8px 20px;border:1px solid rgba(201,168,76,0.3);margin-bottom:50px;}
+    .featured-dot{width:7px;height:7px;background:var(--gold);border-radius:50%;animation:blink 2s ease infinite;}
+    .featured-label span{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold-light);}
+    .featured-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;}
+    .feat-img-wrap{position:relative;aspect-ratio:4/3;overflow:hidden;}
+    .feat-img-wrap::before{content:'';position:absolute;top:-16px;left:-16px;right:16px;bottom:16px;border:1px solid rgba(201,168,76,0.2);z-index:0;pointer-events:none;}
+    .feat-img-wrap::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(10,22,40,0.6) 0%,transparent 50%);z-index:1;}
+    .feat-placeholder{width:100%;height:100%;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;}
+    .feat-placeholder img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0;}
+    .feat-badge{position:absolute;bottom:24px;left:24px;z-index:2;background:rgba(10,22,40,0.9);backdrop-filter:blur(12px);border:1px solid rgba(201,168,76,0.3);padding:14px 22px;}
+    .feat-badge-tag{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:4px;}
+    .feat-badge-name{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:600;}
+    .section-title{font-family:'Cormorant Garamond',serif;font-size:clamp(34px,3.5vw,52px);font-weight:300;line-height:1.1;margin-bottom:14px;}
+    .section-title em{font-style:italic;background:var(--gold-gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+    .feat-by{font-size:13px;color:var(--white-muted);margin-bottom:8px;}
+    .feat-by strong{color:var(--gold-light);font-weight:400;}
+    .feat-marketed{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--white-muted);margin-bottom:28px;}
+    .feat-marketed span{color:var(--gold);}
+    .divider{width:50px;height:1px;background:var(--gold-gradient);margin:24px 0;}
+    .feat-desc{font-size:15px;line-height:1.9;color:var(--white-muted);margin-bottom:30px;}
+    .feat-highlights{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:36px;}
+    .feat-hl{padding:14px 18px;border:1px solid rgba(201,168,76,0.12);background:rgba(201,168,76,0.03);}
+    .feat-hl-label{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--white-muted);margin-bottom:5px;}
+    .feat-hl-val{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:400;color:var(--gold-light);}
+    .btn-primary{padding:16px 44px;background:var(--gold-gradient);color:var(--navy);text-decoration:none;font-size:11px;font-weight:600;letter-spacing:3px;text-transform:uppercase;display:inline-block;transition:transform 0.3s ease,box-shadow 0.3s ease;position:relative;overflow:hidden;border:none;cursor:none;}
+    .btn-primary::before{content:'';position:absolute;inset:0;background:rgba(255,255,255,0.15);transform:translateX(-100%);transition:transform 0.4s ease;}
+    .btn-primary:hover::before{transform:translateX(0);}
+    .btn-primary:hover{transform:translateY(-2px);box-shadow:0 20px 50px rgba(201,168,76,0.3);}
+
+    /* DIVIDER */
+    .section-divider{padding:0 60px;display:flex;align-items:center;gap:30px;max-width:1400px;margin:0 auto;}
+    .section-divider-line{flex:1;height:1px;background:linear-gradient(to right,transparent,rgba(201,168,76,0.25),transparent);}
+    .section-divider-icon{font-family:'Cormorant Garamond',serif;font-size:28px;background:var(--gold-gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+
+    /* OTHER PROJECTS */
+    .other-section{padding:60px 60px 120px;background:var(--navy);}
+    .other-inner{max-width:1400px;margin:0 auto;}
+    .other-header{margin-bottom:60px;}
+    .other-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;}
+    .proj-card{background:var(--navy-mid);border:1px solid rgba(201,168,76,0.08);overflow:hidden;position:relative;transition:all 0.4s ease;text-decoration:none;display:block;color:inherit;}
+    .proj-card::after{content:'';position:absolute;top:0;left:0;width:100%;height:2px;background:var(--gold-gradient);transform:scaleX(0);transform-origin:left;transition:transform 0.4s ease;}
+    .proj-card:hover::after{transform:scaleX(1);}
+    .proj-card:hover{border-color:rgba(201,168,76,0.25);}
+    .proj-card-visual{aspect-ratio:3/2;position:relative;overflow:hidden;}
+    .proj-card-vis{width:100%;height:100%;transition:transform 0.6s cubic-bezier(0.16,1,0.3,1);}
+    .proj-card:hover .proj-card-vis{transform:scale(1.05);}
+    .proj-card-vis-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(10,22,40,0.8),transparent);z-index:1;}
+    .proj-card-body{padding:32px;}
+    .proj-card-collection{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:10px;}
+    .proj-card-name{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:400;margin-bottom:14px;transition:color 0.3s ease;}
+    .proj-card:hover .proj-card-name{color:var(--gold-light);}
+    .proj-card-desc{font-size:13px;color:var(--white-muted);line-height:1.7;margin-bottom:24px;}
+    .proj-card-footer{display:flex;align-items:center;justify-content:space-between;padding-top:20px;border-top:1px solid rgba(201,168,76,0.1);}
+    .proj-card-marketed{font-size:10px;color:var(--white-muted);letter-spacing:1px;}
+    .proj-card-marketed strong{color:var(--gold);font-weight:400;}
+    .proj-card-link{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);display:flex;align-items:center;gap:8px;transition:gap 0.3s ease;}
+    .proj-card:hover .proj-card-link{gap:14px;}
+
+    /* ENQUIRY */
+    .enquiry-section{padding:100px 60px;background:var(--navy-mid);border-top:1px solid rgba(201,168,76,0.1);}
+    .enquiry-inner{max-width:1400px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;}
+    .form-wrap{display:flex;flex-direction:column;gap:16px;}
+    .form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+    .form-group{display:flex;flex-direction:column;gap:8px;}
+    .form-group label{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);}
+    .form-group input,.form-group select,.form-group textarea{background:rgba(255,255,255,0.04);border:1px solid rgba(201,168,76,0.15);padding:14px 18px;color:var(--white);font-family:'Jost',sans-serif;font-size:14px;font-weight:300;outline:none;transition:border-color 0.3s ease;width:100%;}
+    .form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--gold);}
+    .form-group input::placeholder,.form-group textarea::placeholder{color:rgba(255,255,255,0.2);}
+    .form-group select{appearance:none;cursor:none;}
+    .form-group select option{background:var(--navy);}
+    .form-group textarea{resize:none;height:120px;}
+    .btn-submit{width:100%;padding:17px;background:var(--gold-gradient);color:var(--navy);border:none;font-family:'Jost',sans-serif;font-size:11px;font-weight:600;letter-spacing:3px;text-transform:uppercase;cursor:none;position:relative;overflow:hidden;transition:transform 0.3s ease,box-shadow 0.3s ease;}
+    .btn-submit::before{content:'';position:absolute;inset:0;background:rgba(255,255,255,0.15);transform:translateX(-100%);transition:transform 0.4s ease;}
+    .btn-submit:hover::before{transform:translateX(0);}
+    .btn-submit:hover{transform:translateY(-2px);box-shadow:0 20px 50px rgba(201,168,76,0.3);}
+    .form-success{display:none;text-align:center;padding:50px 30px;border:1px solid rgba(201,168,76,0.2);}
+    .form-success.show{display:block;}
+
+    .reveal{opacity:0;transform:translateY(40px);transition:all 0.8s cubic-bezier(0.16,1,0.3,1);}
+    .reveal.visible{opacity:1;transform:translateY(0);}
+    .reveal-delay-1{transition-delay:0.1s;}
+    .reveal-delay-2{transition-delay:0.2s;}
+    .reveal-delay-3{transition-delay:0.3s;}
+
+    /* FOOTER */
+    footer{background:var(--navy-mid);border-top:1px solid rgba(201,168,76,0.12);padding:80px 60px 40px;position:relative;z-index:2;}
+    .footer-top{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:60px;max-width:1400px;margin:0 auto 60px;}
+    .footer-brand-name{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600;background:var(--gold-gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:6px;}
+    .footer-brand-sub{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--white-muted);}
+    .footer-tagline{font-family:'Cormorant Garamond',serif;font-size:16px;font-style:italic;color:var(--white-muted);margin-top:20px;line-height:1.6;}
+    .footer-col-title{font-size:10px;letter-spacing:3px;text-transform:uppercase;background:var(--gold-gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:24px;font-weight:500;}
+    .footer-links{list-style:none;display:flex;flex-direction:column;gap:12px;}
+    .footer-links a{text-decoration:none;font-size:13px;color:var(--white-muted);transition:color 0.3s ease;}
+    .footer-links a:hover{color:var(--gold-light);}
+    .footer-contact-item{display:flex;gap:12px;margin-bottom:16px;}
+    .footer-contact-item svg{width:16px;height:16px;fill:var(--gold);flex-shrink:0;margin-top:2px;}
+    .footer-contact-item span{font-size:13px;color:var(--white-muted);line-height:1.5;}
+    .footer-bottom{max-width:1400px;margin:0 auto;padding-top:30px;border-top:1px solid rgba(201,168,76,0.08);display:flex;align-items:center;justify-content:space-between;}
+    .footer-copyright{font-size:12px;color:rgba(255,255,255,0.3);}
+    .footer-socials{display:flex;gap:16px;}
+    .footer-social{width:34px;height:34px;border:1px solid rgba(201,168,76,0.2);border-radius:50%;display:flex;align-items:center;justify-content:center;text-decoration:none;transition:all 0.3s ease;}
+    .footer-social svg{width:14px;height:14px;fill:var(--white-muted);transition:fill 0.3s ease;}
+    .footer-social:hover{border-color:var(--gold);background:rgba(201,168,76,0.1);}
+    .footer-social:hover svg{fill:var(--gold);}
+    .whatsapp-float-button{position:fixed;right:24px;bottom:50px;width:64px;height:64px;display:flex;align-items:center;justify-content:center;border-radius:50%;background:#25d366;color:#fff;font-size:32px;text-decoration:none;box-shadow:0 14px 30px rgba(37,211,102,0.4);z-index:9999;transition:box-shadow 0.25s ease,filter 0.25s ease;animation:waFloat 2.6s ease-in-out infinite;}
+    .whatsapp-float-button::before,.whatsapp-float-button::after{content:'';position:absolute;inset:0;border-radius:50%;background:rgba(37,211,102,0.45);z-index:-1;animation:waRipple 2.4s ease-out infinite;pointer-events:none;}
+    .whatsapp-float-button::after{animation-delay:1.2s;}
+    .whatsapp-float-button i{position:relative;z-index:1;}
+    .whatsapp-float-button:hover{color:#fff;box-shadow:0 18px 40px rgba(37,211,102,0.55);filter:brightness(1.08);animation-play-state:paused;}
+    @keyframes waFloat{0%,100%{transform:translateY(0);}50%{transform:translateY(-9px);}}
+    @keyframes waRipple{0%{transform:scale(1);opacity:0.7;}100%{transform:scale(2.6);opacity:0;}}
+
+    @media(max-width:1024px){
+      nav{padding:20px 30px;}nav.scrolled{padding:12px 30px;}
+      .page-hero,.featured-section,.other-section,.enquiry-section,footer{padding-left:30px;padding-right:30px;}
+      .featured-grid{grid-template-columns:1fr;gap:50px;}
+      .other-grid{grid-template-columns:1fr 1fr;}
+      .enquiry-inner{grid-template-columns:1fr;gap:50px;}
+      .footer-top{grid-template-columns:1fr 1fr;gap:40px;}
+      .nav-links{display:none;}.hamburger{display:flex;}
+    }
+    @media(max-width:640px){
+      nav{padding:18px 20px;}
+      .page-hero{padding:140px 20px 80px;}
+      .page-hero-photo,.page-hero-photo-overlay{display:none;}
+      .featured-section,.other-section,.enquiry-section,footer{padding-left:20px;padding-right:20px;}
+      .other-grid{grid-template-columns:1fr;}
+      .form-row{grid-template-columns:1fr;}
+      .footer-top{grid-template-columns:1fr;}
+      .section-divider{padding:0 20px;}
+    }
+  </style>
+</head>
+<body>
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+  <div class="gold-top-bar" id="scrollProgress"></div>
+
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="/" onclick="closeMobile()">Home</a>
+    <a href="/projects/" onclick="closeMobile()">Projects We Market</a>
+    <a href="/clients/" onclick="closeMobile()">Satisfied Clients</a>
+    <a href="/about/" onclick="closeMobile()">About Us</a>
+    <a href="/contact/" onclick="closeMobile()">Contact</a>
+  </div>
+
+  <nav id="navbar">
+    <a href="/" class="nav-logo">
+      <div class="nav-logo-mark">HK</div>
+      <div class="nav-logo-text"><div class="name">HK Builders</div><div class="sub">& Developers</div></div>
+    </a>
+    <ul class="nav-links">
+      <li><a href="/">Home</a></li>
+      <li><a href="/projects/" class="active">Projects We Market</a></li>
+      <li><a href="/clients/">Satisfied Clients</a></li>
+      <li><a href="/about/">About Us</a></li>
+      <li><a href="/contact/" class="nav-cta">Get In Touch</a></li>
+    </ul>
+    <div class="hamburger" id="hamburger" onclick="toggleMobile()"><span></span><span></span><span></span></div>
+  </nav>
+
+  <!-- HERO -->
+  <div class="page-hero">
+    <div class="page-hero-bg"></div>
+    <img class="page-hero-photo" id="pageHeroPhoto" src="" alt="">
+    <div class="page-hero-photo-overlay"></div>
+    <div class="page-hero-grid"></div>
+    <div class="page-hero-content">
+      <div class="eyebrow" style="opacity:0;animation:fadeUp 0.8s ease 0.3s forwards;">
+        <div class="eyebrow-line"></div><span>Our Portfolio</span>
+      </div>
+      <h1 class="page-title" style="opacity:0;animation:fadeUp 0.9s ease 0.5s forwards;">
+        Projects We<br><em>Market</em>
+      </h1>
+      <p class="page-subtitle" style="opacity:0;animation:fadeUp 0.9s ease 0.7s forwards;">
+        Carefully curated developments we stand behind, marketed with integrity, expertise, and a commitment to exceptional client outcomes.
+      </p>
+    </div>
+  </div>
+
+  <!-- FEATURED, from JSON -->
+  <section class="featured-section">
+    <div class="featured-inner">
+      <div class="featured-label reveal">
+        <div class="featured-dot"></div>
+        <span id="featuredLabelText">Featured Development, Now Marketing</span>
+      </div>
+      <div class="featured-grid" id="featuredGrid">
+        <div style="grid-column:1/-1;text-align:center;padding:60px;color:var(--white-muted);">Loading...</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DIVIDER -->
+  <div style="padding:60px 0;">
+    <div class="section-divider">
+      <div class="section-divider-line"></div>
+      <div class="section-divider-icon">◆</div>
+      <div class="section-divider-line"></div>
+    </div>
+  </div>
+
+  <!-- OTHER PROJECTS, from JSON -->
+  <section class="other-section">
+    <div class="other-inner">
+      <div class="other-header reveal">
+        <div class="eyebrow" style="margin-bottom:16px;"><div class="eyebrow-line"></div><span>Also In Our Portfolio</span></div>
+        <h2 class="section-title">Explore Our<br><em>Projects</em></h2>
+      </div>
+      <div class="other-grid" id="otherGrid">
+        <!-- JS renders -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ENQUIRY FORM -->
+  <section class="enquiry-section">
+    <div class="enquiry-inner">
+      <div class="reveal">
+        <div class="eyebrow" style="margin-bottom:20px;"><div class="eyebrow-line"></div><span>Get In Touch</span></div>
+        <h2 class="section-title">Interested in a<br><em>Project?</em></h2>
+        <p style="font-size:15px;color:var(--white-muted);line-height:1.8;margin-top:24px;">Fill in the form and one of our expert consultants will get back to you within 24 hours. No pressure, just honest guidance.</p>
+      </div>
+      <div class="reveal reveal-delay-1">
+        <div class="form-wrap" id="enquiryForm">
+          <div class="form-row">
+            <div class="form-group"><label>Full Name</label><input type="text" id="eName" placeholder="Your name"/></div>
+            <div class="form-group"><label>Phone Number</label><input type="tel" id="ePhone" placeholder="+92 300 0000000"/></div>
+          </div>
+          <div class="form-group"><label>Project of Interest</label><select id="eProject"><option value="">Select a project</option></select></div>
+          <div class="form-group"><label>Message</label><textarea id="eMsg" placeholder="Tell us what you're looking for…"></textarea></div>
+          <button class="btn-submit" onclick="submitEnquiry()">Send Enquiry →</button>
+          <p style="font-size:11px;color:rgba(255,255,255,0.25);text-align:center;margin-top:12px;letter-spacing:1px;">We respond within 24 hours. Your data is never shared.</p>
+        </div>
+        <div class="form-success" id="formSuccess">
+          <div style="font-size:36px;margin-bottom:16px;">✦</div>
+          <div style="font-family:'Cormorant Garamond',serif;font-size:26px;margin-bottom:12px;">Enquiry Received</div>
+          <p style="font-size:14px;color:var(--white-muted);line-height:1.7;">Thank you. Our consultant will be in touch within 24 hours.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-top">
+      <div>
+        <div style="width:52px;height:52px;border:1.5px solid var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-weight:700;font-size:18px;background:var(--gold-gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:18px;">HK</div>
+        <div class="footer-brand-name">HK Builders & Developers</div>
+        <div class="footer-brand-sub">Pakistan</div>
+        <p class="footer-tagline">"Building Trust.<br>Creating Futures."</p>
+      </div>
+      <div>
+        <div class="footer-col-title">Quick Links</div>
+        <ul class="footer-links">
+          <li><a href="/">Home</a></li>
+          <li><a href="/projects/">Projects We Market</a></li>
+          <li><a href="/clients/">Satisfied Clients</a></li>
+          <li><a href="/about/">About Us</a></li>
+          <li><a href="/contact/">Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Projects</div>
+        <ul class="footer-links" id="footerProjectLinks"></ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Contact</div>
+        <div class="footer-contact-item"><svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg><span>Karachi, Pakistan</span></div>
+        <div class="footer-contact-item"><svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg><span>+92 325 2208153</span></div>
+        <div class="footer-contact-item"><svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg><span>hkbuildersanddevelopers21@gmail.com</span></div>
+        <div class="footer-socials">
+          <a href="https://www.facebook.com/share/1NHx4GR5Du/?mibextid=wwXIfr" target="_blank" class="footer-social"><svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a>
+          <a href="https://www.instagram.com/hkbuildersanddevelopers?igsh=cWw5d3lzcDVzM2Q5" target="_blank" class="footer-social"><svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-copyright">© 2026 HK Builders & Developers. All rights reserved.</div>
+    </div>
+  </footer>
+
+  <a href="https://wa.me/923252208153?text=Hi%20HK%20Builders%20and%20Developers%2C%20I%27d%20like%20to%20get%20in%20touch." target="_blank" rel="noopener noreferrer" class="whatsapp-float-button" aria-label="Chat on WhatsApp">
+    <i class="fa-brands fa-whatsapp"></i>
+  </a>
+
+  <script>
+    // shared SVG themes
+    const SVG_THEMES = {
+      gate:`<svg viewBox="0 0 400 300" fill="none" width="100%" height="100%" style="position:absolute;inset:0;"><rect width="400" height="300" fill="#0e2040"/><rect x="140" y="80" width="40" height="180" fill="rgba(201,168,76,0.15)" stroke="rgba(201,168,76,0.4)" stroke-width="1"/><rect x="220" y="80" width="40" height="180" fill="rgba(201,168,76,0.15)" stroke="rgba(201,168,76,0.4)" stroke-width="1"/><path d="M140 80 Q200 30 260 80" stroke="rgba(201,168,76,0.6)" stroke-width="1.5" fill="none"/><rect x="160" y="160" width="30" height="100" fill="none" stroke="rgba(201,168,76,0.35)" stroke-width="0.8"/><rect x="210" y="160" width="30" height="100" fill="none" stroke="rgba(201,168,76,0.35)" stroke-width="0.8"/><ellipse cx="110" cy="258" rx="20" ry="35" fill="rgba(14,50,30,0.7)"/><ellipse cx="290" cy="258" rx="20" ry="35" fill="rgba(14,50,30,0.7)"/><circle cx="50" cy="40" r="1.5" fill="rgba(201,168,76,0.5)"/><circle cx="350" cy="30" r="1" fill="rgba(201,168,76,0.4)"/></svg>`,
+      villa:`<svg viewBox="0 0 400 300" fill="none" width="100%" height="100%" style="position:absolute;inset:0;"><rect width="400" height="300" fill="#0e1e38"/><rect x="40" y="100" width="140" height="170" fill="rgba(14,30,56,0.9)" stroke="rgba(201,168,76,0.25)" stroke-width="1"/><polygon points="40,100 110,50 180,100" fill="rgba(201,168,76,0.06)" stroke="rgba(201,168,76,0.35)" stroke-width="1"/><rect x="220" y="120" width="140" height="150" fill="rgba(14,30,56,0.9)" stroke="rgba(201,168,76,0.25)" stroke-width="1"/><polygon points="220,120 290,75 360,120" fill="rgba(201,168,76,0.06)" stroke="rgba(201,168,76,0.35)" stroke-width="1"/><line x1="40" y1="99" x2="180" y2="99" stroke="rgba(201,168,76,0.5)" stroke-width="1.5"/><line x1="220" y1="119" x2="360" y2="119" stroke="rgba(201,168,76,0.5)" stroke-width="1.5"/></svg>`,
+      plan:`<svg viewBox="0 0 400 380" fill="none" width="100%" height="100%" style="position:absolute;inset:0;"><rect width="400" height="380" fill="#0a1628"/><rect x="30" y="30" width="340" height="320" fill="none" stroke="rgba(201,168,76,0.2)" stroke-width="1"/><line x1="30" y1="190" x2="370" y2="190" stroke="rgba(201,168,76,0.3)" stroke-width="6"/><line x1="200" y1="30" x2="200" y2="350" stroke="rgba(201,168,76,0.3)" stroke-width="6"/><rect x="40" y="40" width="150" height="140" fill="rgba(14,30,56,0.8)" stroke="rgba(201,168,76,0.2)" stroke-width="0.5"/><rect x="210" y="40" width="150" height="140" fill="rgba(14,30,56,0.8)" stroke="rgba(201,168,76,0.2)" stroke-width="0.5"/><rect x="40" y="200" width="150" height="140" fill="rgba(14,30,56,0.8)" stroke="rgba(201,168,76,0.2)" stroke-width="0.5"/><rect x="210" y="200" width="150" height="140" fill="rgba(14,30,56,0.8)" stroke="rgba(201,168,76,0.2)" stroke-width="0.5"/><circle cx="200" cy="190" r="30" fill="rgba(14,60,30,0.5)" stroke="rgba(201,168,76,0.3)" stroke-width="1"/></svg>`,
+      building:`<svg viewBox="0 0 400 300" fill="none" width="100%" height="100%" style="position:absolute;inset:0;"><rect width="400" height="300" fill="#0a1628"/><rect x="60" y="60" width="280" height="220" fill="rgba(14,30,56,0.8)" stroke="rgba(201,168,76,0.25)" stroke-width="1"/><rect x="80" y="80" width="50" height="40" fill="rgba(201,168,76,0.1)" stroke="rgba(201,168,76,0.2)" stroke-width="0.5"/><rect x="150" y="80" width="50" height="40" fill="rgba(201,168,76,0.15)" stroke="rgba(201,168,76,0.2)" stroke-width="0.5"/><rect x="220" y="80" width="50" height="40" fill="rgba(201,168,76,0.08)" stroke="rgba(201,168,76,0.2)" stroke-width="0.5"/><rect x="290" y="80" width="50" height="40" fill="rgba(201,168,76,0.12)" stroke="rgba(201,168,76,0.2)" stroke-width="0.5"/><line x1="60" y1="59" x2="340" y2="59" stroke="rgba(201,168,76,0.5)" stroke-width="1.5"/></svg>`
+    };
+    function getSVG(t){return SVG_THEMES[t]||SVG_THEMES.villa;}
+
+    // CURSOR
+    const cursor=document.getElementById('cursor'),ring=document.getElementById('cursorRing');
+    let mouseX=0,mouseY=0,ringX=0,ringY=0;
+    document.addEventListener('mousemove',e=>{mouseX=e.clientX;mouseY=e.clientY;cursor.style.left=mouseX+'px';cursor.style.top=mouseY+'px';});
+    (function t(){ringX+=(mouseX-ringX)*0.12;ringY+=(mouseY-ringY)*0.12;ring.style.left=ringX+'px';ring.style.top=ringY+'px';requestAnimationFrame(t);})();
+    function bindCursor(){document.querySelectorAll('a,button,.proj-card').forEach(el=>{el.addEventListener('mouseenter',()=>{cursor.style.transform='translate(-50%,-50%) scale(2.5)';ring.style.transform='translate(-50%,-50%) scale(1.5)';ring.style.borderColor='rgba(201,168,76,0.8)';});el.addEventListener('mouseleave',()=>{cursor.style.transform='translate(-50%,-50%) scale(1)';ring.style.transform='translate(-50%,-50%) scale(1)';ring.style.borderColor='rgba(201,168,76,0.5)';});});}
+    window.addEventListener('scroll',()=>{const s=window.scrollY/(document.documentElement.scrollHeight-window.innerHeight);document.getElementById('scrollProgress').style.transform=`scaleX(${s})`;document.getElementById('navbar').classList.toggle('scrolled',window.scrollY>60);});
+    function toggleMobile(){document.getElementById('mobileMenu').classList.toggle('open');}
+    function closeMobile(){document.getElementById('mobileMenu').classList.remove('open');}
+    const obs=new IntersectionObserver(e=>{e.forEach(el=>{if(el.isIntersecting)el.target.classList.add('visible');});},{threshold:0.1});
+    function bindReveal(){document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));}
+
+    // LOAD JSON
+    async function init() {
+      const res = await fetch('/assets/js/projects.json', { cache: 'no-store' });
+      const { projects } = await res.json();
+      const featured = projects.find(p => p.featured) || projects[0];
+      // Portfolio grid shows all projects, featured first
+      const others = [featured, ...projects.filter(p => p.id !== featured.id)];
+
+      // Hero background image, from featured project
+      const pageHeroPhoto = document.getElementById('pageHeroPhoto');
+      if (pageHeroPhoto && featured.image) pageHeroPhoto.src = featured.image;
+
+      // Render featured
+      const firstGallery = featured.gallery[0] || { theme:'gate' };
+      document.getElementById('featuredGrid').innerHTML = `
+        <div class="reveal">
+          <div class="feat-img-wrap">
+            <div class="feat-placeholder" style="background:linear-gradient(135deg,#0e2040,#1a3560);">
+              ${featured.image?`<img src="${featured.image}" alt="${featured.name}" style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0;">`:getSVG(firstGallery.theme)}
+            </div>
+            <div class="feat-badge">
+              <div class="feat-badge-tag">Featured Development</div>
+              <div class="feat-badge-name">${featured.name}</div>
+            </div>
+          </div>
+        </div>
+        <div class="reveal reveal-delay-1">
+          <h2 class="section-title">${featured.name.split(' ')[0]}<br><em>${featured.name.split(' ').slice(1).join(' ')}</em></h2>
+          <p class="feat-by">By <strong>${featured.developer}</strong></p>
+          <p class="feat-marketed">Marketed by <span>HK Builders & Developers</span></p>
+          <div class="divider"></div>
+          <p class="feat-desc">${featured.fullDesc}</p>
+          <div class="feat-highlights">
+            <div class="feat-hl"><div class="feat-hl-label">Type</div><div class="feat-hl-val">${featured.type}</div></div>
+            <div class="feat-hl"><div class="feat-hl-label">Status</div><div class="feat-hl-val">${featured.status}</div></div>
+            <div class="feat-hl"><div class="feat-hl-label">Developer</div><div class="feat-hl-val">${featured.developer}</div></div>
+            <div class="feat-hl"><div class="feat-hl-label">Plot Sizes</div><div class="feat-hl-val">${featured.plotSizes}</div></div>
+          </div>
+          <a href="/project/?id=${featured.id}" class="btn-primary">View Project Details</a>
+        </div>
+      `;
+
+      // Render others
+      const bgs = ['linear-gradient(160deg,#0e2040,#1a3560)','linear-gradient(160deg,#152844,#0e1e38)','linear-gradient(160deg,#0a1f3c,#162f50)'];
+      document.getElementById('otherGrid').innerHTML = others.map((p,i) => `
+        <a href="/project/?id=${p.id}" class="proj-card reveal ${i>0?'reveal-delay-'+i:''}">
+          <div class="proj-card-visual">
+            <div class="proj-card-vis" style="background:${bgs[i%bgs.length]};position:relative;">
+              ${p.image?`<img src="${p.image}" alt="${p.name}" style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0;">`:getSVG(p.gallery[0]?.theme||'villa')}
+            </div>
+            <div class="proj-card-vis-overlay"></div>
+          </div>
+          <div class="proj-card-body">
+            <div class="proj-card-collection">${p.collection||p.type}</div>
+            <div class="proj-card-name">${p.name}</div>
+            <div class="proj-card-desc">${p.shortDesc}</div>
+            <div class="proj-card-footer">
+              <div class="proj-card-marketed">Marketed by <strong>HK Builders</strong></div>
+              <span class="proj-card-link">View Details →</span>
+            </div>
+          </div>
+        </a>
+      `).join('');
+
+      // Populate enquiry select
+      const sel = document.getElementById('eProject');
+      projects.forEach(p => { const o=document.createElement('option'); o.value=p.id; o.textContent=p.name; sel.appendChild(o); });
+      const notSure=document.createElement('option'); notSure.value=''; notSure.textContent='Not sure yet'; sel.appendChild(notSure);
+
+      // Footer links
+      document.getElementById('footerProjectLinks').innerHTML = projects.map(p =>
+        `<li><a href="/project/?id=${p.id}">${p.name}</a></li>`
+      ).join('');
+
+      bindReveal(); bindCursor();
+    }
+
+    init().catch(console.error);
+    bindReveal(); bindCursor();
+
+    function submitEnquiry(){
+      const n=document.getElementById('eName').value, ph=document.getElementById('ePhone').value;
+      if(!n||!ph){alert('Please enter your name and phone number.');return;}
+      document.getElementById('enquiryForm').style.display='none';
+      document.getElementById('formSuccess').classList.add('show');
+    }
+  </script>
+</body>
+</html>

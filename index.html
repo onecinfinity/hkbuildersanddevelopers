@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>HK Builders & Developers | Building Trust. Creating Futures.</title>
+  <link rel="stylesheet" href="assets/css/loader.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
+  <script src="assets/js/loader.js"></script>
+  <style>
+    :root{--navy:#0a1628;--navy-mid:#0e1e38;--navy-light:#152844;--gold:#c9a84c;--gold-light:#e2c97e;--gold-pale:#f0dfa0;--white:#ffffff;--white-dim:rgba(255,255,255,0.08);--white-muted:rgba(255,255,255,0.55);--gold-gradient:linear-gradient(135deg,#c9a84c 0%,#f0dfa0 50%,#c9a84c 100%);}
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+    html{scroll-behavior:smooth;}
+    body{background:var(--navy);color:var(--white);font-family:'Jost',sans-serif;font-weight:300;overflow-x:hidden;cursor:none;}
+    .cursor{position:fixed;width:10px;height:10px;background:var(--gold);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:transform 0.1s ease;}
+    .cursor-ring{position:fixed;width:36px;height:36px;border:1px solid rgba(201,168,76,0.5);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:all 0.15s ease;}
+    body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:1;opacity:0.4;}
+    .gold-top-bar{position:fixed;top:0;left:0;right:0;height:2px;background:var(--gold-gradient);z-index:9999;transform-origin:left;transform:scaleX(0);transition:transform 0.1s linear;}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(30px);}to{opacity:1;transform:translateY(0);}}
+    @keyframes gridShift{0%{transform:translateY(0);}100%{transform:translateY(80px);}}
+    @keyframes float{0%{opacity:0;transform:translateY(100vh) translateX(0);}10%{opacity:0.6;}90%{opacity:0.4;}100%{opacity:0;transform:translateY(-100px) translateX(30px);}}
+    @keyframes blink{0%,100%{opacity:1}50%{opacity:0.3}}
+    @keyframes rotateSlow{0%{transform:translate(-50%,-50%) rotate(0deg);}100%{transform:translate(-50%,-50%) rotate(360deg);}}
+    @keyframes scrollPulse{0%,100%{opacity:0.4}50%{opacity:1}}
+
+    /* NAV */
+    nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:22px 60px;display:flex;align-items:center;justify-content:space-between;transition:all 0.4s ease;}
+    nav.scrolled{background:rgba(10,22,40,0.95);backdrop-filter:blur(20px);padding:14px 60px;border-bottom:1px solid rgba(201,168,76,0.15);}
+    .nav-logo{display:flex;align-items:center;gap:14px;text-decoration:none;}
+    .nav-logo-mark{width:48px;height:48px;border:1.5px solid var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-weight:700;font-size:18px;background:var(--gold-gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;flex-shrink:0;}
+    .nav-logo-text .name{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:16px;background:var(--gold-gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:2px;text-transform:uppercase;}
+    .nav-logo-text .sub{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--white-muted);font-weight:400;}
+    .nav-links{display:flex;align-items:center;gap:40px;list-style:none;}
+    .nav-links a{text-decoration:none;font-size:12px;letter-spacing:2.5px;text-transform:uppercase;color:var(--white-muted);font-weight:400;position:relative;transition:color 0.3s ease;}
+    .nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:1px;background:var(--gold);transition:width 0.3s ease;}
+    .nav-links a:hover,.nav-links a.active{color:var(--gold-light);}
+    .nav-links a:hover::after,.nav-links a.active::after{width:100%;}
+    .nav-cta{padding:10px 28px;border:1px solid var(--gold);color:var(--gold)!important;font-size:11px!important;letter-spacing:2px;text-transform:uppercase;text-decoration:none;transition:all 0.3s ease!important;}
+    .nav-cta::after{display:none!important;}
+    .nav-cta:hover{background:var(--gold)!important;color:var(--navy)!important;}
+    .hamburger{display:none;flex-direction:column;gap:5px;cursor:none;z-index:1001;}
+    .hamburger span{display:block;width:28px;height:1.5px;background:var(--gold);transition:all 0.3s ease;}
+    .mobile-menu{position:fixed;inset:0;background:var(--navy);z-index:999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:40px;transform:translateX(100%);transition:transform 0.5s cubic-bezier(0.16,1,0.3,1);}
+    .mobile-menu.open{transform:translateX(0);}
+    .mobile-menu a{font-family:'Cormorant Garamond',serif;font-size:40px;font-weight:300;text-decoration:none;color:var(--white);letter-spacing:2px;transition:color 0.3s ease;}
+    .mobile-menu a:hover{color:var(--gold);}
+
+    /* HERO */
+    .hero{position:relative;height:100vh;min-height:700px;display:flex;align-items:center;overflow:hidden;}
+    .hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse at 70% 40%,rgba(201,168,76,0.08) 0%,transparent 60%),radial-gradient(ellipse at 20% 80%,rgba(14,30,56,0.9) 0%,transparent 50%),linear-gradient(135deg,#0a1628 0%,#0e2040 50%,#0a1628 100%);}
+    .hero-photo{position:absolute;right:0;top:0;bottom:0;width:48%;height:100%;object-fit:cover;opacity:0.30;z-index:0;}
+    .hero-photo-overlay{position:absolute;right:0;top:0;bottom:0;width:48%;z-index:0;background:linear-gradient(90deg,#0a1628 0%,rgba(10,22,40,0.6) 35%,rgba(10,22,40,0.15) 100%),linear-gradient(to top,rgba(10,22,40,0.65) 0%,transparent 55%);}
+    .hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(201,168,76,0.06) 1px,transparent 1px),linear-gradient(90deg,rgba(201,168,76,0.06) 1px,transparent 1px);background-size:80px 80px;animation:gridShift 20s linear infinite;}
+    .particles{position:absolute;inset:0;overflow:hidden;}
+    .particle{position:absolute;width:2px;height:2px;background:var(--gold);border-radius:50%;animation:float linear infinite;opacity:0;}
+    .hero-content{position:relative;z-index:2;padding:0 60px;max-width:900px;}
+    .hero-eyebrow{display:flex;align-items:center;gap:16px;margin-bottom:30px;opacity:0;animation:fadeUp 0.8s ease 0.3s forwards;}
+    .hero-eyebrow-line{width:50px;height:1px;background:var(--gold-gradient);}
+    .hero-eyebrow span{font-size:11px;letter-spacing:4px;text-transform:uppercase;background:var(--gold-gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-weight:500;}
+    .hero-title{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:clamp(52px,7vw,96px);line-height:1.0;letter-spacing:-1px;margin-bottom:30px;opacity:0;animation:fadeUp 0.9s ease 0.5s forwards;}
+    .hero-title em{font-style:italic;background:var(--gold-gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+    .hero-subtitle{font-size:15px;line-height:1.8;color:var(--white-muted);max-width:540px;margin-bottom:50px;font-weight:300;opacity:0;animation:fadeUp 0.9s ease 0.7s forwards;}
+    .hero-actions{display:flex;align-items:center;gap:30px;opacity:0;animation:fadeUp 0.9s ease 0.9s forwards;}
+    .btn-primary{padding:16px 44px;background:var(--gold-gradient);color:var(--navy);text-decoration:none;font-size:11px;font-weight:600;letter-spacing:3px;text-transform:uppercase;position:relative;overflow:hidden;display:inline-block;transition:transform 0.3s ease,box-shadow 0.3s ease;border:none;cursor:none;}
+    .btn-primary::before{content:'';position:absolute;inset:0;background:rgba(255,255,255,0.15);transform:translateX(-100%);transition:transform 0.4s ease;}
+    .btn-primary:hover::before{transform:translateX(0);}
+    .btn-primary:hover{transform:translateY(-2px);box-shadow:0 20px 50px rgba(201,168,76,0.3);}
+    .btn-ghost{display:flex;align-items:center;gap:12px;text-decoration:none;font-size:12px;letter-spacing:2px;text-transform:uppercase;color:var(--white-muted);transition:color 0.3s ease;}
+    .btn-ghost-icon{width:44px;height:44px;border:1px solid rgba(201,168,76,0.3);border-radius:50%;display:flex;align-items:center;justify-content:center;transition:all 0.3s ease;}
+    .btn-ghost-icon svg{width:14px;height:14px;fill:var(--gold);}
+    .btn-ghost:hover{color:var(--gold-light);}
+    .btn-ghost:hover .btn-ghost-icon{border-color:var(--gold);background:rgba(201,168,76,0.1);}
+    .hero-deco{position:absolute;right:0;top:0;bottom:0;width:45%;overflow:hidden;}
+    .hero-deco-inner{position:absolute;inset:0;background:linear-gradient(135deg,rgba(201,168,76,0.05),transparent);border-left:1px solid rgba(201,168,76,0.1);}
+    .hero-building{position:absolute;bottom:0;right:60px;width:260px;opacity:0;animation:fadeUp 1.2s ease 1.1s forwards;}
+    .hero-circle-deco{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:500px;height:500px;border:1px solid rgba(255,187,0,0.08);border-radius:50%;animation:rotateSlow 30s linear infinite;}
+    .hero-circle-deco::before{content:'';position:absolute;inset:40px;border:1px solid rgba(201,168,76,0.05);border-radius:50%;}
+    .scroll-indicator{position:absolute;bottom:40px;left:60px;display:flex;align-items:center;gap:16px;opacity:0;animation:fadeUp 1s ease 1.4s forwards;}
+    .scroll-line{width:1px;height:60px;background:linear-gradient(to bottom,transparent,var(--gold),transparent);animation:scrollPulse 2s ease infinite;}
+    .scroll-text{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--white-muted);writing-mode:vertical-rl;}
+
+    /* STATS */
+    .stats{position:relative;z-index:2;padding:70px 60px;border-top:1px solid rgba(201,168,76,0.12);border-bottom:1px solid rgba(201,168,76,0.12);background:rgba(14,30,56,0.5);backdrop-filter:blur(10px);}
+    .stats-inner{display:grid;grid-template-columns:repeat(4,1fr);gap:0;}
+    .stat-item{text-align:center;padding:20px 40px;border-right:1px solid rgba(201,168,76,0.12);opacity:0;transform:translateY(30px);transition:all 0.6s ease;}
+    .stat-item:last-child{border-right:none;}
+    .stat-item.visible{opacity:1;transform:translateY(0);}
+    .stat-number{font-family:'Cormorant Garamond',serif;font-size:54px;font-weight:300;background:var(--gold-gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1;}
+    .stat-suffix{font-family:'Cormorant Garamond',serif;font-size:32px;background:var(--gold-gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+    .stat-label{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--white-muted);margin-top:10px;font-weight:400;}
+
+    /* SECTIONS COMMON */
+    section{position:relative;z-index:2;}
+    .section-eyebrow{display:flex;align-items:center;gap:16px;margin-bottom:20px;}
+    .section-eyebrow-line{width:40px;height:1px;background:var(--gold-gradient);}
+    .section-eyebrow span{font-size:10px;letter-spacing:4px;text-transform:uppercase;background:var(--gold-gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-weight:500;}
+    .section-title{font-family:'Cormorant Garamond',serif;font-size:clamp(36px,4.5vw,64px);font-weight:300;line-height:1.1;}
+    .section-title em{font-style:italic;background:var(--gold-gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+    .reveal{opacity:0;transform:translateY(40px);transition:all 0.8s cubic-bezier(0.16,1,0.3,1);}
+    .reveal.visible{opacity:1;transform:translateY(0);}
+    .reveal-delay-1{transition-delay:0.1s;}
+    .reveal-delay-2{transition-delay:0.2s;}
+    .reveal-delay-3{transition-delay:0.3s;}
+    .reveal-delay-4{transition-delay:0.4s;}
+
+    /* FEATURED PROJECT */
+    .featured{padding:120px 60px;background:var(--navy);}
+    .featured-inner{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;max-width:1400px;margin:0 auto;}
+    .featured-image-frame{position:relative;aspect-ratio:4/3;overflow:hidden;}
+    .featured-image-frame::before{content:'';position:absolute;top:-20px;left:-20px;right:20px;bottom:20px;border:1px solid rgba(201,168,76,0.25);z-index:0;pointer-events:none;}
+    .featured-image-frame::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(10,22,40,0.7) 0%,transparent 50%);z-index:1;}
+    .featured-placeholder{width:100%;height:100%;background:linear-gradient(135deg,var(--navy-mid),var(--navy-light));display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;}
+    .featured-placeholder img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0;}
+    .arch-svg{width:100%;height:100%;position:absolute;}
+    .featured-badge{position:absolute;bottom:30px;left:30px;z-index:2;background:rgba(10,22,40,0.85);backdrop-filter:blur(10px);border:1px solid rgba(201,168,76,0.3);padding:16px 24px;}
+    .featured-badge-tag{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:6px;}
+    .featured-badge-name{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600;color:var(--white);}
+    .featured-marketed-by{display:inline-flex;align-items:center;gap:10px;padding:8px 18px;border:1px solid rgba(201,168,76,0.25);margin-bottom:40px;}
+    .marketed-dot{width:6px;height:6px;background:var(--gold);border-radius:50%;animation:blink 2s ease infinite;}
+    .marketed-text{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold-light);}
+    .featured-name{font-family:'Cormorant Garamond',serif;font-size:clamp(38px,4vw,58px);font-weight:300;line-height:1.0;margin-bottom:16px;}
+    .featured-by{font-size:13px;color:var(--white-muted);letter-spacing:1px;margin-bottom:24px;}
+    .featured-by strong{color:var(--gold-light);font-weight:400;}
+    .divider{width:60px;height:1px;background:var(--gold-gradient);margin:24px 0;}
+    .featured-desc{font-size:15px;line-height:1.9;color:var(--white-muted);margin-bottom:40px;}
+    .featured-tags{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:40px;}
+    .tag{padding:7px 18px;border:1px solid rgba(201,168,76,0.2);font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--white-muted);transition:all 0.3s ease;}
+    .tag:hover{border-color:var(--gold);color:var(--gold);}
+
+    /* PROJECTS GRID */
+    .projects{padding:120px 60px;background:var(--navy-mid);}
+    .projects-header{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:70px;max-width:1400px;margin-left:auto;margin-right:auto;}
+    .projects-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;max-width:1400px;margin:0 auto;}
+    .project-card{position:relative;aspect-ratio:3/4;overflow:hidden;cursor:none;}
+    .project-card-bg{position:absolute;inset:0;transition:transform 0.7s cubic-bezier(0.16,1,0.3,1);}
+    .project-card:hover .project-card-bg{transform:scale(1.06);}
+    .project-card-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(10,22,40,0.97) 0%,rgba(10,22,40,0.7) 35%,rgba(10,22,40,0.25) 70%,rgba(10,22,40,0.15) 100%);z-index:1;}
+    .project-card-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform 0.7s cubic-bezier(0.16,1,0.3,1);}
+    .project-card:hover .project-card-img{transform:scale(1.06);}
+    .project-card-inner-deco{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0.15;}
+    .project-card-content{position:absolute;bottom:0;left:0;right:0;padding:36px;z-index:2;}
+    .project-card-number{font-family:'Cormorant Garamond',serif;font-size:60px;font-weight:300;color:rgba(226,201,126,0.35);line-height:1;margin-bottom:10px;text-shadow:0 2px 12px rgba(10,22,40,0.6);}
+    .project-card-tag{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--gold-light);margin-bottom:10px;text-shadow:0 1px 6px rgba(10,22,40,0.7);}
+    .project-card-name{text-shadow:0 2px 12px rgba(10,22,40,0.7);}
+    .project-card-desc{text-shadow:0 1px 8px rgba(10,22,40,0.8);}
+    .project-card-name{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:400;line-height:1.2;margin-bottom:14px;transition:color 0.3s ease;}
+    .project-card:hover .project-card-name{color:var(--gold-light);}
+    .project-card-desc{font-size:13px;color:rgba(255,255,255,0.78);line-height:1.6;max-height:0;overflow:hidden;transition:max-height 0.5s ease,opacity 0.4s ease;opacity:0;}
+    .project-card:hover .project-card-desc{max-height:80px;opacity:1;}
+    .project-card-arrow{display:flex;align-items:center;gap:10px;margin-top:20px;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);transform:translateX(-10px);opacity:0;transition:all 0.4s ease;}
+    .project-card:hover .project-card-arrow{transform:translateX(0);opacity:1;}
+    .project-card-arrow-line{width:30px;height:1px;background:var(--gold);transition:width 0.3s ease;}
+    .project-card:hover .project-card-arrow-line{width:50px;}
+
+    /* ============================================================
+       MARQUEE, Scrolling text strip (like arehman.me)
+    ============================================================ */
+    .marquee-section{padding:0;background:var(--navy);overflow:hidden;border-top:1px solid rgba(201,168,76,0.1);border-bottom:1px solid rgba(201,168,76,0.1);}
+    .marquee-track{display:flex;width:max-content;animation:marqueeScroll 30s linear infinite;}
+    .marquee-track:hover{animation-play-state:paused;}
+    @keyframes marqueeScroll{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
+    .marquee-word{font-family:'Cormorant Garamond',serif;font-size:clamp(52px,6vw,90px);font-weight:300;font-style:italic;white-space:nowrap;padding:30px 24px;color:rgba(255,255,255,0.08);letter-spacing:-1px;transition:color 0.3s ease;user-select:none;}
+    .marquee-word.gold{background:var(--gold-gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;color:transparent;}
+    .marquee-sep{font-family:'Cormorant Garamond',serif;font-size:clamp(52px,6vw,90px);padding:30px 10px;color:rgba(201,168,76,0.2);user-select:none;}
+
+    /* ============================================================
+       CLIENTS IMAGE GALLERY, Horizontal infinite scroll
+    ============================================================ */
+    .clients-section{padding:100px 0;background:var(--navy);overflow:hidden;}
+    .clients-header{padding:0 60px;margin-bottom:60px;display:flex;align-items:flex-end;justify-content:space-between;max-width:1400px;margin-left:auto;margin-right:auto;}
+    .clients-gallery-wrap{position:relative;overflow:hidden;}
+    /* Fade edges */
+    .clients-gallery-wrap::before,.clients-gallery-wrap::after{content:'';position:absolute;top:0;bottom:0;width:200px;z-index:2;pointer-events:none;}
+    .clients-gallery-wrap::before{left:0;background:linear-gradient(to right,var(--navy),transparent);}
+    .clients-gallery-wrap::after{right:0;background:linear-gradient(to left,var(--navy),transparent);}
+    .clients-gallery-track{display:flex;gap:16px;width:max-content;animation:galleryScroll 35s linear infinite;}
+    .clients-gallery-track:hover{animation-play-state:paused;}
+    .clients-gallery-track-reverse{animation-direction:reverse;animation-duration:40s;}
+    @keyframes galleryScroll{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
+    .gallery-row{margin-bottom:16px;}
+    .gallery-row:last-child{margin-bottom:0;}
+    .client-gallery-item{flex-shrink:0;position:relative;overflow:hidden;border:1px solid rgba(201,168,76,0.08);transition:border-color 0.3s ease;}
+    .client-gallery-item:hover{border-color:rgba(201,168,76,0.3);}
+    .client-gallery-item img{width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.6s cubic-bezier(0.16,1,0.3,1);}
+    .client-gallery-item:hover img{transform:scale(1.05);}
+    /* SVG placeholder styling */
+    .client-gallery-item .gallery-svg-placeholder{width:100%;height:100%;display:flex;align-items:center;justify-content:center;transition:transform 0.6s cubic-bezier(0.16,1,0.3,1);}
+    .client-gallery-item:hover .gallery-svg-placeholder{transform:scale(1.05);}
+    /* Item sizes */
+    .gallery-item-lg{width:380px;height:260px;}
+    .gallery-item-md{width:280px;height:260px;}
+    .gallery-item-sm{width:220px;height:260px;}
+    .gallery-item-xl{width:460px;height:260px;}
+    /* Caption overlay */
+    .client-gallery-caption{position:absolute;inset:0;background:linear-gradient(to top,rgba(10,22,40,0.9) 0%,transparent 60%);opacity:0;transition:opacity 0.4s ease;display:flex;flex-direction:column;justify-content:flex-end;padding:20px;}
+    .client-gallery-item:hover .client-gallery-caption{opacity:1;}
+    .cgc-name{font-family:'Cormorant Garamond',serif;font-size:17px;color:var(--white);margin-bottom:4px;}
+    .cgc-sub{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);}
+
+    /* TESTIMONIALS */
+    .testimonials-strip{padding:80px 60px;background:var(--navy-mid);}
+    .testimonials-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;max-width:1400px;margin:0 auto;}
+    .client-card{background:rgba(10,22,40,0.6);border:1px solid rgba(201,168,76,0.08);padding:44px 40px;position:relative;transition:all 0.4s ease;}
+    .client-card::before{content:'';position:absolute;top:0;left:0;width:0;height:2px;background:var(--gold-gradient);transition:width 0.4s ease;}
+    .client-card:hover::before{width:100%;}
+    .client-card:hover{border-color:rgba(201,168,76,0.2);}
+    .client-quote{font-size:48px;font-family:'Cormorant Garamond',serif;background:var(--gold-gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:0.8;margin-bottom:20px;}
+    .client-text{font-size:15px;line-height:1.8;color:var(--white-muted);font-style:italic;margin-bottom:30px;font-family:'Cormorant Garamond',serif;font-weight:300;}
+    .client-info{display:flex;align-items:center;gap:16px;}
+    .client-avatar{width:46px;height:46px;border-radius:50%;border:1px solid rgba(201,168,76,0.3);background:linear-gradient(135deg,var(--navy-light),var(--navy-mid));display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:600;color:var(--gold);}
+    .client-name{font-size:14px;font-weight:500;letter-spacing:1px;}
+    .client-location{font-size:11px;color:var(--white-muted);letter-spacing:1px;}
+    .client-stars{margin-bottom:20px;color:var(--gold);font-size:14px;letter-spacing:3px;}
+
+    /* WHY US */
+    .why{padding:120px 60px;background:var(--navy);}
+    .why-inner{max-width:1400px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:100px;align-items:start;}
+    .why-body{font-size:15px;line-height:1.9;color:var(--white-muted);margin-top:30px;}
+    .why-features{display:flex;flex-direction:column;}
+    .why-feature{padding:28px 0;border-bottom:1px solid rgba(201,168,76,0.1);display:flex;gap:24px;align-items:flex-start;transition:all 0.3s ease;}
+    .why-feature:first-child{border-top:1px solid rgba(201,168,76,0.1);}
+    .why-feature:hover{padding-left:10px;}
+    .why-feature-icon{width:44px;height:44px;border:1px solid rgba(201,168,76,0.25);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all 0.3s ease;}
+    .why-feature:hover .why-feature-icon{background:rgba(201,168,76,0.1);border-color:var(--gold);}
+    .why-feature-icon svg{width:20px;height:20px;}
+    .why-feature-title{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:400;margin-bottom:6px;}
+    .why-feature-desc{font-size:13px;color:var(--white-muted);line-height:1.7;}
+
+    /* CTA BANNER */
+    .cta-banner{padding:100px 60px;background:var(--navy);position:relative;overflow:hidden;}
+    .cta-banner::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 50%,rgba(201,168,76,0.07) 0%,transparent 70%);}
+    .cta-banner-inner{position:relative;z-index:2;max-width:1400px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:60px;}
+    .cta-banner-right{display:flex;flex-direction:column;gap:16px;align-items:flex-start;flex-shrink:0;}
+    .cta-phone{display:flex;align-items:center;gap:14px;font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:300;text-decoration:none;color:var(--white);transition:color 0.3s ease;}
+    .cta-phone:hover{color:var(--gold-light);}
+    .cta-phone-icon{width:44px;height:44px;border:1px solid rgba(201,168,76,0.3);border-radius:50%;display:flex;align-items:center;justify-content:center;}
+    .cta-phone-icon svg{width:18px;height:18px;fill:var(--gold);}
+    .horizontal-divider{width:1px;height:80px;background:linear-gradient(to bottom,transparent,rgba(201,168,76,0.3),transparent);}
+
+    /* FOOTER */
+    footer{background:var(--navy-mid);border-top:1px solid rgba(201,168,76,0.12);padding:80px 60px 40px;position:relative;z-index:2;}
+    .footer-top{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:60px;max-width:1400px;margin:0 auto 60px;}
+    .footer-brand-name{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600;background:var(--gold-gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:6px;}
+    .footer-brand-sub{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--white-muted);}
+    .footer-tagline{font-family:'Cormorant Garamond',serif;font-size:16px;font-style:italic;color:var(--white-muted);margin-top:20px;line-height:1.6;}
+    .footer-col-title{font-size:10px;letter-spacing:3px;text-transform:uppercase;background:var(--gold-gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:24px;font-weight:500;}
+    .footer-links{list-style:none;display:flex;flex-direction:column;gap:12px;}
+    .footer-links a{text-decoration:none;font-size:13px;color:var(--white-muted);letter-spacing:0.5px;transition:color 0.3s ease;}
+    .footer-links a:hover{color:var(--gold-light);}
+    .footer-contact-item{display:flex;gap:12px;margin-bottom:16px;}
+    .footer-contact-item svg{width:16px;height:16px;fill:var(--gold);flex-shrink:0;margin-top:2px;}
+    .footer-contact-item span{font-size:13px;color:var(--white-muted);line-height:1.5;}
+    .footer-bottom{max-width:1400px;margin:0 auto;padding-top:30px;border-top:1px solid rgba(201,168,76,0.08);display:flex;align-items:center;justify-content:space-between;}
+    .footer-copyright{font-size:12px;color:rgba(255,255,255,0.3);letter-spacing:1px;}
+    .footer-socials{display:flex;gap:16px;}
+    .footer-social{width:34px;height:34px;border:1px solid rgba(201,168,76,0.2);border-radius:50%;display:flex;align-items:center;justify-content:center;text-decoration:none;transition:all 0.3s ease;}
+    .footer-social svg{width:14px;height:14px;fill:var(--white-muted);transition:fill 0.3s ease;}
+    .footer-social:hover{border-color:var(--gold);background:rgba(201,168,76,0.1);}
+    .footer-social:hover svg{fill:var(--gold);}
+    .whatsapp-float-button{position:fixed;right:24px;bottom:50px;width:64px;height:64px;display:flex;align-items:center;justify-content:center;border-radius:50%;background:#25d366;color:#fff;font-size:32px;text-decoration:none;box-shadow:0 14px 30px rgba(37,211,102,0.4);z-index:9999;transition:box-shadow 0.25s ease,filter 0.25s ease;animation:waFloat 2.6s ease-in-out infinite;}
+    .whatsapp-float-button::before,.whatsapp-float-button::after{content:'';position:absolute;inset:0;border-radius:50%;background:rgba(37,211,102,0.45);z-index:-1;animation:waRipple 2.4s ease-out infinite;pointer-events:none;}
+    .whatsapp-float-button::after{animation-delay:1.2s;}
+    .whatsapp-float-button i{position:relative;z-index:1;}
+    .whatsapp-float-button:hover{color:#fff;box-shadow:0 18px 40px rgba(37,211,102,0.55);filter:brightness(1.08);animation-play-state:paused;}
+    @keyframes waFloat{0%,100%{transform:translateY(0);}50%{transform:translateY(-9px);}}
+    @keyframes waRipple{0%{transform:scale(1);opacity:0.7;}100%{transform:scale(2.6);opacity:0;}}
+
+    /* RESPONSIVE */
+    @media(max-width:1024px){
+      nav{padding:20px 30px;}nav.scrolled{padding:14px 30px;}
+      .hero-content{padding:0 30px;}
+      .hero-deco{width:40%;}
+      .stats-inner{grid-template-columns:repeat(2,1fr);}
+      .stat-item{border-right:none;border-bottom:1px solid rgba(201,168,76,0.12);}
+      .featured,.projects,.why,.testimonials-strip,.cta-banner{padding:80px 30px;}
+      .featured-inner{grid-template-columns:1fr;gap:50px;}
+      .projects-grid{grid-template-columns:1fr;}
+      .project-card{aspect-ratio:16/9;}
+      .why-inner{grid-template-columns:1fr;gap:60px;}
+      .testimonials-grid{grid-template-columns:1fr;}
+      .cta-banner-inner{flex-direction:column;}
+      .footer-top{grid-template-columns:1fr 1fr;gap:40px;}
+      .nav-links{display:none;}
+      .hamburger{display:flex;}
+      .clients-header{padding:0 30px;}
+    }
+    @media(max-width:640px){
+      .hero-title{font-size:42px;}
+      .hero-content{padding:0 20px;}
+      .hero-deco{display:none;}
+      .hero-photo{width:100%;opacity:0.18;}
+      .hero-photo-overlay{width:100%;background:linear-gradient(to top,rgba(10,22,40,0.92) 0%,rgba(10,22,40,0.6) 45%,rgba(10,22,40,0.35) 100%);}
+      .featured,.projects,.why,.testimonials-strip,.cta-banner{padding:60px 20px;}
+      nav{padding:18px 20px;}nav.scrolled{padding:12px 20px;}
+      .footer-top{grid-template-columns:1fr;}
+      footer{padding:60px 20px 30px;}
+      .stats{padding:50px 20px;}
+      .scroll-indicator{display:none;}
+      .hero-actions{flex-direction:column;align-items:flex-start;}
+      .projects-header{flex-direction:column;align-items:flex-start;gap:20px;}
+      .clients-header{flex-direction:column;align-items:flex-start;gap:20px;padding:0 20px;}
+      .whatsapp-float-button{right:16px;bottom:50px;width:56px;height:56px;font-size:28px;}
+    }
+
+    /* Loading state for dynamic content */
+    .dynamic-loading{opacity:0.3;pointer-events:none;}
+  </style>
+</head>
+<body>
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+  <div class="gold-top-bar" id="scrollProgress"></div>
+
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="/" onclick="closeMobile()">Home</a>
+    <a href="/projects/" onclick="closeMobile()">Projects We Market</a>
+    <a href="/clients/" onclick="closeMobile()">Satisfied Clients</a>
+    <a href="/about/" onclick="closeMobile()">About Us</a>
+    <a href="/contact/" onclick="closeMobile()">Contact</a>
+  </div>
+
+  <nav id="navbar">
+    <a href="/" class="nav-logo">
+      <div class="nav-logo-mark">HK</div>
+      <div class="nav-logo-text">
+        <div class="name">HK Builders</div>
+        <div class="sub">& Developers</div>
+      </div>
+    </a>
+    <ul class="nav-links">
+      <li><a href="/" class="active">Home</a></li>
+      <li><a href="/projects/">Projects We Market</a></li>
+      <li><a href="/clients/">Satisfied Clients</a></li>
+      <li><a href="/about/">About Us</a></li>
+      <li><a href="/contact/" class="nav-cta">Get In Touch</a></li>
+    </ul>
+    <div class="hamburger" id="hamburger" onclick="toggleMobile()">
+      <span></span><span></span><span></span>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <img class="hero-photo" id="heroPhoto" src="" alt="Featured project">
+    <div class="hero-photo-overlay"></div>
+    <div class="hero-grid"></div>
+    <div class="particles" id="particles"></div>
+    <div class="hero-content">
+      <div class="hero-eyebrow">
+        <div class="hero-eyebrow-line"></div>
+        <span>Pakistan's Trusted Real Estate Partner</span>
+      </div>
+      <h1 class="hero-title">Building Trust.<br><em>Creating</em><br>Futures.</h1>
+      <p class="hero-subtitle">We connect visionary buyers with Pakistan's most exclusive residential and commercial developments, curated, marketed, and delivered with uncompromising excellence.</p>
+      <div class="hero-actions">
+        <a href="/projects/" class="btn-primary">Explore Projects</a>
+        <a href="/contact/" class="btn-ghost">
+          <div class="btn-ghost-icon"><svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg></div>
+          Schedule a Call
+        </a>
+      </div>
+    </div>
+    <div class="hero-deco">
+      <div class="hero-deco-inner"></div>
+    </div>
+    <div class="scroll-indicator">
+      <div class="scroll-line"></div>
+      <span class="scroll-text">Scroll to discover</span>
+    </div>
+  </section>
+
+  <!-- STATS -->
+  <div class="stats">
+    <div class="stats-inner">
+      <div class="stat-item reveal"><div class="stat-number"><span class="count" data-target="500">0</span><span class="stat-suffix">+</span></div><div class="stat-label">Happy Clients</div></div>
+      <div class="stat-item reveal reveal-delay-1"><div class="stat-number"><span class="count" data-target="15">0</span><span class="stat-suffix">+</span></div><div class="stat-label">Projects Marketed</div></div>
+      <div class="stat-item reveal reveal-delay-2"><div class="stat-number"><span class="count" data-target="10">0</span><span class="stat-suffix">+</span></div><div class="stat-label">Years of Excellence</div></div>
+      <div class="stat-item reveal reveal-delay-3"><div class="stat-number"><span class="count" data-target="100">0</span><span class="stat-suffix">%</span></div><div class="stat-label">Client Satisfaction</div></div>
+    </div>
+  </div>
+
+  <!-- FEATURED PROJECT, loaded from JSON -->
+  <section class="featured" id="featuredSection">
+        <div class="projects-header reveal">
+      <div>
+        <div class="section-eyebrow">
+          <div class="section-eyebrow-line"></div>
+          <span>Exclusive Project</span>
+        </div>
+        <h2 class="section-title">Most <em>Profitable</em> Project</h2>
+      </div>
+      <a href="/projects/" class="btn-ghost" style="margin-bottom:10px">
+        <div class="btn-ghost-icon">
+          <svg viewBox="0 0 24 24">
+            <path d="M8 5v14l11-7z" />
+          </svg>
+        </div>
+        View All
+      </a>
+    </div>
+    <div class="featured-inner" id="featuredInner">
+      <!-- JS renders this from projects.json -->
+      <div style="grid-column:1/-1;text-align:center;padding:60px;color:var(--white-muted);">Loading featured project...</div>
+    </div>
+  </section>
+
+  <!-- SCROLLING MARQUEE TEXT STRIP -->
+  <div class="marquee-section">
+    <div class="marquee-track" id="marqueeTrack">
+      <!-- words injected by JS based on featured project -->
+    </div>
+  </div>
+
+  <!-- ALL PROJECTS GRID, from JSON -->
+  <section class="projects">
+    <div class="projects-header reveal">
+      <div>
+        <div class="section-eyebrow"><div class="section-eyebrow-line"></div><span>Our Portfolio</span></div>
+        <h2 class="section-title">Projects We <em>Market</em></h2>
+      </div>
+      <a href="/projects/" class="btn-ghost" style="margin-bottom:10px;">
+        <div class="btn-ghost-icon"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+        View All
+      </a>
+    </div>
+    <div class="projects-grid" id="projectsGrid">
+      <!-- JS renders from JSON -->
+    </div>
+  </section>
+
+  <!-- WHY US -->
+  <section class="why">
+    <div class="why-inner">
+      <div class="why-left">
+        <div class="section-eyebrow reveal"><div class="section-eyebrow-line"></div><span>Why HK</span></div>
+        <h2 class="section-title reveal reveal-delay-1">Your Trust is<br>Our <em>Foundation</em></h2>
+        <p class="why-body reveal reveal-delay-2">We are not just a marketing firm, we are your long-term real estate partner. With deep market knowledge, strong developer relationships, and a commitment to transparency, we guide every client from first inquiry to final handover.</p>
+      </div>
+      <div class="why-features">
+        <div class="why-feature reveal"><div class="why-feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#c9a84c" stroke-width="1.5"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg></div><div><div class="why-feature-title">Trusted by Hundreds</div><div class="why-feature-desc">Over 500+ satisfied clients trust HK Builders & Developers as their go-to real estate marketing partner in Pakistan.</div></div></div>
+        <div class="why-feature reveal reveal-delay-1"><div class="why-feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#c9a84c" stroke-width="1.5"><path d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg></div><div><div class="why-feature-title">Curated Developments Only</div><div class="why-feature-desc">We market only developments that meet our strict quality and credibility standards, so you invest with confidence.</div></div></div>
+        <div class="why-feature reveal reveal-delay-2"><div class="why-feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#c9a84c" stroke-width="1.5"><path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg></div><div><div class="why-feature-title">End-to-End Support</div><div class="why-feature-desc">From site visits to booking, documentation to handover, our team is with you every step of the way.</div></div></div>
+        <div class="why-feature reveal reveal-delay-3"><div class="why-feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#c9a84c" stroke-width="1.5"><path d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div><div><div class="why-feature-title">Transparent Pricing</div><div class="why-feature-desc">No hidden costs, no surprises. We believe in honest, clear communication for every single transaction.</div></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SATISFIED CLIENTS, Marquee Image Gallery -->
+  <section class="clients-section">
+    <div class="clients-header">
+      <div>
+        <div class="section-eyebrow reveal"><div class="section-eyebrow-line"></div><span>Satisfied Clients</span></div>
+        <h2 class="section-title reveal reveal-delay-1">Real Families.<br><em>Real Stories.</em></h2>
+      </div>
+      <a href="/clients/" class="btn-ghost reveal reveal-delay-2" style="margin-bottom:10px;">
+        <div class="btn-ghost-icon"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+        All Stories
+      </a>
+    </div>
+    <!-- Row 1, left to right -->
+    <div class="clients-gallery-wrap" style="margin-bottom:16px;">
+      <div class="clients-gallery-track gallery-row" id="galleryRow1">
+        <!-- JS renders -->
+      </div>
+    </div>
+    <!-- Row 2, right to left -->
+    <div class="clients-gallery-wrap">
+      <div class="clients-gallery-track clients-gallery-track-reverse gallery-row" id="galleryRow2">
+        <!-- JS renders -->
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section class="testimonials-strip">
+    <div style="max-width:1400px;margin:0 auto;">
+      <div class="section-eyebrow reveal" style="margin-bottom:16px;"><div class="section-eyebrow-line"></div><span>Testimonials</span></div>
+      <h2 class="section-title reveal reveal-delay-1" style="margin-bottom:60px;">Satisfied <em>Clients</em></h2>
+      <div class="testimonials-grid">
+        <div class="client-card reveal"><div class="client-stars">★★★★★</div><div class="client-quote">"</div><p class="client-text">HK Builders made our investment in Falaknaz Wonder City completely seamless. Their transparency and professionalism were second to none. We felt guided at every step.</p><div class="client-info"><div class="client-avatar">AM</div><div><div class="client-name">Ahmed Mirza</div><div class="client-location">Karachi, Pakistan</div></div></div></div>
+        <div class="client-card reveal reveal-delay-1"><div class="client-stars">★★★★★</div><div class="client-quote">"</div><p class="client-text">As an overseas Pakistani, finding a trustworthy partner was everything. HK Builders handled our Overseas Block purchase with exceptional care and communication throughout.</p><div class="client-info"><div class="client-avatar">SK</div><div><div class="client-name">Sara Khan</div><div class="client-location">Dubai, UAE</div></div></div></div>
+        <div class="client-card reveal reveal-delay-2"><div class="client-stars">★★★★★</div><div class="client-quote">"</div><p class="client-text">United Palm Greens was our dream community. The HK team walked us through every detail of the gated community and made the entire process smooth and stress-free.</p><div class="client-info"><div class="client-avatar">FR</div><div><div class="client-name">Farhan Raza</div><div class="client-location">Lahore, Pakistan</div></div></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA BANNER -->
+  <section class="cta-banner">
+    <div class="cta-banner-inner">
+      <div class="reveal">
+        <div class="section-eyebrow" style="margin-bottom:16px;"><div class="section-eyebrow-line"></div><span>Ready to Invest?</span></div>
+        <h2 class="section-title">Find Your Perfect<br><em>Property Today</em></h2>
+      </div>
+      <div class="horizontal-divider reveal reveal-delay-1"></div>
+      <div class="cta-banner-right reveal reveal-delay-2">
+        <a href="tel:+923252208153" class="cta-phone"><div class="cta-phone-icon"><svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg></div>+92 325 2208153</a>
+        <a href="/contact/" class="btn-primary" style="text-align:center;width:100%;">Book a Consultation</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER, with dynamic project links -->
+  <footer>
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="nav-logo-mark" style="width:56px;height:56px;font-size:20px;border:1.5px solid var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;margin-bottom:20px;background:var(--gold-gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">HK</div>
+        <div class="footer-brand-name">HK Builders & Developers</div>
+        <div class="footer-brand-sub">Pakistan</div>
+        <p class="footer-tagline">"Building Trust.<br>Creating Futures."</p>
+      </div>
+      <div>
+        <div class="footer-col-title">Quick Links</div>
+        <ul class="footer-links">
+          <li><a href="/">Home</a></li>
+          <li><a href="/projects/">Projects We Market</a></li>
+          <li><a href="/clients/">Satisfied Clients</a></li>
+          <li><a href="/about/">About Us</a></li>
+          <li><a href="/contact/">Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Projects</div>
+        <ul class="footer-links" id="footerProjectLinks">
+          <!-- JS renders from JSON -->
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Contact</div>
+        <div class="footer-contact-item"><svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg><span>Karachi, Pakistan</span></div>
+        <div class="footer-contact-item"><svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg><span>+92 325 2208153</span></div>
+        <div class="footer-contact-item"><svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg><span>hkbuildersanddevelopers21@gmail.com</span></div>
+        <div class="footer-socials">
+          <a href="https://www.facebook.com/share/1NHx4GR5Du/?mibextid=wwXIfr" target="_blank" class="footer-social"><svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a>
+          <a href="https://www.instagram.com/hkbuildersanddevelopers?igsh=cWw5d3lzcDVzM2Q5" target="_blank" class="footer-social"><svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-copyright">© 2026 HK Builders & Developers. All rights reserved.</div>
+    </div>
+  </footer>
+
+  <a href="https://wa.me/923252208153?text=Hi%20HK%20Builders%20and%20Developers%2C%20I%27d%20like%20to%20get%20in%20touch." target="_blank" rel="noopener noreferrer" class="whatsapp-float-button" aria-label="Chat with us on WhatsApp">
+    <i class="fa-brands fa-whatsapp"></i>
+  </a>
+
+  <script>
+  // ================================================================
+  //  CURSOR
+  // ================================================================
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+  let mouseX = 0, mouseY = 0, ringX = 0, ringY = 0;
+  document.addEventListener('mousemove', e => {
+    mouseX = e.clientX; mouseY = e.clientY;
+    cursor.style.left = mouseX + 'px'; cursor.style.top = mouseY + 'px';
+  });
+  (function animateRing() {
+    ringX += (mouseX - ringX) * 0.12; ringY += (mouseY - ringY) * 0.12;
+    ring.style.left = ringX + 'px'; ring.style.top = ringY + 'px';
+    requestAnimationFrame(animateRing);
+  })();
+  function setCursorHover() {
+    document.querySelectorAll('a,button,.project-card,.client-card,.why-feature,.client-gallery-item').forEach(el => {
+      el.addEventListener('mouseenter', () => { cursor.style.transform='translate(-50%,-50%) scale(2.5)'; ring.style.transform='translate(-50%,-50%) scale(1.5)'; ring.style.borderColor='rgba(201,168,76,0.8)'; });
+      el.addEventListener('mouseleave', () => { cursor.style.transform='translate(-50%,-50%) scale(1)'; ring.style.transform='translate(-50%,-50%) scale(1)'; ring.style.borderColor='rgba(201,168,76,0.5)'; });
+    });
+  }
+
+  // ================================================================
+  //  SCROLL
+  // ================================================================
+  window.addEventListener('scroll', () => {
+    const s = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight);
+    document.getElementById('scrollProgress').style.transform = `scaleX(${s})`;
+    document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 60);
+  });
+
+  function toggleMobile() { document.getElementById('mobileMenu').classList.toggle('open'); }
+  function closeMobile() { document.getElementById('mobileMenu').classList.remove('open'); }
+
+  // ================================================================
+  //  PARTICLES
+  // ================================================================
+  const pc = document.getElementById('particles');
+  for (let i = 0; i < 25; i++) {
+    const p = document.createElement('div'); p.className = 'particle';
+    p.style.left = Math.random() * 100 + '%';
+    p.style.animationDuration = (8 + Math.random() * 15) + 's';
+    p.style.animationDelay = (Math.random() * 10) + 's';
+    p.style.width = p.style.height = (1 + Math.random() * 2.5) + 'px';
+    pc.appendChild(p);
+  }
+
+  // ================================================================
+  //  SCROLL REVEAL
+  // ================================================================
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.12 });
+
+  function observeReveal() {
+    document.querySelectorAll('.reveal, .stat-item').forEach(el => observer.observe(el));
+  }
+
+  // ================================================================
+  //  COUNTER
+  // ================================================================
+  function animateCounter(el) {
+    const target = parseInt(el.dataset.target); let current = 0;
+    const step = target / (2000 / 16);
+    const timer = setInterval(() => {
+      current = Math.min(current + step, target);
+      el.textContent = Math.floor(current);
+      if (current >= target) clearInterval(timer);
+    }, 16);
+  }
+  const cObs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.querySelectorAll('.count').forEach(animateCounter); cObs.unobserve(e.target); } });
+  }, { threshold: 0.3 });
+  document.querySelectorAll('.stats').forEach(el => cObs.observe(el));
+
+  // ================================================================
+  //  PROJECT SVG PLACEHOLDERS, theme-based
+  // ================================================================
+  function getProjectSVG(theme) {
+    const svgs = {
+      gate:`<svg viewBox="0 0 400 300" fill="none" width="100%" height="100%"><rect width="400" height="300" fill="#0e2040"/><rect x="140" y="100" width="40" height="160" fill="rgba(201,168,76,0.15)" stroke="rgba(201,168,76,0.4)" stroke-width="1"/><rect x="220" y="100" width="40" height="160" fill="rgba(201,168,76,0.15)" stroke="rgba(201,168,76,0.4)" stroke-width="1"/><path d="M140 100 Q200 50 260 100" stroke="rgba(201,168,76,0.6)" stroke-width="1.5" fill="none"/><rect x="160" y="180" width="30" height="80" fill="none" stroke="rgba(201,168,76,0.35)" stroke-width="0.8"/><rect x="210" y="180" width="30" height="80" fill="none" stroke="rgba(201,168,76,0.35)" stroke-width="0.8"/><ellipse cx="110" cy="258" rx="20" ry="35" fill="rgba(14,50,30,0.7)"/><ellipse cx="290" cy="258" rx="20" ry="35" fill="rgba(14,50,30,0.7)"/><circle cx="50" cy="40" r="1.5" fill="rgba(201,168,76,0.5)"/><circle cx="350" cy="30" r="1" fill="rgba(201,168,76,0.4)"/></svg>`,
+      road:`<svg viewBox="0 0 400 260" fill="none" width="100%" height="100%"><rect width="400" height="260" fill="#0a1f3c"/><rect x="0" y="180" width="400" height="80" fill="rgba(10,22,40,0.7)"/><line x1="200" y1="180" x2="200" y2="260" stroke="rgba(255,255,255,0.15)" stroke-width="3" stroke-dasharray="16 10"/><line x1="0" y1="180" x2="400" y2="180" stroke="rgba(201,168,76,0.3)" stroke-width="1.5"/><ellipse cx="60" cy="178" rx="18" ry="30" fill="rgba(14,60,30,0.7)"/><ellipse cx="140" cy="178" rx="18" ry="30" fill="rgba(14,60,30,0.65)"/><ellipse cx="260" cy="178" rx="18" ry="30" fill="rgba(14,60,30,0.7)"/><ellipse cx="340" cy="178" rx="18" ry="30" fill="rgba(14,60,30,0.65)"/><circle cx="200" cy="50" r="1.5" fill="rgba(201,168,76,0.5)"/></svg>`,
+      villa:`<svg viewBox="0 0 400 300" fill="none" width="100%" height="100%"><rect width="400" height="300" fill="#0e1e38"/><rect x="40" y="100" width="140" height="170" fill="rgba(14,30,56,0.9)" stroke="rgba(201,168,76,0.25)" stroke-width="1"/><polygon points="40,100 110,50 180,100" fill="rgba(201,168,76,0.06)" stroke="rgba(201,168,76,0.35)" stroke-width="1"/><rect x="220" y="120" width="140" height="150" fill="rgba(14,30,56,0.9)" stroke="rgba(201,168,76,0.25)" stroke-width="1"/><polygon points="220,120 290,75 360,120" fill="rgba(201,168,76,0.06)" stroke="rgba(201,168,76,0.35)" stroke-width="1"/><line x1="40" y1="99" x2="180" y2="99" stroke="rgba(201,168,76,0.5)" stroke-width="1.5"/><line x1="220" y1="119" x2="360" y2="119" stroke="rgba(201,168,76,0.5)" stroke-width="1.5"/></svg>`,
+      park:`<svg viewBox="0 0 400 260" fill="none" width="100%" height="100%"><rect width="400" height="260" fill="#0a1e30"/><ellipse cx="200" cy="220" rx="180" ry="50" fill="rgba(14,60,30,0.4)"/><ellipse cx="100" cy="180" rx="35" ry="55" fill="rgba(14,70,30,0.7)"/><ellipse cx="160" cy="190" rx="28" ry="44" fill="rgba(14,60,25,0.65)"/><ellipse cx="240" cy="185" rx="32" ry="50" fill="rgba(14,70,30,0.7)"/><ellipse cx="300" cy="178" rx="28" ry="46" fill="rgba(14,60,25,0.65)"/><circle cx="200" cy="200" r="25" fill="none" stroke="rgba(201,168,76,0.2)" stroke-width="1"/><circle cx="200" cy="200" r="8" fill="rgba(201,168,76,0.1)" stroke="rgba(201,168,76,0.4)" stroke-width="1"/><circle cx="80" cy="40" r="1.5" fill="rgba(201,168,76,0.5)"/></svg>`,
+      plan:`<svg viewBox="0 0 400 380" fill="none" width="100%" height="100%"><rect width="400" height="380" fill="#0a1628"/><rect x="30" y="30" width="340" height="320" fill="none" stroke="rgba(201,168,76,0.2)" stroke-width="1"/><line x1="30" y1="190" x2="370" y2="190" stroke="rgba(201,168,76,0.3)" stroke-width="6"/><line x1="200" y1="30" x2="200" y2="350" stroke="rgba(201,168,76,0.3)" stroke-width="6"/><rect x="40" y="40" width="150" height="140" fill="rgba(14,30,56,0.8)" stroke="rgba(201,168,76,0.2)" stroke-width="0.5"/><rect x="210" y="40" width="150" height="140" fill="rgba(14,30,56,0.8)" stroke="rgba(201,168,76,0.2)" stroke-width="0.5"/><rect x="40" y="200" width="150" height="140" fill="rgba(14,30,56,0.8)" stroke="rgba(201,168,76,0.2)" stroke-width="0.5"/><rect x="210" y="200" width="150" height="140" fill="rgba(14,30,56,0.8)" stroke="rgba(201,168,76,0.2)" stroke-width="0.5"/><circle cx="200" cy="190" r="30" fill="rgba(14,60,30,0.5)" stroke="rgba(201,168,76,0.3)" stroke-width="1"/></svg>`,
+      security:`<svg viewBox="0 0 400 300" fill="none" width="100%" height="100%"><rect width="400" height="300" fill="#0e1e38"/><rect x="150" y="80" width="100" height="160" fill="rgba(14,30,56,0.9)" stroke="rgba(201,168,76,0.3)" stroke-width="1"/><rect x="80" y="155" width="70" height="4" fill="rgba(201,168,76,0.5)"/><rect x="250" y="155" width="70" height="4" fill="rgba(201,168,76,0.5)"/><circle cx="80" cy="60" r="12" fill="rgba(201,168,76,0.1)" stroke="rgba(201,168,76,0.4)" stroke-width="1"/><circle cx="320" cy="60" r="12" fill="rgba(201,168,76,0.1)" stroke="rgba(201,168,76,0.4)" stroke-width="1"/><line x1="150" y1="79" x2="250" y2="79" stroke="rgba(201,168,76,0.5)" stroke-width="1.5"/></svg>`,
+      mosque:`<svg viewBox="0 0 400 300" fill="none" width="100%" height="100%"><rect width="400" height="300" fill="#0e1e38"/><rect x="100" y="150" width="200" height="120" fill="rgba(14,30,56,0.9)" stroke="rgba(201,168,76,0.3)" stroke-width="1"/><path d="M140 150 Q200 80 260 150" fill="rgba(201,168,76,0.08)" stroke="rgba(201,168,76,0.4)" stroke-width="1.5"/><rect x="90" y="90" width="20" height="60" fill="rgba(14,30,56,0.9)" stroke="rgba(201,168,76,0.3)" stroke-width="1"/><rect x="290" y="90" width="20" height="60" fill="rgba(14,30,56,0.9)" stroke="rgba(201,168,76,0.3)" stroke-width="1"/><polygon points="100,90 95,75 105,75" fill="rgba(201,168,76,0.4)"/><polygon points="300,90 295,75 305,75" fill="rgba(201,168,76,0.4)"/><line x1="100" y1="149" x2="300" y2="149" stroke="rgba(201,168,76,0.5)" stroke-width="1.5"/></svg>`,
+      building:`<svg viewBox="0 0 400 300" fill="none" width="100%" height="100%"><rect width="400" height="300" fill="#0a1628"/><rect x="60" y="80" width="280" height="200" fill="rgba(14,30,56,0.8)" stroke="rgba(201,168,76,0.25)" stroke-width="1"/><rect x="80" y="100" width="50" height="40" fill="rgba(201,168,76,0.1)" stroke="rgba(201,168,76,0.2)" stroke-width="0.5"/><rect x="150" y="100" width="50" height="40" fill="rgba(201,168,76,0.15)" stroke="rgba(201,168,76,0.2)" stroke-width="0.5"/><rect x="220" y="100" width="50" height="40" fill="rgba(201,168,76,0.08)" stroke="rgba(201,168,76,0.2)" stroke-width="0.5"/><rect x="290" y="100" width="50" height="40" fill="rgba(201,168,76,0.12)" stroke="rgba(201,168,76,0.2)" stroke-width="0.5"/><line x1="60" y1="79" x2="340" y2="79" stroke="rgba(201,168,76,0.5)" stroke-width="1.5"/></svg>`,
+      road2:`<svg viewBox="0 0 400 260" fill="none" width="100%" height="100%"><rect width="400" height="260" fill="#0a1f3c"/><rect x="0" y="120" width="400" height="80" fill="rgba(10,22,40,0.7)"/><line x1="200" y1="120" x2="200" y2="200" stroke="rgba(255,255,255,0.12)" stroke-width="3" stroke-dasharray="16 10"/><line x1="80" y1="55" x2="80" y2="120" stroke="rgba(201,168,76,0.4)" stroke-width="1.5"/><line x1="80" y1="55" x2="105" y2="55" stroke="rgba(201,168,76,0.4)" stroke-width="1.5"/><circle cx="105" cy="55" r="5" fill="rgba(201,168,76,0.4)"/><line x1="320" y1="55" x2="320" y2="120" stroke="rgba(201,168,76,0.4)" stroke-width="1.5"/><ellipse cx="40" cy="118" rx="16" ry="26" fill="rgba(14,60,30,0.7)"/><ellipse cx="360" cy="118" rx="16" ry="26" fill="rgba(14,60,30,0.7)"/></svg>`
+    };
+    return svgs[theme] || svgs['villa'];
+  }
+
+  // ================================================================
+  //  LOAD + RENDER PROJECTS JSON
+  // ================================================================
+  async function loadProjects() {
+    const res = await fetch('/assets/js/projects.json', { cache: 'no-store' });
+    const data = await res.json();
+    return data.projects;
+  }
+
+  function renderFeatured(p) {
+    document.getElementById('featuredInner').innerHTML = `
+      <div class="featured-visual reveal">
+        <div class="featured-image-frame">
+          <div class="featured-placeholder">
+            ${p.image
+              ? `<img src="${p.image}" alt="${p.name}">`
+              : (p.gallery && p.gallery[0] ? getProjectSVG(p.gallery[0].theme) : getProjectSVG('gate'))}
+          </div>
+          <div class="featured-badge">
+            <div class="featured-badge-tag">Featured Development</div>
+            <div class="featured-badge-name">${p.name}</div>
+          </div>
+        </div>
+      </div>
+      <div class="featured-content">
+        <div class="featured-marketed-by reveal">
+          <div class="marketed-dot"></div>
+          <span class="marketed-text">Now Marketing</span>
+        </div>
+        <h2 class="featured-name reveal reveal-delay-1">${p.name.split(' ').map((w,i)=>i===0?w:`<em style="font-style:italic;background:var(--gold-gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">${p.name.split(' ').slice(1).join(' ')}</em>`).slice(0,2).join('<br>')}</h2>
+        <p class="featured-by reveal reveal-delay-2">An Exclusive ${p.type} by <strong>${p.developer}</strong></p>
+        <div class="divider reveal reveal-delay-2"></div>
+        <p class="featured-desc reveal reveal-delay-3">${p.shortDesc}</p>
+        <div class="featured-tags reveal reveal-delay-3">${p.tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div>
+        <div class="reveal reveal-delay-4">
+          <a href="/project/?id=${p.id}" class="btn-primary">View Project Details</a>
+        </div>
+      </div>
+    `;
+    observeReveal();
+    setCursorHover();
+  }
+
+  function renderMarquee(p) {
+    const words = [p.name, '-', p.type, '·', p.developer, '-', p.tagline, '·', 'Now Marketing', '-', p.name, '·', p.type, '-', p.developer, '·', p.tagline, '-', 'Now Marketing', '·'];
+    const track = document.getElementById('marqueeTrack');
+    // Duplicate for seamless loop
+    const all = [...words, ...words];
+    track.innerHTML = all.map((w, i) => {
+      const isGold = w === p.name || w === 'Now Marketing';
+      const isSep = w === '-' || w === '·';
+      if (isSep) return `<span class="marquee-sep">${w}</span>`;
+      return `<span class="marquee-word${isGold ? ' gold' : ''}">${w}</span>`;
+    }).join('');
+  }
+
+  function renderProjectsGrid(projects) {
+    const grid = document.getElementById('projectsGrid');
+    // Featured project first, then the rest
+    const ordered = [...projects.filter(p => p.featured), ...projects.filter(p => !p.featured)];
+    const toShow = ordered.slice(0, 3);
+    grid.innerHTML = toShow.map((p, i) => `
+      <div class="project-card reveal ${i>0?'reveal-delay-'+i:''}">
+        ${p.image
+          ? `<img class="project-card-img" src="${p.image}" alt="${p.name}">`
+          : `<div class="project-card-bg" style="background:${p.cardBg}"></div>
+             <div class="project-card-inner-deco">${getProjectSVG(p.gallery[0]?.theme||'villa')}</div>`}
+        <div class="project-card-overlay"></div>
+        <div class="project-card-content">
+          <div class="project-card-number">${p.cardNumber}</div>
+          <div class="project-card-tag">${p.collection || p.type}</div>
+          <div class="project-card-name">${p.name}</div>
+          <div class="project-card-desc">${p.shortDesc}</div>
+          <a href="/project/?id=${p.id}" class="project-card-arrow" style="text-decoration:none;">
+            <div class="project-card-arrow-line"></div>
+            Explore
+          </a>
+        </div>
+      </div>
+    `).join('');
+    observeReveal();
+    setCursorHover();
+  }
+
+  function renderFooterLinks(projects) {
+    document.getElementById('footerProjectLinks').innerHTML = projects.map(p =>
+      `<li><a href="/project/?id=${p.id}">${p.name}</a></li>`
+    ).join('');
+  }
+
+  // ================================================================
+  //  CLIENTS GALLERY, infinite scroll rows
+  // ================================================================
+  function buildClientGalleryItem(caption, sub, theme, sizeClass, image) {
+    return `
+      <div class="client-gallery-item ${sizeClass}">
+        ${image
+          ? `<img src="${image}" alt="${caption}">`
+          : `<div class="gallery-svg-placeholder">${getProjectSVG(theme)}</div>`}
+        <div class="client-gallery-caption">
+          <div class="cgc-name">${caption}</div>
+          <div class="cgc-sub">${sub}</div>
+        </div>
+      </div>
+    `;
+  }
+
+  async function loadClientGallery() {
+    const res = await fetch('/assets/js/clients-gallery.json', { cache: 'no-store' });
+    const data = await res.json();
+    return data.gallery || [];
+  }
+
+  function renderClientGallery(items) {
+    // Items come from clients-gallery.json: { caption, sub, image }
+    const allItems = (items || []).map(g => ({ caption: g.caption, sub: g.sub, theme: g.theme, image: g.image }));
+    if (!allItems.length) return;
+
+    const sizes = ['gallery-item-lg','gallery-item-md','gallery-item-sm','gallery-item-xl','gallery-item-md','gallery-item-lg','gallery-item-sm','gallery-item-xl'];
+
+    // Row 1, first half of items
+    const row1Items = [...allItems, ...allItems]; // duplicate for infinite
+    const row1 = document.getElementById('galleryRow1');
+    row1.innerHTML = row1Items.map((item, i) =>
+      buildClientGalleryItem(item.caption, item.sub, item.theme, sizes[i % sizes.length], item.image)
+    ).join('');
+
+    // Row 2, reversed items
+    const row2Items = [...allItems].reverse();
+    const row2Full = [...row2Items, ...row2Items];
+    const row2 = document.getElementById('galleryRow2');
+    row2.innerHTML = row2Full.map((item, i) =>
+      buildClientGalleryItem(item.caption, item.sub, item.theme, sizes[(i + 3) % sizes.length], item.image)
+    ).join('');
+
+    setCursorHover();
+  }
+
+  // ================================================================
+  //  INIT
+  // ================================================================
+  loadProjects().then(projects => {
+    const featured = projects.find(p => p.featured) || projects[0];
+    const heroPhoto = document.getElementById('heroPhoto');
+    if (heroPhoto && featured.image) heroPhoto.src = featured.image;
+    renderFeatured(featured);
+    renderMarquee(featured);
+    renderProjectsGrid(projects);
+    renderFooterLinks(projects);
+    observeReveal();
+    setCursorHover();
+  }).catch(err => {
+    console.error('Failed to load projects:', err);
+    document.getElementById('featuredInner').innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--white-muted);">Unable to load projects data.</div>';
+  });
+
+  // Satisfied Clients gallery, loaded from its own dedicated JSON file
+  loadClientGallery().then(items => {
+    renderClientGallery(items);
+    observeReveal();
+    setCursorHover();
+  }).catch(err => console.error('Failed to load clients gallery:', err));
+
+  observeReveal();
+  setCursorHover();
+  </script>
+</body>
+</html>
