@@ -62,9 +62,15 @@
     .mobile-menu-close::before{transform:rotate(45deg);}
     .mobile-menu-close::after{transform:rotate(-45deg);}
     .mobile-menu-close:hover::before,.mobile-menu-close:hover::after{background:var(--gold-light);box-shadow:0 0 8px rgba(201,168,76,0.5);}
-    .mobile-menu-links{display:flex;flex-direction:column;gap:0;padding:30px 0;}
-    .mobile-menu a{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:300;text-decoration:none;color:var(--white);letter-spacing:1px;transition:all 0.3s ease;padding:16px 30px;border-left:3px solid transparent;}
-    .mobile-menu a:hover{color:var(--gold-light);border-left-color:var(--gold);background:rgba(201,168,76,0.05);}
+    .mobile-menu-links{display:flex;flex-direction:column;gap:0;padding:20px 0;}
+    .mobile-menu a{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:400;text-decoration:none;color:var(--white);letter-spacing:1px;transition:all 0.3s cubic-bezier(0.16,1,0.3,1);padding:18px 30px;border-left:4px solid transparent;position:relative;display:flex;align-items:center;gap:16px;overflow:hidden;}
+    .mobile-menu a::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--gold-gradient);transform:scaleY(0);transform-origin:top;transition:transform 0.3s cubic-bezier(0.16,1,0.3,1);}
+    .mobile-menu a::after{content:'';position:absolute;inset:0;background:rgba(201,168,76,0.06);transform:translateX(-100%);transition:transform 0.3s cubic-bezier(0.16,1,0.3,1);z-index:-1;}
+    .mobile-menu a:hover{color:var(--gold-light);}
+    .mobile-menu a:hover::before{transform:scaleY(1);}
+    .mobile-menu a:hover::after{transform:translateX(0);}
+    .mobile-menu-link-icon{width:24px;height:24px;display:flex;align-items:center;justify-content:center;font-size:16px;opacity:0.7;transition:all 0.3s ease;}
+    .mobile-menu a:hover .mobile-menu-link-icon{opacity:1;color:var(--gold);}
     .mobile-menu-cta{padding:20px 30px;}
     .mobile-menu-cta .btn-primary{width:100%;text-align:center;display:block;}
     .mobile-menu-footer{margin-top:auto;padding:30px;border-top:1px solid rgba(201,168,76,0.15);text-align:center;}
@@ -344,11 +350,11 @@
       <div class="mobile-menu-close" onclick="closeMobile()"></div>
     </div>
     <div class="mobile-menu-links">
-      <a href="/" onclick="closeMobile()">Home</a>
-      <a href="/projects/" onclick="closeMobile()">Projects We Market</a>
-      <a href="/clients/" onclick="closeMobile()">Satisfied Clients</a>
-      <a href="/about/" onclick="closeMobile()">About Us</a>
-      <a href="/contact/" onclick="closeMobile()">Contact</a>
+      <a href="/" onclick="closeMobile()"><span class="mobile-menu-link-icon">⌂</span>Home</a>
+      <a href="/projects/" onclick="closeMobile()"><span class="mobile-menu-link-icon">🏗</span>Projects We Market</a>
+      <a href="/clients/" onclick="closeMobile()"><span class="mobile-menu-link-icon">⭐</span>Satisfied Clients</a>
+      <a href="/about/" onclick="closeMobile()"><span class="mobile-menu-link-icon">ℹ</span>About Us</a>
+      <a href="/contact/" onclick="closeMobile()"><span class="mobile-menu-link-icon">✉</span>Contact</a>
     </div>
     <div class="mobile-menu-cta">
       <a href="/contact/" onclick="closeMobile()" class="btn-primary">Get In Touch</a>
