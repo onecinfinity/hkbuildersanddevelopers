@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>About Us | HK Builders & Developers</title>
+  <link rel="stylesheet" href="/assets/css/loader.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer"/>
+  <script src="/assets/js/loader.js"></script>
+  <style>
+    :root{--navy:#0a1628;--navy-mid:#0e1e38;--navy-light:#152844;--gold:#c9a84c;--gold-light:#e2c97e;--gold-pale:#f0dfa0;--white:#ffffff;--white-muted:rgba(255,255,255,0.55);--gold-gradient:linear-gradient(135deg,#c9a84c 0%,#f0dfa0 50%,#c9a84c 100%);}
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+    html{scroll-behavior:smooth;}
+    body{background:var(--navy);color:var(--white);font-family:'Jost',sans-serif;font-weight:300;overflow-x:hidden;cursor:none;}
+    .cursor{position:fixed;width:10px;height:10px;background:var(--gold);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:transform 0.1s ease;}
+    .cursor-ring{position:fixed;width:36px;height:36px;border:1px solid rgba(201,168,76,0.5);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:all 0.15s ease;}
+    body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:1;opacity:0.4;}
+    .gold-top-bar{position:fixed;top:0;left:0;right:0;height:2px;background:var(--gold-gradient);z-index:9999;transform-origin:left;transform:scaleX(0);transition:transform 0.1s linear;}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(30px);}to{opacity:1;transform:translateY(0);}}
+    @keyframes gridShift{0%{transform:translateY(0);}100%{transform:translateY(80px);}}
+    @keyframes rotateSlow{0%{transform:rotate(0deg);}100%{transform:rotate(360deg);}}
+
+    nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:22px 60px;display:flex;align-items:center;justify-content:space-between;transition:all 0.4s ease;}
+    nav.scrolled{background:rgba(10,22,40,0.95);backdrop-filter:blur(20px);padding:14px 60px;border-bottom:1px solid rgba(201,168,76,0.15);}
+    .nav-logo{display:flex;align-items:center;gap:14px;text-decoration:none;}
+    .nav-logo-mark{width:48px;height:48px;border:1.5px solid var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-weight:700;font-size:18px;background:var(--gold-gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+    .nav-logo-text .name{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:16px;background:var(--gold-gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:2px;text-transform:uppercase;}
+    .nav-logo-text .sub{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--white-muted);}
+    .nav-links{display:flex;align-items:center;gap:40px;list-style:none;}
+    .nav-links a{text-decoration:none;font-size:12px;letter-spacing:2.5px;text-transform:uppercase;color:var(--white-muted);position:relative;transition:color 0.3s ease;}
+    .nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:1px;background:var(--gold);transition:width 0.3s ease;}
+    .nav-links a:hover,.nav-links a.active{color:var(--gold-light);}
+    .nav-links a:hover::after,.nav-links a.active::after{width:100%;}
+    .nav-cta{padding:10px 28px;border:1px solid var(--gold);color:var(--gold)!important;font-size:11px!important;letter-spacing:2px;text-transform:uppercase;text-decoration:none;transition:all 0.3s ease!important;}
+    .nav-cta::after{display:none!important;}
+    .nav-cta:hover{background:var(--gold)!important;color:var(--navy)!important;}
+    .hamburger{display:none;flex-direction:column;gap:5px;cursor:none;}
+    .hamburger span{display:block;width:28px;height:1.5px;background:var(--gold);}
+    .mobile-menu{position:fixed;inset:0;background:var(--navy);z-index:999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:40px;transform:translateX(100%);transition:transform 0.5s cubic-bezier(0.16,1,0.3,1);}
+    .mobile-menu.open{transform:translateX(0);}
+    .mobile-menu a{font-family:'Cormorant Garamond',serif;font-size:40px;font-weight:300;text-decoration:none;color:var(--white);transition:color 0.3s ease;}
+    .mobile-menu a:hover{color:var(--gold);}
+
+    .page-hero{min-height:100vh;display:flex;align-items:center;position:relative;overflow:hidden;padding:0 60px;}
+    .page-hero-bg{position:absolute;inset:0;background:linear-gradient(135deg,#0a1628 0%,#0e2040 60%,#0a1628 100%);}
+    .page-hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(201,168,76,0.05) 1px,transparent 1px),linear-gradient(90deg,rgba(201,168,76,0.05) 1px,transparent 1px);background-size:80px 80px;animation:gridShift 20s linear infinite;}
+    .page-hero-glow{position:absolute;right:0;top:0;bottom:0;width:50%;background:radial-gradient(ellipse at 70% 50%,rgba(201,168,76,0.08) 0%,transparent 70%);}
+    .page-hero-inner{position:relative;z-index:2;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;max-width:1400px;margin:0 auto;width:100%;padding-top:120px;}
+    .eyebrow{display:flex;align-items:center;gap:16px;margin-bottom:24px;}
+    .eyebrow-line{width:40px;height:1px;background:var(--gold-gradient);}
+    .eyebrow span{font-size:10px;letter-spacing:4px;text-transform:uppercase;background:var(--gold-gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-weight:500;}
+    .hero-title{font-family:'Cormorant Garamond',serif;font-size:clamp(48px,6vw,84px);font-weight:300;line-height:1.0;margin-bottom:24px;}
+    .hero-title em{font-style:italic;background:var(--gold-gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+    .hero-body{font-size:15px;line-height:1.9;color:var(--white-muted);max-width:520px;margin-bottom:40px;}
+    .btn-primary{padding:16px 44px;background:var(--gold-gradient);color:var(--navy);text-decoration:none;font-size:11px;font-weight:600;letter-spacing:3px;text-transform:uppercase;display:inline-block;transition:transform 0.3s ease,box-shadow 0.3s ease;position:relative;overflow:hidden;}
+    .btn-primary::before{content:'';position:absolute;inset:0;background:rgba(255,255,255,0.15);transform:translateX(-100%);transition:transform 0.4s ease;}
+    .btn-primary:hover::before{transform:translateX(0);}
+    .btn-primary:hover{transform:translateY(-2px);box-shadow:0 20px 50px rgba(201,168,76,0.3);}
+
+    .about-visual-wrap{position:relative;}
+    .about-logo-display{position:relative;display:flex;align-items:center;justify-content:center;}
+    .about-logo-ring{width:360px;height:360px;border-radius:50%;border:1px solid rgba(201,168,76,0.2);display:flex;align-items:center;justify-content:center;position:relative;animation:rotateSlow 25s linear infinite;}
+    .about-logo-ring::before{content:'';position:absolute;inset:20px;border-radius:50%;border:1px solid rgba(201,168,76,0.1);animation:rotateSlow 20s linear infinite reverse;}
+    .about-logo-inner{animation:rotateSlow 25s linear infinite reverse;width:100%;height:100%;display:flex;align-items:center;justify-content:center;}
+    .about-logo-center{width:220px;height:220px;border-radius:50%;border:1.5px solid var(--gold);background:rgba(10,22,40,0.9);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;animation:rotateSlow 25s linear infinite;}
+    .about-hk-mark{font-family:'Cormorant Garamond',serif;font-size:64px;font-weight:700;line-height:1;background:var(--gold-gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+    .about-hk-sub{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:rgba(201,168,76,0.6);}
+    .orbit-dot{position:absolute;width:8px;height:8px;border-radius:50%;background:var(--gold);box-shadow:0 0 10px rgba(201,168,76,0.5);}
+    .orbit-dot-1{top:10px;left:50%;transform:translateX(-50%);}
+    .orbit-dot-2{right:10px;top:50%;transform:translateY(-50%);width:5px;height:5px;opacity:0.5;}
+    .orbit-dot-3{bottom:10px;left:50%;transform:translateX(-50%);width:4px;height:4px;opacity:0.3;}
+    .about-float-badge{position:absolute;bottom:-20px;right:-20px;background:rgba(10,22,40,0.95);backdrop-filter:blur(12px);border:1px solid rgba(201,168,76,0.25);padding:20px 24px;min-width:180px;}
+    .about-float-badge-num{font-family:'Cormorant Garamond',serif;font-size:42px;font-weight:300;background:var(--gold-gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1;}
+    .about-float-badge-label{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--white-muted);margin-top:4px;}
+
+    .mission{padding:120px 60px;background:var(--navy-mid);position:relative;z-index:2;}
+    .mission-inner{max-width:1400px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:100px;align-items:center;}
+    .mission-quote{font-family:'Cormorant Garamond',serif;font-size:clamp(24px,3vw,42px);font-weight:300;font-style:italic;line-height:1.4;color:var(--white);}
+    .mission-quote em{background:var(--gold-gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-style:normal;}
+    .mission-attribution{display:flex;align-items:center;gap:16px;margin-top:30px;}
+    .mission-attr-line{width:40px;height:1px;background:var(--gold-gradient);}
+    .mission-attr-text{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);}
+    .section-title{font-family:'Cormorant Garamond',serif;font-size:clamp(34px,3.5vw,50px);font-weight:300;line-height:1.1;margin-bottom:24px;}
+    .section-title em{font-style:italic;background:var(--gold-gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+    .mission-body{font-size:15px;line-height:1.9;color:var(--white-muted);}
+
+    .values{padding:120px 60px;background:var(--navy);}
+    .values-inner{max-width:1400px;margin:0 auto;}
+    .values-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;margin-top:70px;}
+    .value-card{background:var(--navy-mid);border:1px solid rgba(201,168,76,0.08);padding:44px 36px;position:relative;overflow:hidden;transition:all 0.4s ease;}
+    .value-card::after{content:'';position:absolute;bottom:0;left:0;width:100%;height:2px;background:var(--gold-gradient);transform:scaleX(0);transform-origin:left;transition:transform 0.4s ease;}
+    .value-card:hover{border-color:rgba(201,168,76,0.2);}
+    .value-card:hover::after{transform:scaleX(1);}
+    .value-number{font-family:'Cormorant Garamond',serif;font-size:80px;font-weight:700;color:rgba(201,168,76,0.05);line-height:1;position:absolute;top:20px;right:20px;}
+    .value-icon{width:52px;height:52px;border:1px solid rgba(201,168,76,0.2);display:flex;align-items:center;justify-content:center;margin-bottom:24px;transition:all 0.3s ease;}
+    .value-card:hover .value-icon{border-color:var(--gold);background:rgba(201,168,76,0.08);}
+    .value-icon svg{width:24px;height:24px;}
+    .value-title{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:400;margin-bottom:14px;}
+    .value-desc{font-size:13px;color:var(--white-muted);line-height:1.7;}
+
+    .stats-section{padding:100px 60px;background:var(--navy-mid);border-top:1px solid rgba(201,168,76,0.1);border-bottom:1px solid rgba(201,168,76,0.1);}
+    .stats-inner{max-width:1400px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);}
+    .stat-item{text-align:center;padding:30px;border-right:1px solid rgba(201,168,76,0.1);}
+    .stat-item:last-child{border-right:none;}
+    .stat-number{font-family:'Cormorant Garamond',serif;font-size:60px;font-weight:300;line-height:1;background:var(--gold-gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+    .stat-label{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--white-muted);margin-top:12px;}
+
+    .trust{padding:120px 60px;background:var(--navy);}
+    .trust-inner{max-width:1400px;margin:0 auto;}
+    .trust-grid{display:grid;grid-template-columns:1fr 1fr;gap:2px;margin-top:70px;}
+    .trust-item{background:var(--navy-mid);border:1px solid rgba(201,168,76,0.08);padding:50px;display:flex;gap:30px;align-items:flex-start;transition:all 0.4s ease;position:relative;overflow:hidden;}
+    .trust-item::before{content:'';position:absolute;top:0;left:0;width:2px;height:0;background:var(--gold-gradient);transition:height 0.4s ease;}
+    .trust-item:hover::before{height:100%;}
+    .trust-item:hover{border-color:rgba(201,168,76,0.15);}
+    .trust-icon{width:56px;height:56px;border:1px solid rgba(201,168,76,0.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all 0.3s ease;}
+    .trust-item:hover .trust-icon{border-color:var(--gold);background:rgba(201,168,76,0.08);}
+    .trust-icon svg{width:24px;height:24px;}
+    .trust-title{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:400;margin-bottom:12px;}
+    .trust-desc{font-size:14px;color:var(--white-muted);line-height:1.8;}
+
+.about-cta{padding:100px 60px;background:var(--navy);position:relative;overflow:hidden;}
+    .about-cta::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 50%,rgba(201,168,76,0.07) 0%,transparent 70%);}
+    .about-cta-inner{position:relative;z-index:2;max-width:800px;margin:0 auto;text-align:center;}
+    .cta-title{font-family:'Cormorant Garamond',serif;font-size:clamp(36px,5vw,68px);font-weight:300;line-height:1.1;margin-bottom:24px;}
+    .cta-title em{font-style:italic;background:var(--gold-gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+    .cta-sub{font-size:15px;color:var(--white-muted);line-height:1.8;max-width:480px;margin:0 auto 50px;}
+    .cta-actions{display:flex;align-items:center;justify-content:center;gap:24px;flex-wrap:wrap;}
+    .btn-outline{padding:15px 44px;border:1px solid rgba(201,168,76,0.4);color:var(--gold-light);text-decoration:none;font-size:11px;letter-spacing:3px;text-transform:uppercase;display:inline-block;transition:all 0.3s ease;}
+    .btn-outline:hover{border-color:var(--gold);background:rgba(201,168,76,0.08);}
+
+    .reveal{opacity:0;transform:translateY(40px);transition:all 0.8s cubic-bezier(0.16,1,0.3,1);}
+    .reveal.visible{opacity:1;transform:translateY(0);}
+    .reveal-delay-1{transition-delay:0.1s;}
+    .reveal-delay-2{transition-delay:0.2s;}
+    .reveal-delay-3{transition-delay:0.3s;}
+    .reveal-delay-4{transition-delay:0.4s;}
+
+    footer{background:var(--navy-mid);border-top:1px solid rgba(201,168,76,0.12);padding:80px 60px 40px;position:relative;z-index:2;}
+    .footer-top{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:60px;max-width:1400px;margin:0 auto 60px;}
+    .footer-brand-name{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600;background:var(--gold-gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:6px;}
+    .footer-brand-sub{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--white-muted);}
+    .footer-tagline{font-family:'Cormorant Garamond',serif;font-size:16px;font-style:italic;color:var(--white-muted);margin-top:20px;line-height:1.6;}
+    .footer-col-title{font-size:10px;letter-spacing:3px;text-transform:uppercase;background:var(--gold-gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:24px;font-weight:500;}
+    .footer-links{list-style:none;display:flex;flex-direction:column;gap:12px;}
+    .footer-links a{text-decoration:none;font-size:13px;color:var(--white-muted);transition:color 0.3s ease;}
+    .footer-links a:hover{color:var(--gold-light);}
+    .footer-contact-item{display:flex;gap:12px;margin-bottom:16px;}
+    .footer-contact-item svg{width:16px;height:16px;fill:var(--gold);flex-shrink:0;margin-top:2px;}
+    .footer-contact-item span{font-size:13px;color:var(--white-muted);line-height:1.5;}
+    .footer-bottom{max-width:1400px;margin:0 auto;padding-top:30px;border-top:1px solid rgba(201,168,76,0.08);display:flex;align-items:center;justify-content:space-between;}
+    .footer-copyright{font-size:12px;color:rgba(255,255,255,0.3);}
+    .footer-socials{display:flex;gap:16px;}
+    .footer-social{width:34px;height:34px;border:1px solid rgba(201,168,76,0.2);border-radius:50%;display:flex;align-items:center;justify-content:center;text-decoration:none;transition:all 0.3s ease;}
+    .footer-social svg{width:14px;height:14px;fill:var(--white-muted);transition:fill 0.3s ease;}
+    .footer-social:hover{border-color:var(--gold);background:rgba(201,168,76,0.1);}
+    .footer-social:hover svg{fill:var(--gold);}
+    .whatsapp-float-button{position:fixed;right:24px;bottom:50px;width:64px;height:64px;display:flex;align-items:center;justify-content:center;border-radius:50%;background:#25d366;color:#fff;font-size:32px;text-decoration:none;box-shadow:0 14px 30px rgba(37,211,102,0.4);z-index:9999;transition:box-shadow 0.25s ease,filter 0.25s ease;animation:waFloat 2.6s ease-in-out infinite;}
+    .whatsapp-float-button::before,.whatsapp-float-button::after{content:'';position:absolute;inset:0;border-radius:50%;background:rgba(37,211,102,0.45);z-index:-1;animation:waRipple 2.4s ease-out infinite;pointer-events:none;}
+    .whatsapp-float-button::after{animation-delay:1.2s;}
+    .whatsapp-float-button i{position:relative;z-index:1;}
+    .whatsapp-float-button:hover{color:#fff;box-shadow:0 18px 40px rgba(37,211,102,0.55);filter:brightness(1.08);animation-play-state:paused;}
+    @keyframes waFloat{0%,100%{transform:translateY(0);}50%{transform:translateY(-9px);}}
+    @keyframes waRipple{0%{transform:scale(1);opacity:0.7;}100%{transform:scale(2.6);opacity:0;}}
+
+    @media(max-width:1200px){.values-grid{grid-template-columns:repeat(2,1fr);}}
+    @media(max-width:1024px){
+      nav{padding:20px 30px;}
+      .page-hero{padding:0 30px;}
+      .page-hero-inner{grid-template-columns:1fr;padding-top:140px;padding-bottom:80px;}
+      .about-visual-wrap{display:flex;justify-content:center;}
+      .mission,.values,.trust,.about-cta{padding-left:30px;padding-right:30px;}
+      .mission-inner{grid-template-columns:1fr;gap:50px;}
+      .trust-grid{grid-template-columns:1fr;}
+      .stats-inner{grid-template-columns:repeat(2,1fr);}
+      .stat-item{border-right:none;border-bottom:1px solid rgba(201,168,76,0.1);}
+      .footer-top{grid-template-columns:1fr 1fr;gap:40px;}
+      .nav-links{display:none;}.hamburger{display:flex;}
+    }
+    @media(max-width:640px){
+      nav{padding:18px 20px;}
+      .page-hero{padding:0 20px;}
+      .mission,.values,.trust,.about-cta,footer{padding-left:20px;padding-right:20px;}
+      .values-grid{grid-template-columns:1fr;}
+      .about-logo-ring{width:260px;height:260px;}
+      .about-logo-center{width:160px;height:160px;}
+      .about-hk-mark{font-size:48px;}
+      .cta-actions{flex-direction:column;}
+      .footer-top{grid-template-columns:1fr;}
+      .stats-section{padding:60px 20px;}
+    }
+  </style>
+</head>
+<body>
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+  <div class="gold-top-bar" id="scrollProgress"></div>
+
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="/" onclick="closeMobile()">Home</a>
+    <a href="/projects/" onclick="closeMobile()">Projects We Market</a>
+    <a href="/clients/" onclick="closeMobile()">Satisfied Clients</a>
+    <a href="/about/" onclick="closeMobile()">About Us</a>
+    <a href="/contact/" onclick="closeMobile()">Contact</a>
+  </div>
+
+  <nav id="navbar">
+    <a href="/" class="nav-logo">
+      <div class="nav-logo-mark">HK</div>
+      <div class="nav-logo-text"><div class="name">HK Builders</div><div class="sub">& Developers</div></div>
+    </a>
+    <ul class="nav-links">
+      <li><a href="/">Home</a></li>
+      <li><a href="/projects/">Projects We Market</a></li>
+      <li><a href="/clients/">Satisfied Clients</a></li>
+      <li><a href="/about/" class="active">About Us</a></li>
+      <li><a href="/contact/" class="nav-cta">Get In Touch</a></li>
+    </ul>
+    <div class="hamburger" id="hamburger" onclick="toggleMobile()"><span></span><span></span><span></span></div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="page-hero">
+    <div class="page-hero-bg"></div>
+    <div class="page-hero-grid"></div>
+    <div class="page-hero-glow"></div>
+    <div class="page-hero-inner">
+      <div>
+        <div class="eyebrow" style="opacity:0;animation:fadeUp 0.8s ease 0.3s forwards;"><div class="eyebrow-line"></div><span>Who We Are</span></div>
+        <h1 class="hero-title" style="opacity:0;animation:fadeUp 0.9s ease 0.5s forwards;">The Team<br>Behind Your<br><em>Next Home</em></h1>
+        <p class="hero-body" style="opacity:0;animation:fadeUp 0.9s ease 0.7s forwards;">HK Builders & Developers is Pakistan's trusted real estate marketing partner, connecting buyers with exceptional developments through integrity, expertise, and a genuine commitment to client outcomes.</p>
+        <div style="opacity:0;animation:fadeUp 0.9s ease 0.9s forwards;"><a href="/contact/" class="btn-primary">Work With Us</a></div>
+      </div>
+      <div class="about-visual-wrap" style="opacity:0;animation:fadeUp 1s ease 1.1s forwards;">
+        <div class="about-logo-display">
+          <div class="about-logo-ring">
+            <div class="orbit-dot orbit-dot-1"></div>
+            <div class="orbit-dot orbit-dot-2"></div>
+            <div class="orbit-dot orbit-dot-3"></div>
+            <div class="about-logo-inner">
+              <div class="about-logo-center">
+                <div class="about-hk-mark">HK</div>
+                <div class="about-hk-sub">Builders & Devs</div>
+              </div>
+            </div>
+          </div>
+          <div class="about-float-badge">
+            <div class="about-float-badge-num">10+</div>
+            <div class="about-float-badge-label">Years in Market</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STATS -->
+  <div class="stats-section">
+    <div class="stats-inner">
+      <div class="stat-item reveal"><div class="stat-number"><span class="count" data-target="500">0</span>+</div><div class="stat-label">Satisfied Clients</div></div>
+      <div class="stat-item reveal reveal-delay-1"><div class="stat-number"><span class="count" data-target="15">0</span>+</div><div class="stat-label">Projects Marketed</div></div>
+      <div class="stat-item reveal reveal-delay-2"><div class="stat-number"><span class="count" data-target="10">0</span>+</div><div class="stat-label">Years of Excellence</div></div>
+      <div class="stat-item reveal reveal-delay-3"><div class="stat-number"><span class="count" data-target="100">0</span>%</div><div class="stat-label">Satisfaction Rate</div></div>
+    </div>
+  </div>
+
+  <!-- MISSION -->
+  <section class="mission">
+    <div class="mission-inner">
+      <div class="reveal">
+        <div class="mission-quote">"We don't just market properties. We help families find <em>their place in the world</em>, with trust, transparency, and unwavering commitment."</div>
+        <div class="mission-attribution"><div class="mission-attr-line"></div><span class="mission-attr-text">Our Guiding Principle</span></div>
+      </div>
+      <div class="reveal reveal-delay-1">
+        <div class="eyebrow" style="margin-bottom:20px;"><div class="eyebrow-line"></div><span>Our Mission</span></div>
+        <h2 class="section-title">Why We <em>Exist</em></h2>
+        <p class="mission-body" style="margin-top:20px;">
+          HK Builders & Developers was founded on a simple belief: that buying property should be a joyful, transparent, and empowering experience, not a stressful one. We bridge the gap between visionary real estate developers and the buyers who deserve the best.
+          <br><br>
+          Our role is to market developments with honesty, guide clients with expertise, and deliver outcomes that exceed expectations every single time. We are not the builders, we are your trusted advocates, your eyes on the ground, and your long-term real estate partner.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- VALUES -->
+  <section class="values">
+    <div class="values-inner">
+      <div class="reveal">
+        <div class="eyebrow" style="margin-bottom:16px;"><div class="eyebrow-line"></div><span>What We Stand For</span></div>
+        <h2 class="section-title">Our Core <em>Values</em></h2>
+      </div>
+      <div class="values-grid">
+        <div class="value-card reveal"><div class="value-number">01</div><div class="value-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#c9a84c" stroke-width="1.5"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg></div><div class="value-title">Integrity</div><div class="value-desc">We operate with complete transparency. What we promise, we deliver. No hidden fees, no misleading information, ever.</div></div>
+        <div class="value-card reveal reveal-delay-1"><div class="value-number">02</div><div class="value-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#c9a84c" stroke-width="1.5"><path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg></div><div class="value-title">Client First</div><div class="value-desc">Your needs, goals, and comfort always come first. We listen before we speak, and we advise before we sell.</div></div>
+        <div class="value-card reveal reveal-delay-2"><div class="value-number">03</div><div class="value-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#c9a84c" stroke-width="1.5"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg></div><div class="value-title">Excellence</div><div class="value-desc">We hold ourselves to the highest standards in every interaction, from first inquiry to final handover and beyond.</div></div>
+        <div class="value-card reveal reveal-delay-3"><div class="value-number">04</div><div class="value-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#c9a84c" stroke-width="1.5"><path d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div><div class="value-title">Value</div><div class="value-desc">Every investment we facilitate is designed to grow in value, because your financial future matters as much as your comfort today.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHY TRUST US -->
+  <section class="trust">
+    <div class="trust-inner">
+      <div class="reveal">
+        <div class="eyebrow" style="margin-bottom:16px;"><div class="eyebrow-line"></div><span>Why Choose HK</span></div>
+        <h2 class="section-title">What Makes Us <em>Different</em></h2>
+      </div>
+      <div class="trust-grid">
+        <div class="trust-item reveal"><div class="trust-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#c9a84c" stroke-width="1.5"><path d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/></svg></div><div><div class="trust-title">Deep Market Knowledge</div><div class="trust-desc">Over a decade of experience in Karachi's real estate market means we know which developments are worth your money and which aren't, and we'll always tell you the truth.</div></div></div>
+        <div class="trust-item reveal reveal-delay-1"><div class="trust-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#c9a84c" stroke-width="1.5"><path d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg></div><div><div class="trust-title">Curated Projects Only</div><div class="trust-desc">We only market developments we believe in, projects with credible developers, clear documentation, and genuine long-term value for buyers and investors alike.</div></div></div>
+        <div class="trust-item reveal reveal-delay-2"><div class="trust-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#c9a84c" stroke-width="1.5"><path d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg></div><div><div class="trust-title">Dedicated Support Line</div><div class="trust-desc">You always have a real person to speak to. We are reachable by phone, WhatsApp, and in person, before, during, and after your investment.</div></div></div>
+        <div class="trust-item reveal reveal-delay-3"><div class="trust-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#c9a84c" stroke-width="1.5"><path d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064"/></svg></div><div><div class="trust-title">Overseas Pakistani Specialists</div><div class="trust-desc">We understand the unique challenges of investing from abroad. Our overseas clients receive dedicated, documented, and fully remote-friendly service from day one.</div></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TEAM -->
+<!-- CTA -->
+  <section class="about-cta">
+    <div class="about-cta-inner">
+      <h2 class="cta-title reveal">Ready to Start Your<br><em>Property Journey?</em></h2>
+      <p class="cta-sub reveal reveal-delay-1">Whether you're buying your first home, expanding your portfolio, or investing from overseas, HK Builders & Developers is ready to guide you every step of the way.</p>
+      <div class="cta-actions reveal reveal-delay-2">
+        <a href="/projects/" class="btn-primary">View Our Projects</a>
+        <a href="/contact/" class="btn-outline">Talk to Our Team</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-top">
+      <div>
+        <div style="width:52px;height:52px;border:1.5px solid var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-weight:700;font-size:18px;background:var(--gold-gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:18px;">HK</div>
+        <div class="footer-brand-name">HK Builders & Developers</div>
+        <div class="footer-brand-sub">Pakistan</div>
+        <p class="footer-tagline">"Building Trust.<br>Creating Futures."</p>
+      </div>
+      <div>
+        <div class="footer-col-title">Quick Links</div>
+        <ul class="footer-links">
+          <li><a href="/">Home</a></li>
+          <li><a href="/projects/">Projects We Market</a></li>
+          <li><a href="/clients/">Satisfied Clients</a></li>
+          <li><a href="/about/">About Us</a></li>
+          <li><a href="/contact/">Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Projects</div>
+        <ul class="footer-links" id="footerProjectLinks"></ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Contact</div>
+        <div class="footer-contact-item"><svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg><span>Karachi, Pakistan</span></div>
+        <div class="footer-contact-item"><svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg><span>+92 325 2208153</span></div>
+        <div class="footer-contact-item"><svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg><span>hkbuildersanddevelopers21@gmail.com</span></div>
+        <div class="footer-socials">
+          <a href="https://www.facebook.com/share/1NHx4GR5Du/?mibextid=wwXIfr" target="_blank" class="footer-social"><svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a>
+          <a href="https://www.instagram.com/hkbuildersanddevelopers?igsh=cWw5d3lzcDVzM2Q5" target="_blank" class="footer-social"><svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom"><div class="footer-copyright">© 2026 HK Builders & Developers. All rights reserved.</div></div>
+  </footer>
+
+  <a href="https://wa.me/923252208153?text=Hi%20HK%20Builders%20and%20Developers%2C%20I%27d%20like%20to%20get%20in%20touch." target="_blank" rel="noopener noreferrer" class="whatsapp-float-button" aria-label="Chat on WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+
+  <script>
+    const cursor=document.getElementById('cursor'),ring=document.getElementById('cursorRing');
+    let mouseX=0,mouseY=0,ringX=0,ringY=0;
+    document.addEventListener('mousemove',e=>{mouseX=e.clientX;mouseY=e.clientY;cursor.style.left=mouseX+'px';cursor.style.top=mouseY+'px';});
+    (function tk(){ringX+=(mouseX-ringX)*0.12;ringY+=(mouseY-ringY)*0.12;ring.style.left=ringX+'px';ring.style.top=ringY+'px';requestAnimationFrame(tk);})();
+    document.querySelectorAll('a,button,.value-card,.trust-item').forEach(el=>{el.addEventListener('mouseenter',()=>{cursor.style.transform='translate(-50%,-50%) scale(2.5)';ring.style.transform='translate(-50%,-50%) scale(1.5)';ring.style.borderColor='rgba(201,168,76,0.8)';});el.addEventListener('mouseleave',()=>{cursor.style.transform='translate(-50%,-50%) scale(1)';ring.style.transform='translate(-50%,-50%) scale(1)';ring.style.borderColor='rgba(201,168,76,0.5)';});});
+    window.addEventListener('scroll',()=>{const s=window.scrollY/(document.documentElement.scrollHeight-window.innerHeight);document.getElementById('scrollProgress').style.transform=`scaleX(${s})`;document.getElementById('navbar').classList.toggle('scrolled',window.scrollY>60);});
+    function toggleMobile(){document.getElementById('mobileMenu').classList.toggle('open');}
+    function closeMobile(){document.getElementById('mobileMenu').classList.remove('open');}
+    const obs=new IntersectionObserver(e=>{e.forEach(el=>{if(el.isIntersecting)el.target.classList.add('visible');});},{threshold:0.1});
+    document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+    function animateCounter(el){const t=parseInt(el.dataset.target);let c=0;const step=t/(2000/16);const timer=setInterval(()=>{c=Math.min(c+step,t);el.textContent=Math.floor(c);if(c>=t)clearInterval(timer);},16);}
+    const cobs=new IntersectionObserver(e=>{e.forEach(el=>{if(el.isIntersecting){el.target.querySelectorAll('.count').forEach(animateCounter);cobs.unobserve(el.target);}});},{threshold:0.3});
+    document.querySelectorAll('.stats-section').forEach(el=>cobs.observe(el));
+
+    // Footer project links from JSON
+    fetch('/assets/js/projects.json').then(r=>r.json()).then(({projects})=>{
+      document.getElementById('footerProjectLinks').innerHTML = projects.map(p=>`<li><a href="/project/?id=${p.id}">${p.name}</a></li>`).join('');
+    });
+  </script>
+</body>
+</html>
