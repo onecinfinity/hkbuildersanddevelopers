@@ -471,7 +471,12 @@
       </div>
       <div>
         <div class="footer-col-title">Projects</div>
-        <ul class="footer-links" id="footerProjectLinks"></ul>
+        <ul class="footer-links">
+          <li><a href="/united-palm-greens/">United Palm Greens</a></li>
+          <li><a href="/falaknaz-wonder-city/">Falaknaz Wonder City</a></li>
+          <li><a href="/falaknaz-hills-view/">Falaknaz Hills View</a></li>
+          <li><a href="/falaknaz-overseas-block/">Falaknaz Overseas Block</a></li>
+        </ul>
       </div>
       <div>
         <div class="footer-col-title">Contact</div>
@@ -504,16 +509,26 @@
     const cobs=new IntersectionObserver(e=>{e.forEach(el=>{if(el.isIntersecting){el.target.querySelectorAll('.count').forEach(animateCounter);cobs.unobserve(el.target);}});},{threshold:0.3});
     document.querySelectorAll('.stats-section').forEach(el=>cobs.observe(el));
 
-    // Footer project links from JSON
-    fetch('/assets/js/projects.json', { cache: 'no-store' }).then(r=>r.json()).then(({projects})=>{
-      document.getElementById('footerProjectLinks').innerHTML = projects.map(p=>`<li><a href="/${p.id}/">${p.name}</a></li>`).join('');
-    });
+    // Satisfied clients gallery (static fallback)
+    function getStaticClientGallery() {
+      return [
+        {caption: 'Handover Day', sub: 'United Palm Greens', image: null},
+        {caption: 'Site Walkthrough', sub: 'Falaknaz Wonder City', image: null},
+        {caption: 'Welcoming New Residents', sub: 'United Palm Greens', image: null},
+        {caption: 'Documentation Signing', sub: 'Falaknaz Hills View', image: null},
+        {caption: 'Key Handover Ceremony', sub: 'Falaknaz Overseas Block', image: null},
+        {caption: 'Client Family Visit', sub: 'United Palm Greens', image: null},
+        {caption: 'Consultation Meeting', sub: 'HK Office, Karachi', image: null},
+        {caption: 'Project Site Tour', sub: 'Falaknaz Wonder City', image: null},
+        {caption: 'Celebrating Success', sub: 'United Palm Greens', image: null},
+        {caption: 'Final Walkthrough', sub: 'Falaknaz Hills View', image: null},
+        {caption: 'Overseas Client Visit', sub: 'Falaknaz Overseas Block', image: null},
+        {caption: 'Community Welcome', sub: 'United Palm Greens', image: null}
+      ];
+    }
 
-    // Satisfied clients gallery
     async function loadClientGallery() {
-      const res = await fetch('/assets/js/clients-gallery.json', { cache: 'no-store' });
-      const data = await res.json();
-      return data.gallery || [];
+      return getStaticClientGallery();
     }
 
     function buildClientGalleryItem(caption, sub, image) {

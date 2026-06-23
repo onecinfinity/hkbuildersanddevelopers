@@ -429,7 +429,12 @@
       </div>
       <div>
         <div class="footer-col-title">Projects</div>
-        <ul class="footer-links" id="footerProjectLinks"></ul>
+        <ul class="footer-links">
+          <li><a href="/united-palm-greens/">United Palm Greens</a></li>
+          <li><a href="/falaknaz-wonder-city/">Falaknaz Wonder City</a></li>
+          <li><a href="/falaknaz-hills-view/">Falaknaz Hills View</a></li>
+          <li><a href="/falaknaz-overseas-block/">Falaknaz Overseas Block</a></li>
+        </ul>
       </div>
       <div>
         <div class="footer-col-title">Contact</div>
@@ -561,28 +566,27 @@
     // Fallback gallery (used only if the photos JSON fails to load)
     const fallbackItems = captions.map((c,i)=>({caption:c.c, sub:c.s, theme:themes[i%themes.length]}));
 
-    // Load projects (for hero image + footer links) and satisfied-client photos in parallel
-    Promise.all([
-      fetch('/assets/js/projects.json', { cache: 'no-store' }).then(r=>r.json()).catch(()=>({projects:[]})),
-      fetch('/assets/js/clients-gallery.json', { cache: 'no-store' }).then(r=>r.json()).catch(()=>({gallery:[]}))
-    ]).then(([projData, galData])=>{
-      const projects = projData.projects || [];
-      const featured = projects.find(p=>p.featured) || projects[0];
-      const items = (galData.gallery||[]).map(g=>({caption:g.caption, sub:g.sub, image:g.image, theme:g.theme}));
-      galleryItems = items.length ? items : fallbackItems;
+    // Static project and gallery data
+    const staticProjects = [
+      {id: 'united-palm-greens', name: 'United Palm Greens', featured: true, image: null},
+      {id: 'falaknaz-wonder-city', name: 'Falaknaz Wonder City', featured: false, image: null},
+      {id: 'falaknaz-hills-view', name: 'Falaknaz Hills View', featured: false, image: null},
+      {id: 'falaknaz-overseas-block', name: 'Falaknaz Overseas Block', featured: false, image: null}
+    ];
 
-      // Hero photo from FEATURED PROJECT, featured-story image from clients gallery
-      const heroPhoto = document.getElementById('pageHeroPhoto');
-      const fsImage = document.getElementById('fsImage');
-      if (heroPhoto && featured?.image) heroPhoto.src = featured.image;
-      const imgs = galleryItems.filter(g=>g.image).map(g=>g.image);
-      if (fsImage) fsImage.src = imgs[0] || '';
+    const projects = staticProjects;
+    const featured = projects.find(p=>p.featured) || projects[0];
+    const items = fallbackItems;
+    galleryItems = items.length ? items : fallbackItems;
 
-      // Footer project links
-      document.getElementById('footerProjectLinks').innerHTML = projects.map(p=>`<li><a href="/${p.id}/">${p.name}</a></li>`).join('');
+    // Hero photo from FEATURED PROJECT, featured-story image from clients gallery
+    const heroPhoto = document.getElementById('pageHeroPhoto');
+    const fsImage = document.getElementById('fsImage');
+    if (heroPhoto && featured?.image) heroPhoto.src = featured.image;
+    const imgs = galleryItems.filter(g=>g.image).map(g=>g.image);
+    if (fsImage) fsImage.src = imgs[0] || '';
 
-      renderGallery();
-    });
+    renderGallery();
 
     function toggleMobile() {
       const menu = document.getElementById('mobileMenu');

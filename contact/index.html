@@ -432,7 +432,12 @@
       </div>
       <div>
         <div class="footer-col-title">Projects</div>
-        <ul class="footer-links" id="footerProjectLinks"></ul>
+        <ul class="footer-links">
+          <li><a href="/united-palm-greens/">United Palm Greens</a></li>
+          <li><a href="/falaknaz-wonder-city/">Falaknaz Wonder City</a></li>
+          <li><a href="/falaknaz-hills-view/">Falaknaz Hills View</a></li>
+          <li><a href="/falaknaz-overseas-block/">Falaknaz Overseas Block</a></li>
+        </ul>
       </div>
       <div>
         <div class="footer-col-title">Contact</div>
@@ -488,10 +493,7 @@
       if(!wasOpen) el.classList.add('open');
     }
 
-    // Footer project links
-    fetch('/assets/js/projects.json').then(r=>r.json()).then(({projects})=>{
-      document.getElementById('footerProjectLinks').innerHTML = projects.map(p=>`<li><a href="/${p.id}/">${p.name}</a></li>`).join('');
-    });
+    // Static footer already loaded - no fetch needed
   </script>
 </body>
 </html>

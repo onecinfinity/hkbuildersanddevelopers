@@ -759,20 +759,24 @@
   }
 
   // ================================================================
-  // INIT, read ?id= from URL
+  // INIT with STATIC PROJECT DATA
   // ================================================================
-  async function init() {
+  const staticProjects = [
+    {id: 'united-palm-greens', name: 'United Palm Greens', featured: true, image: null, type: 'Gated Community', developer: 'Al Waheed Group', location: 'Karachi', collection: 'Premium Living', shortDesc: 'Luxury gated community with world-class amenities', fullDesc: 'United Palm Greens is a prestigious gated community designed for families seeking premium living spaces. Features include lush green spaces, modern infrastructure, and family-friendly amenities.', quote: 'United Palm Greens represents the pinnacle of luxury living in Karachi.', plotSizes: '100 sq yds, 200 sq yds, 300 sq yds', paymentPlan: 'Flexible installment plans available', possession: '36 months', status: 'Pre-Launch', mapEmbed: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3620.5651746282314!2d67.2076!3d24.8607!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3eb33e06651d4bbf%3A0x9cf92f44555a0c23!2sKarachi%2C%20Pakistan!5e0!3m2!1sen!2s!4v1700000000000', cardBg: 'linear-gradient(135deg,#0e2040,#152844)', amenities: [{name: 'Security', icon: 'shield', desc: '24/7 gated security'}, {name: 'Parks', icon: 'tree', desc: 'Green spaces'}, {name: 'Community', icon: 'users', desc: 'Family areas'}, {name: 'Schools', icon: 'book', desc: 'Quality education'}], gallery: [{caption: 'Master Plan', sub: 'Community Layout', theme: 'plan'}, {caption: 'Entrance Gate', sub: 'Grand Entry', theme: 'gate'}, {caption: 'Villas', sub: 'Residential Units', theme: 'villa'}, {caption: 'Parks', sub: 'Green Space', theme: 'park'}]},
+    {id: 'falaknaz-wonder-city', name: 'Falaknaz Wonder City', featured: false, image: null, type: 'City Development', developer: 'Falaknaz Group', location: 'Karachi', collection: 'Modern City', shortDesc: 'Integrated urban development with mixed-use spaces', fullDesc: 'Falaknaz Wonder City is a comprehensive urban development featuring residential, commercial, and recreational spaces designed for modern living.', quote: 'A wonder of modern urban planning and sustainable development.', plotSizes: '150 sq yds, 250 sq yds, 500 sq yds', paymentPlan: 'Flexible payment options', possession: '42 months', status: 'Ongoing', mapEmbed: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3620.5651746282314!2d67.2076!3d24.8607!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3eb33e06651d4bbf%3A0x9cf92f44555a0c23!2sKarachi%2C%20Pakistan!5e0!3m2!1sen!2s!4v1700000000000', cardBg: 'linear-gradient(135deg,#0a1f3c,#0e2a4a)', amenities: [{name: 'Mall', icon: 'building', desc: 'Shopping center'}, {name: 'Community', icon: 'users', desc: 'Social spaces'}, {name: 'Parks', icon: 'tree', desc: 'Recreation'}, {name: 'Transport', icon: 'map', desc: 'Road network'}], gallery: [{caption: 'Master Plan', sub: 'City Layout', theme: 'plan'}, {caption: 'Roads', sub: 'Infrastructure', theme: 'road'}, {caption: 'Buildings', sub: 'Commercial', theme: 'building'}, {caption: 'Parks', sub: 'Public Space', theme: 'park'}]},
+    {id: 'falaknaz-hills-view', name: 'Falaknaz Hills View', featured: false, image: null, type: 'Housing Scheme', developer: 'Falaknaz Group', location: 'Karachi', collection: 'Hillside Living', shortDesc: 'Premium hillside residences with panoramic views', fullDesc: 'Falaknaz Hills View offers exclusive residential plots on scenic hillside locations with stunning panoramic views of the city and surroundings.', quote: 'Where luxury meets panoramic beauty.', plotSizes: '200 sq yds, 300 sq yds, 500 sq yds', paymentPlan: 'Custom payment plans', possession: '30 months', status: 'Available', mapEmbed: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3620.5651746282314!2d67.2076!3d24.8607!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3eb33e06651d4bbf%3A0x9cf92f44555a0c23!2sKarachi%2C%20Pakistan!5e0!3m2!1sen!2s!4v1700000000000', cardBg: 'linear-gradient(135deg,#0e1e38,#0a1628)', amenities: [{name: 'Views', icon: 'map', desc: 'Panoramic vistas'}, {name: 'Security', icon: 'shield', desc: 'Gated access'}, {name: 'Roads', icon: 'zap', desc: 'Well-planned'}, {name: 'Greenery', icon: 'tree', desc: 'Natural beauty'}], gallery: [{caption: 'Panoramic View', sub: 'City Skyline', theme: 'villa'}, {caption: 'Access Road', sub: 'Main Entry', theme: 'road2'}, {caption: 'Plots', sub: 'Residential', theme: 'security'}, {caption: 'Community', sub: 'Hillside Living', theme: 'park'}]},
+    {id: 'falaknaz-overseas-block', name: 'Falaknaz Overseas Block', featured: false, image: null, type: 'Special Project', developer: 'Falaknaz Group', location: 'Karachi', collection: 'International', shortDesc: 'Dedicated investment blocks for overseas Pakistanis', fullDesc: 'Falaknaz Overseas Block is specifically designed for overseas Pakistanis and international investors seeking premium residential investments with dedicated support and flexible terms.', quote: 'Connecting overseas Pakistanis with home investments.', plotSizes: '250 sq yds, 500 sq yds', paymentPlan: 'Overseas-friendly terms', possession: '48 months', status: 'Available', mapEmbed: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3620.5651746282314!2d67.2076!3d24.8607!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3eb33e06651d4bbf%3A0x9cf92f44555a0c23!2sKarachi%2C%20Pakistan!5e0!3m2!1sen!2s!4v1700000000000', cardBg: 'linear-gradient(135deg,#1a3560,#0e2040)', amenities: [{name: 'Global', icon: 'users', desc: 'Worldwide investors'}, {name: 'Support', icon: 'book', desc: 'Dedicated team'}, {name: 'Legal', icon: 'shield', desc: 'Documentation'}, {name: 'Finance', icon: 'zap', desc: 'Easy terms'}], gallery: [{caption: 'Investment Blocks', sub: 'Premium Plots', theme: 'plan'}, {caption: 'Security', sub: 'Gated Community', theme: 'security'}, {caption: 'Amenities', sub: 'Facilities', theme: 'building'}, {caption: 'Connectivity', sub: 'Road Access', theme: 'mosque'}]}
+  ];
+
+  function init() {
     const id = new URLSearchParams(window.location.search).get('id');
-    const res = await fetch('/assets/js/projects.json', { cache: 'no-store' });
-    const { projects } = await res.json();
 
     if (!id) {
-      // No ID, redirect to projects page
       window.location.href = '/projects/';
       return;
     }
 
-    const project = projects.find(p => p.id === id);
+    const project = staticProjects.find(p => p.id === id);
     if (!project) {
       document.getElementById('pageBody').innerHTML = `
         <div class="not-found">
@@ -784,10 +788,10 @@
       return;
     }
 
-    renderPage(project, projects);
+    renderPage(project, staticProjects);
   }
 
-  init().catch(console.error);
+  init();
   </script>
 </body>
 </html>
