@@ -506,7 +506,7 @@
 
     // Footer project links from JSON
     fetch('/assets/js/projects.json', { cache: 'no-store' }).then(r=>r.json()).then(({projects})=>{
-      document.getElementById('footerProjectLinks').innerHTML = projects.map(p=>`<li><a href="/project/?id=${p.id}">${p.name}</a></li>`).join('');
+      document.getElementById('footerProjectLinks').innerHTML = projects.map(p=>`<li><a href="/${p.id}/">${p.name}</a></li>`).join('');
     });
 
     // Satisfied clients gallery

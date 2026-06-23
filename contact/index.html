@@ -490,7 +490,7 @@
 
     // Footer project links
     fetch('/assets/js/projects.json').then(r=>r.json()).then(({projects})=>{
-      document.getElementById('footerProjectLinks').innerHTML = projects.map(p=>`<li><a href="/project/?id=${p.id}">${p.name}</a></li>`).join('');
+      document.getElementById('footerProjectLinks').innerHTML = projects.map(p=>`<li><a href="/${p.id}/">${p.name}</a></li>`).join('');
     });
   </script>
 </body>

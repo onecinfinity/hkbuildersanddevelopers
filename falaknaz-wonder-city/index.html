@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Falaknaz Wonder City | HK Builders & Developers</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="stylesheet" href="/assets/css/loader.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer-when-downgrade"/>
+  <script src="/assets/js/loader.js"></script>
+  <style>
+    :root{--navy:#0a1628;--navy-mid:#0e1e38;--navy-light:#152844;--gold:#c9a84c;--gold-light:#e2c97e;--gold-pale:#f0dfa0;--white:#ffffff;--white-muted:rgba(255,255,255,0.55);--gold-gradient:linear-gradient(135deg,#c9a84c 0%,#f0dfa0 50%,#c9a84c 100%);}
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+    html{scroll-behavior:smooth;}
+    body{background:var(--navy);color:var(--white);font-family:'Jost',sans-serif;font-weight:300;overflow-x:hidden;cursor:none;}
+    .cursor{position:fixed;width:10px;height:10px;background:var(--gold);border-radius:50%;pointer-events:none;z-index:99990;transform:translate(-50%,-50%);transition:transform 0.1s ease;}
+    .cursor-ring{position:fixed;width:36px;height:36px;border:1px solid rgba(201,168,76,0.5);border-radius:50%;pointer-events:none;z-index:99989;transform:translate(-50%,-50%);transition:all 0.15s ease;}
+    body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:1;opacity:0.4;}
+    .gold-top-bar{position:fixed;top:0;left:0;right:0;height:2px;background:var(--gold-gradient);z-index:9999;transform-origin:left;transform:scaleX(0);transition:transform 0.1s linear;}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(30px);}to{opacity:1;transform:translateY(0);}}
+    @keyframes blink{0%,100%{opacity:1}50%{opacity:0.3}}
+    @keyframes gridShift{0%{transform:translateY(0);}100%{transform:translateY(80px);}}
+    /* NAV */
+    nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:22px 60px;display:flex;align-items:center;justify-content:space-between;transition:all 0.4s ease;}
+    nav.scrolled{background:rgba(10,22,40,0.95);backdrop-filter:blur(20px);padding:14px 60px;border-bottom:1px solid rgba(201,168,76,0.15);}
+    .nav-logo{display:flex;align-items:center;gap:14px;text-decoration:none;}
+    .nav-logo-mark{width:48px;height:48px;border:1.5px solid var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-weight:700;font-size:18px;background:var(--gold-gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;flex-shrink:0;}
+    .nav-logo-text .name{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:16px;background:var(--gold-gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:2px;text-transform:uppercase;}
+    .nav-logo-text .sub{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--white-muted);font-weight:400;}
+    .nav-links{display:flex;align-items:center;gap:40px;list-style:none;}
+    .nav-links a{text-decoration:none;font-size:12px;letter-spacing:2.5px;text-transform:uppercase;color:var(--white-muted);font-weight:400;position:relative;transition:color 0.3s ease;}
+    .nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:1px;background:var(--gold);transition:width 0.3s ease;}
+    .nav-links a:hover,.nav-links a.active{color:var(--gold-light);}
+    .nav-links a:hover::after,.nav-links a.active::after{width:100%;}
+    .nav-cta{padding:12px 36px;border:2px solid var(--gold);color:var(--gold)!important;font-size:11px!important;letter-spacing:2px;text-transform:uppercase;text-decoration:none;transition:all 0.3s cubic-bezier(0.16,1,0.3,1)!important;position:relative;overflow:hidden;display:inline-flex;align-items:center;gap:8px;background:transparent;font-weight:600;}
+    .nav-cta::before{content:'';position:absolute;inset:0;background:var(--gold-gradient);transform:translateX(-100%);transition:transform 0.4s cubic-bezier(0.16,1,0.3,1);z-index:-1;}
+    .nav-cta::after{display:none!important;}
+    .nav-cta:hover{color:var(--navy)!important;border-color:var(--gold);box-shadow:0 12px 30px rgba(201,168,76,0.35);}
+    .nav-cta:hover::before{transform:translateX(0);}
+    .nav-cta:active{transform:scale(0.98);}
+    .hamburger{display:none;flex-direction:column;gap:5px;cursor:none;z-index:1001;width:32px;height:24px;position:relative;}
+    .hamburger span{display:block;width:100%;height:2px;background:var(--gold);transition:all 0.3s cubic-bezier(0.16,1,0.3,1);position:absolute;left:0;}
+    .hamburger span:nth-child(1){top:0;}
+    .hamburger span:nth-child(2){top:11px;opacity:1;}
+    .hamburger span:nth-child(3){top:22px;}
+    .hamburger.open span:nth-child(1){transform:rotate(45deg);top:11px;}
+    .hamburger.open span:nth-child(2){opacity:0;}
+    .hamburger.open span:nth-child(3){transform:rotate(-45deg);top:11px;}
+    .mobile-menu{position:fixed;inset:0;background:linear-gradient(135deg,#0a1628 0%,#0e2040 50%,#0a1628 100%);z-index:1000;display:flex;flex-direction:column;align-items:stretch;justify-content:flex-start;gap:0;transform:translateX(100%);transition:transform 0.5s cubic-bezier(0.16,1,0.3,1);}
+    .mobile-menu.open{transform:translateX(0);}
+    .mobile-menu-header{display:flex;align-items:center;justify-content:space-between;padding:24px 30px;border-bottom:1px solid rgba(201,168,76,0.15);}
+    .mobile-menu-logo{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600;background:var(--gold-gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+    .mobile-menu-close{width:32px;height:32px;display:flex;align-items:center;justify-content:center;cursor:none;position:relative;}
+    .mobile-menu-close::before,.mobile-menu-close::after{content:'';position:absolute;width:24px;height:2px;background:var(--gold);transition:all 0.3s ease;}
+    .mobile-menu-close::before{transform:rotate(45deg);}
+    .mobile-menu-close::after{transform:rotate(-45deg);}
+    .mobile-menu-close:hover::before,.mobile-menu-close:hover::after{background:var(--gold-light);box-shadow:0 0 8px rgba(201,168,76,0.5);}
+    .mobile-menu-links{display:flex;flex-direction:column;gap:0;padding:20px 0;}
+    .mobile-menu a{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:400;text-decoration:none;color:var(--white);letter-spacing:1px;transition:all 0.3s cubic-bezier(0.16,1,0.3,1);padding:18px 30px;border-left:4px solid transparent;position:relative;display:flex;align-items:center;gap:16px;overflow:hidden;}
+    .mobile-menu a::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--gold-gradient);transform:scaleY(0);transform-origin:top;transition:transform 0.3s cubic-bezier(0.16,1,0.3,1);}
+    .mobile-menu a::after{content:'';position:absolute;inset:0;background:rgba(201,168,76,0.06);transform:translateX(-100%);transition:transform 0.3s cubic-bezier(0.16,1,0.3,1);z-index:-1;}
+    .mobile-menu a:hover{color:var(--gold-light);}
+    .mobile-menu a:hover::before{transform:scaleY(1);}
+    .mobile-menu a:hover::after{transform:translateX(0);}
+    .mobile-menu-link-icon{width:24px;height:24px;display:flex;align-items:center;justify-content:center;font-size:16px;opacity:0.7;transition:all 0.3s ease;}
+    .mobile-menu a:hover .mobile-menu-link-icon{opacity:1;color:var(--gold);}
+    .mobile-menu-cta{padding:20px 30px;}
+    .mobile-menu-cta .btn-primary{width:100%;text-align:center;display:block;}
+    .mobile-menu-footer{margin-top:auto;padding:30px;border-top:2px solid rgba(201,168,76,0.25);text-align:center;background:linear-gradient(to bottom,transparent,rgba(201,168,76,0.03));}
+    .mobile-menu-socials{display:flex;gap:16px;justify-content:center;margin-bottom:28px;}
+    .mobile-menu-socials a{width:48px;height:48px;display:flex;align-items:center;justify-content:center;border:2px solid rgba(201,168,76,0.4);border-radius:50%;color:var(--gold);transition:all 0.3s cubic-bezier(0.16,1,0.3,1);padding:0;position:relative;overflow:hidden;}
+    .mobile-menu-socials a::before{content:'';position:absolute;inset:0;background:rgba(201,168,76,0.1);transform:scale(0);transition:transform 0.3s cubic-bezier(0.16,1,0.3,1);border-radius:50%;}
+    .mobile-menu-socials a:hover{border-color:var(--gold-light);color:var(--gold-light);box-shadow:0 0 20px rgba(201,168,76,0.3);}
+    .mobile-menu-socials a:hover::before{transform:scale(1);}
+    .mobile-menu-socials svg{width:20px;height:20px;position:relative;z-index:1;}
+    .mobile-menu-contact{font-size:13px;color:var(--white-muted);letter-spacing:1px;display:flex;flex-direction:column;gap:12px;}
+    .mobile-menu-contact>span{font-weight:600;color:var(--gold-light);font-size:12px;letter-spacing:2px;text-transform:uppercase;}
+    .mobile-menu-contact a{font-size:13px;color:var(--gold);text-decoration:none;padding:0;border:none;transition:all 0.3s ease;display:inline-block;}
+    .mobile-menu-contact a:active{transform:scale(0.98);}
+    /* HERO */
+    .hero{position:relative;height:100vh;min-height:700px;display:flex;align-items:flex-end;overflow:hidden;}
+    .hero-bg-layer{position:absolute;inset:0;background:linear-gradient(160deg,#0a1f3c 0%,#0e2a4a 40%,#0a1628 100%);}
+    .hero-bg-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
+    .hero-grid-layer{position:absolute;inset:0;background-image:linear-gradient(rgba(201,168,76,0.06) 1px,transparent 1px),linear-gradient(90deg,rgba(201,168,76,0.06) 1px,transparent 1px);background-size:80px 80px;animation:gridShift 20s linear infinite;}
+    .hero-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(10,22,40,0.98) 0%,rgba(10,22,40,0.4) 60%,rgba(10,22,40,0.15) 100%);}
+    .hero-illustration{position:absolute;right:0;bottom:0;width:55%;height:90%;opacity:0.12;pointer-events:none;}
+    .hero-content{position:relative;z-index:2;padding:0 60px 80px;width:100%;}
+    .hero-breadcrumb{display:flex;align-items:center;gap:12px;margin-bottom:24px;opacity:0;animation:fadeUp 0.8s ease 0.3s forwards;}
+    .hero-breadcrumb a{text-decoration:none;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--white-muted);transition:color 0.3s ease;}
+    .hero-breadcrumb a:hover{color:var(--gold);}
+    .hero-breadcrumb-sep{color:rgba(201,168,76,0.4);}
+    .hero-breadcrumb-current{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);}
+    .hero-marketed{display:inline-flex;align-items:center;gap:10px;padding:7px 18px;border:1px solid rgba(201,168,76,0.3);background:rgba(10,22,40,0.6);backdrop-filter:blur(10px);margin-bottom:20px;opacity:0;animation:fadeUp 0.8s ease 0.4s forwards;}
+    .marketed-dot{width:6px;height:6px;background:var(--gold);border-radius:50%;animation:blink 2s ease infinite;}
+    .marketed-text{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold-light);}
+    .hero-title{font-family:'Cormorant Garamond',serif;font-size:clamp(52px,8vw,110px);font-weight:300;line-height:0.95;margin-bottom:16px;opacity:0;animation:fadeUp 0.9s ease 0.5s forwards;}
+    .hero-title em{font-style:italic;background:var(--gold-gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+    .hero-developer{font-size:14px;color:var(--white-muted);letter-spacing:1px;margin-bottom:40px;opacity:0;animation:fadeUp 0.9s ease 0.7s forwards;}
+    .hero-developer strong{color:var(--gold-light);font-weight:400;}
+    .hero-actions{display:flex;align-items:center;gap:20px;opacity:0;animation:fadeUp 0.9s ease 0.9s forwards;flex-wrap:wrap;}
+    .btn-primary{padding:16px 40px;background:var(--gold-gradient);color:var(--navy);text-decoration:none;font-size:11px;font-weight:600;letter-spacing:3px;text-transform:uppercase;display:inline-block;transition:transform 0.3s ease,box-shadow 0.3s ease;position:relative;overflow:hidden;border:none;cursor:none;}
+    .btn-primary::before{content:'';position:absolute;inset:0;background:rgba(255,255,255,0.15);transform:translateX(-100%);transition:transform 0.4s ease;}
+    .btn-primary:hover::before{transform:translateX(0);}
+    .btn-primary:hover{transform:translateY(-2px);box-shadow:0 20px 50px rgba(201,168,76,0.3);}
+    .btn-ghost{padding:15px 40px;border:1px solid rgba(201,168,76,0.35);color:var(--white);text-decoration:none;font-size:11px;letter-spacing:3px;text-transform:uppercase;display:inline-block;transition:all 0.3s ease;}
+    .btn-ghost:hover{border-color:var(--gold);color:var(--gold-light);}
+    .hero-scroll{position:absolute;right:60px;bottom:80px;display:flex;flex-direction:column;align-items:center;gap:10px;opacity:0;animation:fadeUp 1s ease 1.2s forwards;}
+    .hero-scroll-line{width:1px;height:60px;background:linear-gradient(to bottom,transparent,var(--gold),transparent);animation:scrollP 2s ease infinite;}
+    @keyframes scrollP{0%,100%{opacity:0.4}50%{opacity:1}}
+    .hero-scroll-text{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--white-muted);writing-mode:vertical-rl;}
+    /* HIGHLIGHTS BAR */
+    .highlights{background:var(--navy-mid);border-bottom:1px solid rgba(201,168,76,0.12);}
+    .highlights-inner{max-width:1400px;margin:0 auto;display:grid;grid-template-columns:repeat(5,1fr);}
+    .hl-item{padding:30px;border-right:1px solid rgba(201,168,76,0.1);text-align:center;transition:background 0.3s ease;}
+    .hl-item:last-child{border-right:none;}
+    .hl-item:hover{background:rgba(201,168,76,0.04);}
+    .hl-label{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:8px;}
+    .hl-value{font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:400;}
+    /* OVERVIEW */
+    .overview{padding:100px 60px;background:var(--navy);}
+    .overview-inner{max-width:1400px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:100px;align-items:start;}
+    .eyebrow{display:flex;align-items:center;gap:16px;margin-bottom:20px;}
+    .eyebrow-line{width:40px;height:1px;background:var(--gold-gradient);}
+    .eyebrow span{font-size:10px;letter-spacing:4px;text-transform:uppercase;background:var(--gold-gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-weight:500;}
+    .section-title{font-family:'Cormorant Garamond',serif;font-size:clamp(34px,3.5vw,52px);font-weight:300;line-height:1.1;margin-bottom:24px;}
+    .section-title em{font-style:italic;background:var(--gold-gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+    .overview-body{font-size:15px;line-height:1.95;color:var(--white-muted);margin-bottom:24px;}
+    .divider{width:50px;height:1px;background:var(--gold-gradient);margin:28px 0;}
+    .overview-quote{font-family:'Cormorant Garamond',serif;font-size:19px;font-style:italic;color:rgba(255,255,255,0.7);line-height:1.6;border-left:2px solid rgba(201,168,76,0.4);padding-left:24px;}
+    .info-table{width:100%;border-collapse:collapse;}
+    .info-table tr{border-bottom:1px solid rgba(201,168,76,0.08);}
+    .info-table tr:first-child{border-top:1px solid rgba(201,168,76,0.08);}
+    .info-table td{padding:17px 0;font-size:13px;vertical-align:top;}
+    .info-table td:first-child{color:var(--gold);letter-spacing:2px;text-transform:uppercase;font-size:9px;width:40%;padding-right:20px;}
+    .info-table td:last-child{color:var(--white);font-family:'Cormorant Garamond',serif;font-size:17px;}
+    /* MASONRY GALLERY */
+    .gallery-section{padding:100px 60px;background:var(--navy-mid);}
+    .gallery-header{max-width:1400px;margin:0 auto 60px;}
+    .masonry-grid{max-width:1400px;margin:0 auto;columns:3;column-gap:6px;}
+    .masonry-item{break-inside:avoid;margin-bottom:6px;position:relative;overflow:hidden;cursor:none;}
+    .masonry-item:hover .masonry-inner{transform:scale(1.04);}
+    .masonry-inner{transition:transform 0.6s cubic-bezier(0.16,1,0.3,1);width:100%;display:block;}
+    .masonry-item:nth-child(3n+1) .masonry-inner{height:360px;}
+    .masonry-item:nth-child(3n+2) .masonry-inner{height:260px;}
+    .masonry-item:nth-child(3n+3) .masonry-inner{height:300px;}
+    .masonry-inner img{width:100%;height:100%;object-fit:cover;display:block;}
+    .masonry-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(10,22,40,0.9) 0%,transparent 60%);opacity:0;transition:opacity 0.4s ease;display:flex;flex-direction:column;justify-content:flex-end;padding:24px;}
+    .masonry-item:hover .masonry-overlay{opacity:1;}
+    .masonry-caption{color:var(--white);font-family:'Cormorant Garamond',serif;font-size:18px;transform:translateY(8px);transition:transform 0.4s ease;}
+    .masonry-item:hover .masonry-caption{transform:translateY(0);}
+    .masonry-sub{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-top:4px;}
+    .masonry-zoom{position:absolute;top:16px;right:16px;width:38px;height:38px;border:1px solid rgba(255,255,255,0.3);border-radius:50%;display:flex;align-items:center;justify-content:center;opacity:0;transform:scale(0.8);transition:all 0.3s ease;background:rgba(10,22,40,0.5);}
+    .masonry-item:hover .masonry-zoom{opacity:1;transform:scale(1);}
+    .masonry-zoom svg{width:15px;height:15px;fill:var(--white);}
+    /* LIGHTBOX */
+    .lightbox{position:fixed;inset:0;z-index:99999;background:rgba(5,12,25,0.97);display:flex;align-items:center;justify-content:center;opacity:0;visibility:hidden;transition:all 0.4s ease;backdrop-filter:blur(12px);}
+    .lightbox.active{opacity:1;visibility:visible;}
+    .lb-close{position:fixed;top:28px;right:36px;width:48px;height:48px;border:1px solid rgba(201,168,76,0.3);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:none;transition:all 0.3s ease;background:rgba(10,22,40,0.8);}
+    .lb-close:hover{border-color:var(--gold);}
+    .lb-close svg{width:18px;height:18px;fill:var(--white);}
+    .lb-prev,.lb-next{position:fixed;top:50%;transform:translateY(-50%);width:52px;height:52px;border:1px solid rgba(201,168,76,0.25);display:flex;align-items:center;justify-content:center;cursor:none;transition:all 0.3s ease;background:rgba(10,22,40,0.7);}
+    .lb-prev{left:28px;}.lb-next{right:28px;}
+    .lb-prev:hover,.lb-next:hover{border-color:var(--gold);}
+    .lb-prev svg,.lb-next svg{width:20px;height:20px;fill:var(--white);}
+    .lb-content{max-width:90vw;max-height:90vh;display:flex;align-items:center;justify-content:center;}
+    .lb-display{width:min(85vw,1000px);height:70vh;overflow:hidden;}
+    .lb-display img{width:100%;height:100%;object-fit:contain;display:block;}
+    .lb-caption-bar{position:fixed;bottom:50px;left:50%;transform:translateX(-50%);text-align:center;}
+    .lb-caption-title{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:300;}
+    .lb-caption-sub{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-top:4px;}
+    .lb-counter{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);font-size:11px;letter-spacing:3px;color:var(--white-muted);}
+    /* AMENITIES */
+    .amenities{padding:100px 60px;background:var(--navy);}
+    .amenities-inner{max-width:1400px;margin:0 auto;}
+    .amenities-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;margin-top:60px;}
+    .amenity-card{background:var(--navy-mid);border:1px solid rgba(201,168,76,0.08);padding:36px 28px;text-align:center;transition:all 0.3s ease;position:relative;overflow:hidden;}
+    .amenity-card::before{content:'';position:absolute;bottom:0;left:0;width:100%;height:2px;background:var(--gold-gradient);transform:scaleX(0);transform-origin:center;transition:transform 0.4s ease;}
+    .amenity-card:hover::before{transform:scaleX(1);}
+    .amenity-card:hover{border-color:rgba(201,168,76,0.2);}
+    .amenity-icon{width:52px;height:52px;border:1px solid rgba(201,168,76,0.2);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 18px;transition:all 0.3s ease;}
+    .amenity-card:hover .amenity-icon{border-color:var(--gold);background:rgba(201,168,76,0.08);}
+    .amenity-icon svg{width:22px;height:22px;}
+    .amenity-name{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:400;margin-bottom:8px;}
+    .amenity-desc{font-size:12px;color:var(--white-muted);line-height:1.6;}
+    /* MAP */
+    .map-section{padding:100px 60px;background:var(--navy-mid);}
+    .map-inner{max-width:1400px;margin:0 auto;display:grid;grid-template-columns:1fr 2fr;gap:60px;align-items:start;}
+    .map-frame{width:100%;height:460px;border:1px solid rgba(201,168,76,0.15);overflow:hidden;filter:grayscale(1) invert(0.9) sepia(0.3) hue-rotate(180deg) saturate(0.8) brightness(0.65);}
+    .map-frame iframe{width:100%;height:100%;border:0;}
+    .map-addr{background:rgba(10,22,40,0.9);border:1px solid rgba(201,168,76,0.2);padding:28px;margin-top:16px;display:flex;gap:14px;}
+    .map-addr-icon{width:38px;height:38px;border:1px solid rgba(201,168,76,0.25);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+    .map-addr-icon svg{width:16px;height:16px;fill:var(--gold);}
+    .map-addr-label{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:5px;}
+    .map-addr-val{font-size:14px;line-height:1.5;}
+    /* ENQUIRY */
+    .enquiry{padding:100px 60px;background:var(--navy);}
+    .enquiry-inner{max-width:1400px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:100px;align-items:center;}
+    .form-wrap{display:flex;flex-direction:column;gap:18px;}
+    .form-row{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+    .form-group{display:flex;flex-direction:column;gap:8px;}
+    .form-group label{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);}
+    .form-group input,.form-group select,.form-group textarea{background:rgba(255,255,255,0.03);border:1px solid rgba(201,168,76,0.15);padding:14px 18px;color:var(--white);font-family:'Jost',sans-serif;font-size:14px;font-weight:300;outline:none;transition:border-color 0.3s ease;width:100%;}
+    .form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--gold);}
+    .form-group input::placeholder,.form-group textarea::placeholder{color:rgba(255,255,255,0.2);}
+    .form-group select{appearance:none;cursor:none;}
+    .form-group select option{background:var(--navy);}
+    .form-group textarea{resize:none;height:120px;}
+    .btn-submit{width:100%;padding:17px;background:var(--gold-gradient);color:var(--navy);border:none;font-family:'Jost',sans-serif;font-size:11px;font-weight:600;letter-spacing:3px;text-transform:uppercase;cursor:none;position:relative;overflow:hidden;transition:transform 0.3s ease,box-shadow 0.3s ease;}
+    .btn-submit::before{content:'';position:absolute;inset:0;background:rgba(255,255,255,0.15);transform:translateX(-100%);transition:transform 0.4s ease;}
+    .btn-submit:hover::before{transform:translateX(0);}
+    .btn-submit:hover{transform:translateY(-2px);box-shadow:0 20px 50px rgba(201,168,76,0.3);}
+    .form-success{display:none;text-align:center;padding:50px 30px;border:1px solid rgba(201,168,76,0.2);}
+    .form-success.show{display:block;}
+    /* RELATED */
+    .related{padding:100px 60px;background:var(--navy-mid);}
+    .related-inner{max-width:1400px;margin:0 auto;}
+    .related-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-top:60px;}
+    .related-card{background:var(--navy);border:1px solid rgba(201,168,76,0.08);overflow:hidden;position:relative;transition:all 0.4s ease;text-decoration:none;display:block;color:inherit;}
+    .related-card::after{content:'';position:absolute;top:0;left:0;width:100%;height:2px;background:var(--gold-gradient);transform:scaleX(0);transform-origin:left;transition:transform 0.4s ease;}
+    .related-card:hover::after{transform:scaleX(1);}
+    .related-card:hover{border-color:rgba(201,168,76,0.25);}
+    .rc-visual{aspect-ratio:16/9;position:relative;overflow:hidden;}
+    .rc-vis-inner{width:100%;height:100%;transition:transform 0.6s cubic-bezier(0.16,1,0.3,1);position:relative;}
+    .related-card:hover .rc-vis-inner{transform:scale(1.05);}
+    .rc-body{padding:28px;}
+    .rc-tag{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:10px;}
+    .rc-name{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:400;color:var(--white);margin-bottom:10px;transition:color 0.3s ease;}
+    .related-card:hover .rc-name{color:var(--gold-light);}
+    .rc-desc{font-size:13px;color:var(--white-muted);line-height:1.6;margin-bottom:20px;}
+    .rc-arrow{display:flex;align-items:center;gap:10px;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);}
+    .rc-arrow-line{width:24px;height:1px;background:var(--gold);transition:width 0.3s ease;}
+    .related-card:hover .rc-arrow-line{width:40px;}
+    .reveal{opacity:0;transform:translateY(40px);transition:all 0.8s cubic-bezier(0.16,1,0.3,1);}
+    .reveal.visible{opacity:1;transform:translateY(0);}
+    .reveal-delay-1{transition-delay:0.1s;}
+    .reveal-delay-2{transition-delay:0.2s;}
+    .reveal-delay-3{transition-delay:0.3s;}
+    /* FOOTER */
+    footer{background:var(--navy-mid);border-top:1px solid rgba(201,168,76,0.12);padding:80px 60px 40px;position:relative;z-index:2;}
+    .footer-top{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:60px;max-width:1400px;margin:0 auto 60px;}
+    .footer-brand-name{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600;background:var(--gold-gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:6px;}
+    .footer-brand-sub{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--white-muted);}
+    .footer-tagline{font-family:'Cormorant Garamond',serif;font-size:16px;font-style:italic;color:var(--white-muted);margin-top:20px;line-height:1.6;}
+    .footer-col-title{font-size:10px;letter-spacing:3px;text-transform:uppercase;background:var(--gold-gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:24px;font-weight:500;}
+    .footer-links{list-style:none;display:flex;flex-direction:column;gap:12px;}
+    .footer-links a{text-decoration:none;font-size:13px;color:var(--white-muted);transition:color 0.3s ease;}
+    .footer-links a:hover{color:var(--gold-light);}
+    .footer-contact-item{display:flex;gap:12px;margin-bottom:16px;}
+    .footer-contact-item svg{width:16px;height:16px;fill:var(--gold);flex-shrink:0;margin-top:2px;}
+    .footer-contact-item span{font-size:13px;color:var(--white-muted);line-height:1.5;}
+    .footer-bottom{max-width:1400px;margin:0 auto;padding-top:30px;border-top:1px solid rgba(201,168,76,0.08);display:flex;align-items:center;justify-content:space-between;}
+    .footer-copyright{font-size:12px;color:rgba(255,255,255,0.3);}
+    .footer-socials{display:flex;gap:16px;}
+    .footer-social{width:34px;height:34px;border:1px solid rgba(201,168,76,0.2);border-radius:50%;display:flex;align-items:center;justify-content:center;text-decoration:none;transition:all 0.3s ease;}
+    .footer-social svg{width:14px;height:14px;fill:var(--white-muted);transition:fill 0.3s ease;}
+    .footer-social:hover{border-color:var(--gold);background:rgba(201,168,76,0.1);}
+    .footer-social:hover svg{fill:var(--gold);}
+    .whatsapp-float-button{position:fixed;right:24px;bottom:50px;width:64px;height:64px;display:flex;align-items:center;justify-content:center;border-radius:50%;background:#25d366;color:#fff;font-size:32px;text-decoration:none;box-shadow:0 14px 30px rgba(37,211,102,0.4);z-index:9999;transition:box-shadow 0.25s ease,filter 0.25s ease;animation:waFloat 2.6s ease-in-out infinite;}
+    .whatsapp-float-button::before,.whatsapp-float-button::after{content:'';position:absolute;inset:0;border-radius:50%;background:rgba(37,211,102,0.45);z-index:-1;animation:waRipple 2.4s ease-out infinite;pointer-events:none;}
+    .whatsapp-float-button::after{animation-delay:1.2s;}
+    .whatsapp-float-button i{position:relative;z-index:1;}
+    .whatsapp-float-button:hover{color:#fff;box-shadow:0 18px 40px rgba(37,211,102,0.55);filter:brightness(1.08);animation-play-state:paused;}
+    @keyframes waFloat{0%,100%{transform:translateY(0);}50%{transform:translateY(-9px);}}
+    @keyframes waRipple{0%{transform:scale(1);opacity:0.7;}100%{transform:scale(2.6);opacity:0;}}
+    @media(max-width:1200px){.amenities-grid{grid-template-columns:repeat(2,1fr);}}
+    @media(max-width:1024px){
+      nav{padding:20px 30px;}nav.scrolled{padding:12px 30px;}
+      .hero-content{padding:0 30px 60px;}
+      .overview,.amenities,.map-section,.enquiry,.related,footer,.gallery-section{padding-left:30px;padding-right:30px;}
+      .overview-inner{grid-template-columns:1fr;gap:50px;}
+      .highlights-inner{grid-template-columns:repeat(3,1fr);}
+      .masonry-grid{columns:2;}
+      .map-inner{grid-template-columns:1fr;gap:40px;}
+      .enquiry-inner{grid-template-columns:1fr;gap:50px;}
+      .related-grid{grid-template-columns:1fr 1fr;}
+      .footer-top{grid-template-columns:1fr 1fr;gap:40px;}
+      .nav-links{display:none;}.hamburger{display:flex;}
+    }
+    @media(max-width:640px){
+      nav{padding:18px 20px;}
+      .hero-content{padding:0 20px 50px;}
+      .hero-title{font-size:48px;}
+      .overview,.amenities,.map-section,.enquiry,.related,footer,.gallery-section{padding-left:20px;padding-right:20px;}
+      .masonry-grid{columns:1;}
+      .highlights-inner{grid-template-columns:repeat(2,1fr);}
+      .hl-item:nth-child(5){grid-column:span 2;}
+      .amenities-grid{grid-template-columns:1fr 1fr;}
+      .form-row{grid-template-columns:1fr;}
+      .related-grid{grid-template-columns:1fr;}
+      .footer-top{grid-template-columns:1fr;}
+      .hero-actions{flex-direction:column;align-items:flex-start;}
+      .hero-scroll{display:none;}
+    }
+  </style>
+</head>
+<body>
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+  <div class="gold-top-bar" id="scrollProgress"></div>
+  <div class="lightbox" id="lightbox">
+    <div class="lb-close" id="lbClose"><svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg></div>
+    <div class="lb-prev" id="lbPrev"><svg viewBox="0 0 24 24"><path d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6z"/></svg></div>
+    <div class="lb-content"><div class="lb-display" id="lbDisplay"></div></div>
+    <div class="lb-next" id="lbNext"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg></div>
+    <div class="lb-caption-bar"><div class="lb-caption-title" id="lbCaption"></div><div class="lb-caption-sub" id="lbSub"></div></div>
+    <div class="lb-counter" id="lbCounter"></div>
+  </div>
+  <div class="mobile-menu" id="mobileMenu">
+    <div class="mobile-menu-header">
+      <div class="mobile-menu-logo">HK</div>
+      <div class="mobile-menu-close" onclick="closeMobile()"></div>
+    </div>
+    <div class="mobile-menu-links">
+      <a href="/" onclick="closeMobile()"><span class="mobile-menu-link-icon">⌂</span>Home</a>
+      <a href="/projects/" onclick="closeMobile()"><span class="mobile-menu-link-icon">🏗</span>Projects We Market</a>
+      <a href="/clients/" onclick="closeMobile()"><span class="mobile-menu-link-icon">⭐</span>Satisfied Clients</a>
+      <a href="/about/" onclick="closeMobile()"><span class="mobile-menu-link-icon">ℹ</span>About Us</a>
+      <a href="/contact/" onclick="closeMobile()"><span class="mobile-menu-link-icon">✉</span>Contact</a>
+    </div>
+    <div class="mobile-menu-cta"><a href="/contact/" onclick="closeMobile()" class="btn-primary">Get In Touch</a></div>
+    <div class="mobile-menu-footer">
+      <div class="mobile-menu-socials">
+        <a href="https://www.facebook.com/share/1NHx4GR5Du/?mibextrid=wwXIfr" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a>
+        <a href="https://www.instagram.com/hkbuildersanddevelopers?igsh=cWw5d3lzcDVzM2Q5" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></a>
+      </div>
+      <div class="mobile-menu-contact">
+        <span>Need Help?</span>
+        <a href="tel:+923252208153">+92 325 2208153</a>
+        <a href="mailto:hkbuildersanddevelopers21@gmail.com">Email Us</a>
+      </div>
+    </div>
+  </div>
+  <nav id="navbar">
+    <a href="/" class="nav-logo">
+      <div class="nav-logo-mark">HK</div>
+      <div class="nav-logo-text">
+        <div class="name">HK Builders</div>
+        <div class="sub">& Developers</div>
+      </div>
+    </a>
+    <ul class="nav-links">
+      <li><a href="/">Home</a></li>
+      <li><a href="/projects/">Projects We Market</a></li>
+      <li><a href="/clients/">Satisfied Clients</a></li>
+      <li><a href="/about/">About Us</a></li>
+      <li><a href="/contact/" class="nav-cta">Get In Touch</a></li>
+    </ul>
+    <div class="hamburger" id="hamburger" onclick="toggleMobile()"><span></span><span></span><span></span></div>
+  </nav>
+  <section class="hero">
+    <div class="hero-bg-layer"></div>
+    <div class="hero-grid-layer"></div>
+    <div class="hero-overlay"></div>
+    <div class="hero-illustration"><img src="/assets/images/projects/Falaknaz-wonder-city/main.jpg" alt="Falaknaz Wonder City" style="width:100%;height:100%;object-fit:cover;"></div>
+    <div class="hero-content">
+      <div class="hero-breadcrumb">
+        <a href="/">Home</a>
+        <span class="hero-breadcrumb-sep">›</span>
+        <a href="/projects/">Projects</a>
+        <span class="hero-breadcrumb-sep">›</span>
+        <span class="hero-breadcrumb-current">Falaknaz Wonder City</span>
+      </div>
+      <div class="hero-marketed">
+        <div class="marketed-dot"></div>
+        <span class="marketed-text">Now Marketing, HK Builders & Developers</span>
+      </div>
+      <h1 class="hero-title">Falaknaz<br><em>Wonder City</em></h1>
+      <p class="hero-developer">Master-Planned Urban Living by <strong>Falaknaz Group</strong></p>
+      <div class="hero-actions">
+        <a href="#enquiry" class="btn-primary">Enquire Now</a>
+        <a href="#gallery" class="btn-ghost">View Gallery</a>
+      </div>
+    </div>
+    <div class="hero-scroll">
+      <div class="hero-scroll-line"></div>
+      <span class="hero-scroll-text">Scroll</span>
+    </div>
+  </section>
+  <div class="highlights">
+    <div class="highlights-inner">
+      <div class="hl-item reveal"><div class="hl-label">Type</div><div class="hl-value">Residential & Commercial</div></div>
+      <div class="hl-item reveal reveal-delay-1"><div class="hl-label">Developer</div><div class="hl-value">Falaknaz Group</div></div>
+      <div class="hl-item reveal reveal-delay-2"><div class="hl-label">Location</div><div class="hl-value">Sector 11C, Surjani Town, Karachi</div></div>
+      <div class="hl-item reveal reveal-delay-3"><div class="hl-label">Plot Sizes</div><div class="hl-value">80, 120, 400 Sq. Yards</div></div>
+      <div class="hl-item reveal reveal-delay-4" style="color:var(--gold-light);"><div class="hl-label">Status</div><div class="hl-value" style="color:var(--gold-light);">Available ✦</div></div>
+    </div>
+  </div>
+  <section class="overview">
+    <div class="overview-inner">
+      <div class="reveal">
+        <div class="eyebrow"><div class="eyebrow-line"></div><span>About the Project</span></div>
+        <h2 class="section-title">A Community<br>Built for <em>Living</em></h2>
+        <p class="overview-body">Falaknaz Wonder City is a comprehensive master-planned development that redefines urban living in Karachi. Offering a perfect blend of residential plots and commercial spaces, this development caters to families, investors, and business owners alike. With modern infrastructure, wide roads, and essential amenities all within reach, Wonder City is designed for a complete community lifestyle.</p>
+        <div class="divider"></div>
+        <div class="overview-quote">"Wonder City is where modern urban living meets affordability, a true wonder of community planning."</div>
+      </div>
+      <div class="reveal reveal-delay-1">
+        <div class="eyebrow"><div class="eyebrow-line"></div><span>Project Details</span></div>
+        <table class="info-table">
+          <tr><td>Project Name</td><td>Falaknaz Wonder City</td></tr>
+          <tr><td>Developer</td><td>Falaknaz Group</td></tr>
+          <tr><td>Marketed By</td><td>HK Builders & Developers</td></tr>
+          <tr><td>Project Type</td><td>Residential & Commercial</td></tr>
+          <tr><td>Location</td><td>Sector 11C, Surjani Town, Karachi</td></tr>
+          <tr><td>Plot Sizes</td><td>80, 120, 400 Sq. Yards</td></tr>
+          <tr><td>Payment Plan</td><td>Easy Installments Available</td></tr>
+          <tr><td>Possession</td><td>On Booking</td></tr>
+          <tr><td>Status</td><td>Available</td></tr>
+        </table>
+      </div>
+    </div>
+  </section>
+  <section class="gallery-section" id="gallery">
+    <div class="gallery-header reveal">
+      <div class="eyebrow"><div class="eyebrow-line"></div><span>Photo Gallery</span></div>
+      <h2 class="section-title">Project <em>Gallery</em></h2>
+      <p style="font-size:12px;color:rgba(255,255,255,0.25);letter-spacing:2px;text-transform:uppercase;margin-top:10px;">Click any image to view full screen</p>
+    </div>
+    <div class="masonry-grid">
+      <div class="masonry-item reveal" data-index="0" onclick="openLightbox(0)">
+        <div class="masonry-inner" style="background:linear-gradient(160deg,#0e2040,#152844);"><img src="/assets/images/projects/Falaknaz-wonder-city/1.jpeg" alt="Green Parks"></div>
+        <div class="masonry-overlay"><div class="masonry-caption">Green Parks</div><div class="masonry-sub">Falaknaz Wonder City</div></div>
+        <div class="masonry-zoom"><svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0016 9.5 6.5 6.5 0 109.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg></div>
+      </div>
+      <div class="masonry-item reveal" data-index="1" onclick="openLightbox(1)">
+        <div class="masonry-inner" style="background:linear-gradient(160deg,#0e2040,#152844);"><img src="/assets/images/projects/Falaknaz-wonder-city/7.jpeg" alt="Residential Plots"></div>
+        <div class="masonry-overlay"><div class="masonry-caption">Residential Plots</div><div class="masonry-sub">Plot Zones</div></div>
+        <div class="masonry-zoom"><svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0016 9.5 6.5 6.5 0 109.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg></div>
+      </div>
+      <div class="masonry-item reveal" data-index="2" onclick="openLightbox(2)">
+        <div class="masonry-inner" style="background:linear-gradient(160deg,#0e2040,#152844);"><img src="/assets/images/projects/Falaknaz-wonder-city/3.jpeg" alt="Commercial Area"></div>
+        <div class="masonry-overlay"><div class="masonry-caption">Commercial Area</div><div class="masonry-sub">Internal Roads</div></div>
+        <div class="masonry-zoom"><svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0016 9.5 6.5 6.5 0 109.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg></div>
+      </div>
+      <div class="masonry-item reveal" data-index="3" onclick="openLightbox(3)">
+        <div class="masonry-inner" style="background:linear-gradient(160deg,#0e2040,#152844);"><img src="/assets/images/projects/Falaknaz-wonder-city/4.jpeg" alt="Road Network"></div>
+        <div class="masonry-overlay"><div class="masonry-caption">Road Network</div><div class="masonry-sub">Internal Roads</div></div>
+        <div class="masonry-zoom"><svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0016 9.5 6.5 6.5 0 109.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg></div>
+      </div>
+      <div class="masonry-item reveal" data-index="4" onclick="openLightbox(4)">
+        <div class="masonry-inner" style="background:linear-gradient(160deg,#0e2040,#152844);"><img src="/assets/images/projects/Falaknaz-wonder-city/5.jpeg" alt="Fountains"></div>
+        <div class="masonry-overlay"><div class="masonry-caption">Fountains</div><div class="masonry-sub">Round About</div></div>
+        <div class="masonry-zoom"><svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0016 9.5 6.5 6.5 0 109.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg></div>
+      </div>
+      <div class="masonry-item reveal" data-index="5" onclick="openLightbox(5)">
+        <div class="masonry-inner" style="background:linear-gradient(160deg,#0e2040,#152844);"><img src="/assets/images/projects/Falaknaz-wonder-city/6.jpeg" alt="Master Plan"></div>
+        <div class="masonry-overlay"><div class="masonry-caption">Master Plan</div><div class="masonry-sub">Community Layout</div></div>
+        <div class="masonry-zoom"><svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0016 9.5 6.5 6.5 0 109.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg></div>
+      </div>
+    </div>
+  </section>
+  <section class="amenities">
+    <div class="amenities-inner">
+      <div class="reveal">
+        <div class="eyebrow"><div class="eyebrow-line"></div><span>Facilities & Features</span></div>
+        <h2 class="section-title">World-Class <em>Amenities</em></h2>
+      </div>
+      <div class="amenities-grid">
+        <div class="amenity-card reveal"><div class="amenity-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#c9a84c" stroke-width="1.5"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg></div><div class="amenity-name">Secured Boundary</div><div class="amenity-desc">Boundary wall with security checkpoints at all entry points</div></div>
+        <div class="amenity-card reveal reveal-delay-1"><div class="amenity-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#c9a84c" stroke-width="1.5"><path d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg></div><div class="amenity-name">Commercial Hub</div><div class="amenity-desc">Vibrant commercial area integrated into the master plan</div></div>
+        <div class="amenity-card reveal reveal-delay-2"><div class="amenity-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#c9a84c" stroke-width="1.5"><path d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0110.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064"/></svg></div><div class="amenity-name">Green Spaces</div><div class="amenity-desc">Parks and green areas throughout the development</div></div>
+        <div class="amenity-card reveal reveal-delay-3"><div class="amenity-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#c9a84c" stroke-width="1.5"><path d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/></svg></div><div class="amenity-name">Wide Roads</div><div class="amenity-desc">Well-planned road network with street lighting</div></div>
+        <div class="amenity-card reveal"><div class="amenity-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#c9a84c" stroke-width="1.5"><path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg></div><div class="amenity-name">Mosque</div><div class="amenity-desc">Community mosque conveniently located within the project</div></div>
+        <div class="amenity-card reveal reveal-delay-1"><div class="amenity-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#c9a84c" stroke-width="1.5"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg></div><div class="amenity-name">Utilities</div><div class="amenity-desc">All essential utilities including water, gas, and electricity</div></div>
+        <div class="amenity-card reveal reveal-delay-2"><div class="amenity-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#c9a84c" stroke-width="1.5"><path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg></div><div class="amenity-name">Community Area</div><div class="amenity-desc">Dedicated spaces for community gatherings and events</div></div>
+        <div class="amenity-card reveal reveal-delay-3"><div class="amenity-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#c9a84c" stroke-width="1.5"><path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg></div><div class="amenity-name">Nearby Facilities</div><div class="amenity-desc">Close proximity to schools, hospitals and shopping</div></div>
+      </div>
+    </div>
+  </section>
+  <section class="map-section">
+    <div class="map-inner">
+      <div class="reveal">
+        <div class="eyebrow" style="margin-bottom:16px;"><div class="eyebrow-line"></div><span>Location</span></div>
+        <h2 class="section-title">Project <em>Location</em></h2>
+        <p style="font-size:14px;color:var(--white-muted);line-height:1.8;margin-top:16px;margin-bottom:28px;">Strategically located in Sector 11C, Surjani Town, Karachi with excellent connectivity to major roads, commercial hubs, hospitals and schools.</p>
+        <div class="map-addr">
+          <div class="map-addr-icon"><svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" fill="#c9a84c"/></svg></div>
+          <div><div class="map-addr-label">Project Address</div><div class="map-addr-val">Falaknaz Wonder City<br>Sector 11C, Surjani Town, Karachi</div></div>
+        </div>
+        <div style="margin-top:24px;"><a href="#enquiry" class="btn-primary">Book a Site Visit</a></div>
+      </div>
+      <div class="map-frame-wrap reveal reveal-delay-1">
+        <div class="map-frame"><iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d231612.32908118765!2d66.99403390000001!3d24.8607343!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3eb33e06651d4bbf%3A0x9cf92f44555a0c23!2sKarachi%2C%20Karachi%20City%2C%20Sindh%2C%20Pakistan!5e0!3m2!1sen!2s!4v1700000000000!5m2!1sen!2s" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe></div>
+      </div>
+    </div>
+  </section>
+  <section class="enquiry" id="enquiry">
+    <div class="enquiry-inner">
+      <div class="reveal">
+        <div class="eyebrow" style="margin-bottom:16px;"><div class="eyebrow-line"></div><span>Get In Touch</span></div>
+        <h2 class="section-title">Enquire About<br><em>This Project</em></h2>
+        <p style="font-size:15px;color:var(--white-muted);line-height:1.9;margin-top:20px;">Interested in Falaknaz Wonder City? Fill in your details and our dedicated consultant will contact you within 24 hours.</p>
+        <div style="margin-top:36px;display:flex;flex-direction:column;gap:20px;">
+          <div style="display:flex;align-items:center;gap:16px;">
+            <div style="width:42px;height:42px;border:1px solid rgba(201,168,76,0.25);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="18" height="18" viewBox="0 0 24 24" fill="#c9a84c"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg></div>
+            <div><div style="font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:4px;">Call / WhatsApp</div><div><a href="tel:+923252208153" style="color:var(--white);text-decoration:none;font-size:15px;">+92 325 2208153</a></div></div>
+          </div>
+          <div style="display:flex;align-items:center;gap:16px;">
+            <div style="width:42px;height:42px;border:1px solid rgba(201,168,76,0.25);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="18" height="18" viewBox="0 0 24 24" fill="#c9a84c"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg></div>
+            <div><div style="font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:4px;">Email</div><div><a href="mailto:hkbuildersanddevelopers21@gmail.com" style="color:var(--white);text-decoration:none;font-size:14px;">hkbuildersanddevelopers21@gmail.com</a></div></div>
+          </div>
+        </div>
+      </div>
+      <div class="reveal reveal-delay-1">
+        <div class="form-wrap" id="enquiryForm">
+          <div class="form-row">
+            <div class="form-group"><label>Full Name *</label><input type="text" id="eName" placeholder="Your name"/></div>
+            <div class="form-group"><label>Phone / WhatsApp *</label><input type="tel" id="ePhone" placeholder="+92 300 0000000"/></div>
+          </div>
+          <div class="form-group"><label>Email</label><input type="email" id="eEmail" placeholder="your@email.com"/></div>
+          <div class="form-group"><label>Plot Size Interest</label>
+            <select id="ePlot">
+              <option value="">Select plot size</option>
+              <option>80 Sq. Yards</option>
+              <option>120 Sq. Yards</option>
+              <option>400 Sq. Yards</option>
+              <option>Not sure yet</option>
+            </select>
+          </div>
+          <div class="form-group"><label>Message</label><textarea id="eMsg" placeholder="Any specific questions…"></textarea></div>
+          <input type="hidden" id="eProject" value="Falaknaz Wonder City">
+          <button class="btn-submit" onclick="submitEnquiry()">Send Enquiry, Falaknaz Wonder City →</button>
+          <p style="font-size:11px;color:rgba(255,255,255,0.25);text-align:center;margin-top:12px;letter-spacing:1px;">We respond within 24 hours. Your data is never shared.</p>
+        </div>
+        <div class="form-success" id="enquirySuccess">
+          <div style="font-size:36px;margin-bottom:16px;">✦</div>
+          <div style="font-family:'Cormorant Garamond',serif;font-size:26px;margin-bottom:12px;">Enquiry Received</div>
+          <p style="font-size:14px;color:var(--white-muted);line-height:1.7;">Thank you for your interest in Falaknaz Wonder City. Our consultant will be in touch within 24 hours.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="related">
+    <div class="related-inner">
+      <div class="reveal">
+        <div class="eyebrow" style="margin-bottom:16px;"><div class="eyebrow-line"></div><span>Also Available</span></div>
+        <h2 class="section-title">Other Projects We <em>Market</em></h2>
+      </div>
+      <div class="related-grid">
+        <a href="/united-palm-greens/" class="related-card reveal">
+          <div class="rc-visual">
+            <div class="rc-vis-inner" style="background:linear-gradient(160deg, #0e2040 0%, #1a3560 50%, #0a1628 100%);"><img src="/assets/images/projects/united-palm-green/main.jpg" alt="United Palm Greens" style="width:100%;height:100%;object-fit:cover;"></div>
+          </div>
+          <div class="rc-body">
+            <div class="rc-tag">Residential</div>
+            <div class="rc-name">United Palm Greens</div>
+            <div class="rc-desc">A landmark gated residential community offering a serene, secure lifestyle surrounded by lush landscaping and world-class amenities.</div>
+            <div class="rc-arrow"><div class="rc-arrow-line"></div>View Project</div>
+          </div>
+        </a>
+        <a href="/falaknaz-hills-view/" class="related-card reveal reveal-delay-1">
+          <div class="rc-visual">
+            <div class="rc-vis-inner" style="background:linear-gradient(160deg, #0a1f3c 0%, #162f50 50%, #0a1628 100%);"><img src="/assets/images/projects/falaknaz-hills-view/main.jpg" alt="Falaknaz Hills View" style="width:100%;height:100%;object-fit:cover;"></div>
+          </div>
+          <div class="rc-body">
+            <div class="rc-tag">Premium Residential</div>
+            <div class="rc-name">Falaknaz Hills View</div>
+            <div class="rc-desc">Elevated living with panoramic city views adjacent to Karachi's largest theme park and second largest mosque. Premium plots designed for those who seek tranquility.</div>
+            <div class="rc-arrow"><div class="rc-arrow-line"></div>View Project</div>
+          </div>
+        </a>
+        <a href="/falaknaz-overseas-block/" class="related-card reveal reveal-delay-2">
+          <div class="rc-visual">
+            <div class="rc-vis-inner" style="background:linear-gradient(160deg, #0e1e38 0%, #0a1f3c 50%, #0a1628 100%);"><img src="/assets/images/projects/Falaknaz-overseas-block/main.jpg" alt="Falaknaz Overseas Block" style="width:100%;height:100%;object-fit:cover;"></div>
+          </div>
+          <div class="rc-body">
+            <div class="rc-tag">Overseas Investment</div>
+            <div class="rc-name">Falaknaz Overseas Block</div>
+            <div class="rc-desc">Specially designed for overseas Pakistanis, secure investment, international standards, and a home to return to. Fully documented and remotely manageable.</div>
+            <div class="rc-arrow"><div class="rc-arrow-line"></div>View Project</div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+  <footer>
+    <div class="footer-top">
+      <div>
+        <div style="width:52px;height:52px;border:1.5px solid var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-weight:700;font-size:18px;background:var(--gold-gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:18px;">HK</div>
+        <div class="footer-brand-name">HK Builders & Developers</div>
+        <div class="footer-brand-sub">Pakistan</div>
+        <p class="footer-tagline">"Building Trust.<br>Creating Futures."</p>
+      </div>
+      <div>
+        <div class="footer-col-title">Quick Links</div>
+        <ul class="footer-links">
+          <li><a href="/">Home</a></li>
+          <li><a href="/projects/">Projects We Market</a></li>
+          <li><a href="/clients/">Satisfied Clients</a></li>
+          <li><a href="/about/">About Us</a></li>
+          <li><a href="/contact/">Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Projects</div>
+        <ul class="footer-links">
+          <li><a href="/united-palm-greens/">United Palm Greens</a></li>
+          <li><a href="/falaknaz-wonder-city/">Falaknaz Wonder City</a></li>
+          <li><a href="/falaknaz-hills-view/">Falaknaz Hills View</a></li>
+          <li><a href="/falaknaz-overseas-block/">Falaknaz Overseas Block</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Contact</div>
+        <div class="footer-contact-item"><svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" fill="var(--gold)"/></svg><span>Karachi, Pakistan</span></div>
+        <div class="footer-contact-item"><svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z" fill="var(--gold)"/></svg><span>+92 325 2208153</span></div>
+        <div class="footer-contact-item"><svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" fill="var(--gold)"/></svg><span>hkbuildersanddevelopers21@gmail.com</span></div>
+        <div class="footer-socials">
+          <a href="https://www.facebook.com/share/1NHx4GR5Du/?mibextrid=wwXIfr" target="_blank" class="footer-social"><svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" fill="var(--white-muted)"/></svg></a>
+          <a href="https://www.instagram.com/hkbuildersanddevelopers?igsh=cWw5d3lzcDVzM2Q5" target="_blank" class="footer-social"><svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" fill="var(--white-muted)"/></svg></a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-copyright">© 2026 HK Builders & Developers. All rights reserved.</div>
+    </div>
+  </footer>
+  <a href="https://wa.me/923252208153?text=Hi%20HK%20Builders%20and%20Developers%2C%20I%27d%20like%20to%20get%20in%20touch." target="_blank" rel="noopener noreferrer" class="whatsapp-float-button" aria-label="Chat on WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+  <script>
+    const cursor=document.getElementById('cursor'),ring=document.getElementById('cursorRing');
+    let mouseX=0,mouseY=0,ringX=0,ringY=0;
+    document.addEventListener('mousemove',e=>{mouseX=e.clientX;mouseY=e.clientY;cursor.style.left=mouseX+'px';cursor.style.top=mouseY+'px';});
+    (function t(){ringX+=(mouseX-ringX)*0.12;ringY+=(mouseY-ringY)*0.12;ring.style.left=ringX+'px';ring.style.top=ringY+'px';requestAnimationFrame(t);})();
+    function bindCursor(){document.querySelectorAll('a,button,.masonry-item,.amenity-card,.related-card,.hl-item').forEach(el=>{el.addEventListener('mouseenter',()=>{cursor.style.transform='translate(-50%,-50%) scale(2.5)';ring.style.transform='translate(-50%,-50%) scale(1.5)';ring.style.borderColor='rgba(201,168,76,0.8)';});el.addEventListener('mouseleave',()=>{cursor.style.transform='translate(-50%,-50%) scale(1)';ring.style.transform='translate(-50%,-50%) scale(1)';ring.style.borderColor='rgba(201,168,76,0.5)';});});}
+    window.addEventListener('scroll',()=>{const s=window.scrollY/(document.documentElement.scrollHeight-window.innerHeight);document.getElementById('scrollProgress').style.transform=`scaleX(${s})`;document.getElementById('navbar').classList.toggle('scrolled',window.scrollY>60);});
+    function toggleMobile(){const menu=document.getElementById('mobileMenu');const hamburger=document.getElementById('hamburger');const navbar=document.getElementById('navbar');menu.classList.toggle('open');hamburger.classList.toggle('open');navbar.style.display=menu.classList.contains('open')?'none':'flex';}
+    function closeMobile(){const menu=document.getElementById('mobileMenu');const navbar=document.getElementById('navbar');menu.classList.remove('open');document.getElementById('hamburger').classList.remove('open');navbar.style.display='flex';}
+    const obs=new IntersectionObserver(e=>{e.forEach(el=>{if(el.isIntersecting)el.target.classList.add('visible');});},{threshold:0.1});
+    function bindReveal(){document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));}
+    let lbItems=[{caption:"Green Parks",sub:"Falaknaz Wonder City",image:"/assets/images/projects/Falaknaz-wonder-city/1.jpeg"},{caption:"Residential Plots",sub:"Plot Zones",image:"/assets/images/projects/Falaknaz-wonder-city/7.jpeg"},{caption:"Commercial Area",sub:"Internal Roads",image:"/assets/images/projects/Falaknaz-wonder-city/3.jpeg"},{caption:"Road Network",sub:"Internal Roads",image:"/assets/images/projects/Falaknaz-wonder-city/4.jpeg"},{caption:"Fountains",sub:"Round About",image:"/assets/images/projects/Falaknaz-wonder-city/5.jpeg"},{caption:"Master Plan",sub:"Community Layout",image:"/assets/images/projects/Falaknaz-wonder-city/6.jpeg"}];let lbIndex=0;
+    function openLightbox(i){lbIndex=i;updateLB();document.getElementById('lightbox').classList.add('active');document.body.style.overflow='hidden';}
+    function closeLB(){document.getElementById('lightbox').classList.remove('active');document.body.style.overflow='';}
+    function updateLB(){const item=lbItems[lbIndex];document.getElementById('lbDisplay').innerHTML=`<img src="${item.image}" alt="${item.caption||''}">`;document.getElementById('lbCaption').textContent=item.caption;document.getElementById('lbSub').textContent=item.sub||'';document.getElementById('lbCounter').textContent=(lbIndex+1)+' / '+lbItems.length;}
+    document.getElementById('lbClose').addEventListener('click',closeLB);
+    document.getElementById('lbPrev').addEventListener('click',()=>{lbIndex=(lbIndex-1+lbItems.length)%lbItems.length;updateLB();});
+    document.getElementById('lbNext').addEventListener('click',()=>{lbIndex=(lbIndex+1)%lbItems.length;updateLB();});
+    document.getElementById('lightbox').addEventListener('click',e=>{if(e.target===document.getElementById('lightbox'))closeLB();});
+    document.addEventListener('keydown',e=>{if(!document.getElementById('lightbox').classList.contains('active'))return;if(e.key==='Escape')closeLB();if(e.key==='ArrowLeft'){lbIndex=(lbIndex-1+lbItems.length)%lbItems.length;updateLB();}if(e.key==='ArrowRight'){lbIndex=(lbIndex+1)%lbItems.length;updateLB();}});
+    window.submitEnquiry=function(){const n=document.getElementById('eName').value,ph=document.getElementById('ePhone').value;if(!n||!ph){alert('Please enter your name and phone number.');return;}document.getElementById('enquiryForm').style.display='none';document.getElementById('enquirySuccess').classList.add('show');};
+    bindReveal();bindCursor();
+  </script>
+</body>
+</html>

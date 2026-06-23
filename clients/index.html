@@ -579,7 +579,7 @@
       if (fsImage) fsImage.src = imgs[0] || '';
 
       // Footer project links
-      document.getElementById('footerProjectLinks').innerHTML = projects.map(p=>`<li><a href="/project/?id=${p.id}">${p.name}</a></li>`).join('');
+      document.getElementById('footerProjectLinks').innerHTML = projects.map(p=>`<li><a href="/${p.id}/">${p.name}</a></li>`).join('');
 
       renderGallery();
     });

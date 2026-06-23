@@ -748,7 +748,7 @@
         <p class="featured-desc reveal reveal-delay-3">${p.shortDesc}</p>
         <div class="featured-tags reveal reveal-delay-3">${p.tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div>
         <div class="reveal reveal-delay-4">
-          <a href="/project/?id=${p.id}" class="btn-primary">View Project Details</a>
+          <a href="/${p.id}/" class="btn-primary">View Project Details</a>
         </div>
       </div>
     `;
@@ -786,7 +786,7 @@
           <div class="project-card-tag">${p.collection || p.type}</div>
           <div class="project-card-name">${p.name}</div>
           <div class="project-card-desc">${p.shortDesc}</div>
-          <a href="/project/?id=${p.id}" class="project-card-arrow" style="text-decoration:none;">
+          <a href="/${p.id}/" class="project-card-arrow" style="text-decoration:none;">
             <div class="project-card-arrow-line"></div>
             Explore
           </a>
@@ -799,7 +799,7 @@
 
   function renderFooterLinks(projects) {
     document.getElementById('footerProjectLinks').innerHTML = projects.map(p =>
-      `<li><a href="/project/?id=${p.id}">${p.name}</a></li>`
+      `<li><a href="/${p.id}/">${p.name}</a></li>`
     ).join('');
   }
 
