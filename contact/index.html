@@ -501,32 +501,26 @@
       const btn=document.getElementById('contactBtn');
       btn.textContent='Sending…';btn.disabled=true;
       try{
-        const res=await fetch('https://api.web3forms.com/submit',{
-          method:'POST',
-          headers:{'Content-Type':'application/json','Accept':'application/json'},
-          body:JSON.stringify({
-            access_key:'11bb7533-30f5-4e46-8376-cbeb028ad15a',
-            subject:'New Contact Enquiry - HK Builders & Developers',
-            from_name:'HK Builders & Developers Website',
-            botcheck:false,
-            name:n,
-            phone:ph,
-            email:document.getElementById('cEmail').value.trim()||'',
-            interest:document.getElementById('cInterest').value||'Not specified',
-            message:m
-          })
-        });
+        const fd=new FormData();
+        fd.append('access_key','11bb7533-30f5-4e46-8376-cbeb028ad15a');
+        fd.append('subject','New Contact Enquiry - HK Builders & Developers');
+        fd.append('from_name','HK Builders Website');
+        fd.append('botcheck','');
+        fd.append('name',n);
+        fd.append('phone',ph);
+        fd.append('email',document.getElementById('cEmail').value.trim()||'Not provided');
+        fd.append('interest',document.getElementById('cInterest').value||'Not specified');
+        fd.append('message',m);
+        const res=await fetch('https://api.web3forms.com/submit',{method:'POST',body:fd});
         const data=await res.json();
         if(data.success){
           document.getElementById('contactForm').style.display='none';
           document.getElementById('contactSuccess').classList.add('show');
         }else{
           btn.textContent='Send Message →';btn.disabled=false;
-          btn.textContent=btn.textContent.replace('Sending…','Try again →');
         }
       }catch(e){
         btn.textContent='Send Message →';btn.disabled=false;
-        btn.textContent=btn.textContent.replace('Sending…','Try again →');
       }
     }
 
