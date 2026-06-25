@@ -520,11 +520,11 @@
           document.getElementById('contactSuccess').classList.add('show');
         }else{
           btn.textContent='Send Message →';btn.disabled=false;
-          alert('Something went wrong. Please try again or WhatsApp us directly.');
+          alert('DEBUG: ' + JSON.stringify(data));
         }
       }catch(e){
         btn.textContent='Send Message →';btn.disabled=false;
-        alert('DEBUG - Catch error: ' + e.message);
+        alert('DEBUG catch: ' + e.message);
       }
     }
 
