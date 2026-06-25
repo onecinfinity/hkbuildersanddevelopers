@@ -354,12 +354,12 @@
         <div class="form-card">
           <div id="contactForm">
             <div class="form-row">
-              <div class="form-group"><label>Full Name *</label><input type="text" id="cName" placeholder="Your full name"/></div>
-              <div class="form-group"><label>Phone Number *</label><input type="tel" id="cPhone" placeholder="+92 300 0000000"/></div>
+              <div class="form-group"><label>Full Name *</label><input type="text" id="cName" name="name" placeholder="Your full name"/></div>
+              <div class="form-group"><label>Phone Number *</label><input type="tel" id="cPhone" name="phone" placeholder="+92 300 0000000"/></div>
             </div>
-            <div class="form-group"><label>Email Address</label><input type="email" id="cEmail" placeholder="your@email.com"/></div>
+            <div class="form-group"><label>Email Address</label><input type="email" id="cEmail" name="email" placeholder="your@email.com"/></div>
             <div class="form-group"><label>I'm Interested In</label>
-              <select id="cInterest">
+              <select id="cInterest" name="interest">
                 <option value="">Select an option</option>
                 <option>Buying a Property</option>
                 <option>Investing in a Project</option>
@@ -368,8 +368,8 @@
                 <option>Overseas Investment</option>
               </select>
             </div>
-            <div class="form-group"><label>Message *</label><textarea id="cMsg" placeholder="Tell us how we can help you…"></textarea></div>
-            <button class="btn-submit" onclick="submitContact()">Send Message →</button>
+            <div class="form-group"><label>Message *</label><textarea id="cMsg" name="message" placeholder="Tell us how we can help you…"></textarea></div>
+            <button class="btn-submit" id="contactBtn" onclick="submitContact()">Send Message →</button>
             <p style="font-size:11px;color:rgba(255,255,255,0.25);text-align:center;margin-top:14px;letter-spacing:1px;">We respond within 24 hours. Your data is never shared with third parties.</p>
           </div>
           <div class="form-success" id="contactSuccess">
@@ -493,11 +493,39 @@
     const obs=new IntersectionObserver(e=>{e.forEach(el=>{if(el.isIntersecting)el.target.classList.add('visible');});},{threshold:0.1});
     document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
 
-    function submitContact(){
-      const n=document.getElementById('cName').value, ph=document.getElementById('cPhone').value, m=document.getElementById('cMsg').value;
+    async function submitContact(){
+      const n=document.getElementById('cName').value.trim();
+      const ph=document.getElementById('cPhone').value.trim();
+      const m=document.getElementById('cMsg').value.trim();
       if(!n||!ph||!m){alert('Please fill in your name, phone number, and message.');return;}
-      document.getElementById('contactForm').style.display='none';
-      document.getElementById('contactSuccess').classList.add('show');
+      const btn=document.getElementById('contactBtn');
+      btn.textContent='Sending…';btn.disabled=true;
+      try{
+        const res=await fetch('https://api.web3forms.com/submit',{
+          method:'POST',
+          headers:{'Content-Type':'application/json','Accept':'application/json'},
+          body:JSON.stringify({
+            access_key:'11bb7533-30f5-4e46-8376-cbeb028ad15a',
+            subject:'New Contact Enquiry - HK Builders & Developers',
+            name:n,
+            phone:ph,
+            email:document.getElementById('cEmail').value.trim()||'Not provided',
+            interest:document.getElementById('cInterest').value||'Not specified',
+            message:m
+          })
+        });
+        const data=await res.json();
+        if(data.success){
+          document.getElementById('contactForm').style.display='none';
+          document.getElementById('contactSuccess').classList.add('show');
+        }else{
+          btn.textContent='Send Message →';btn.disabled=false;
+          alert('Something went wrong. Please try again or WhatsApp us directly.');
+        }
+      }catch(e){
+        btn.textContent='Send Message →';btn.disabled=false;
+        alert('Network error. Please check your connection and try again.');
+      }
     }
 
     function toggleFaq(el){

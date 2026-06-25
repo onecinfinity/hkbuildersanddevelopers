@@ -441,10 +441,10 @@
       <div class="reveal reveal-delay-1">
         <div class="form-wrap" id="enquiryForm">
           <div class="form-row">
-            <div class="form-group"><label>Full Name</label><input type="text" id="eName" placeholder="Your name"/></div>
-            <div class="form-group"><label>Phone Number</label><input type="tel" id="ePhone" placeholder="+92 300 0000000"/></div>
+            <div class="form-group"><label>Full Name</label><input type="text" id="eName" name="name" placeholder="Your name"/></div>
+            <div class="form-group"><label>Phone Number</label><input type="tel" id="ePhone" name="phone" placeholder="+92 300 0000000"/></div>
           </div>
-          <div class="form-group"><label>Project of Interest</label><select id="eProject">
+          <div class="form-group"><label>Project of Interest</label><select id="eProject" name="project">
             <option value="">Select a project</option>
             <option value="united-palm-greens">United Palm Greens</option>
             <option value="falaknaz-wonder-city">Falaknaz Wonder City</option>
@@ -452,8 +452,8 @@
             <option value="falaknaz-overseas-block">Falaknaz Overseas Block</option>
             <option value="">Not sure yet</option>
           </select></div>
-          <div class="form-group"><label>Message</label><textarea id="eMsg" placeholder="Tell us what you're looking for…"></textarea></div>
-          <button class="btn-submit" onclick="submitEnquiry()">Send Enquiry →</button>
+          <div class="form-group"><label>Message</label><textarea id="eMsg" name="message" placeholder="Tell us what you're looking for…"></textarea></div>
+          <button class="btn-submit" id="enquiryBtn" onclick="submitEnquiry()">Send Enquiry →</button>
           <p style="font-size:11px;color:rgba(255,255,255,0.25);text-align:center;margin-top:12px;letter-spacing:1px;">We respond within 24 hours. Your data is never shared.</p>
         </div>
         <div class="form-success" id="formSuccess">
@@ -554,11 +554,37 @@
 
     bindReveal(); bindCursor();
 
-    function submitEnquiry(){
-      const n=document.getElementById('eName').value, ph=document.getElementById('ePhone').value;
+    async function submitEnquiry(){
+      const n=document.getElementById('eName').value.trim();
+      const ph=document.getElementById('ePhone').value.trim();
       if(!n||!ph){alert('Please enter your name and phone number.');return;}
-      document.getElementById('enquiryForm').style.display='none';
-      document.getElementById('formSuccess').classList.add('show');
+      const btn=document.getElementById('enquiryBtn');
+      btn.textContent='Sending…';btn.disabled=true;
+      try{
+        const res=await fetch('https://api.web3forms.com/submit',{
+          method:'POST',
+          headers:{'Content-Type':'application/json','Accept':'application/json'},
+          body:JSON.stringify({
+            access_key:'11bb7533-30f5-4e46-8376-cbeb028ad15a',
+            subject:'New Project Enquiry - HK Builders & Developers',
+            name:n,
+            phone:ph,
+            project:document.getElementById('eProject').value||'Not specified',
+            message:document.getElementById('eMsg').value.trim()||'No message'
+          })
+        });
+        const data=await res.json();
+        if(data.success){
+          document.getElementById('enquiryForm').style.display='none';
+          document.getElementById('formSuccess').classList.add('show');
+        }else{
+          btn.textContent='Send Enquiry →';btn.disabled=false;
+          alert('Something went wrong. Please try again or WhatsApp us directly.');
+        }
+      }catch(e){
+        btn.textContent='Send Enquiry →';btn.disabled=false;
+        alert('Network error. Please check your connection and try again.');
+      }
     }
   </script>
 </body>
