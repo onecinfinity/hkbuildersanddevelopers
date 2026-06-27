@@ -1,0 +1,26 @@
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "HK Builders and Developers",
+  "alternateName": "HK Builders and Developers",
+  "url": "https://www.hkbuildersanddevelopers.com/",
+  "logo": "https://www.hkbuildersanddevelopers.com/assets/images/logo.jpg",
+  "image": "https://www.hkbuildersanddevelopers.com/assets/images/logo.jpg",
+  "description": "HK Builders and Developers offers premium residential and commercial real estate projects in Karachi, Pakistan.",
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "telephone": "+92 325 2208153",
+    "contactType": "customer service",
+    "areaServed": "PK",
+    "availableLanguage": [
+      "en",
+      "ur"
+    ]
+  },
+  "sameAs": [
+    "https://www.facebook.com/profile.php?id=61588825989572",
+    "https://www.instagram.com/hkbuildersanddevelopers"
+  ]
+}
+</script>
