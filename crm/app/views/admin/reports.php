@@ -199,6 +199,7 @@ ob_start();
                 <th>Lost</th>
                 <th>Conversion</th>
                 <th>Last Activity</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -237,10 +238,13 @@ ob_start();
                 <td style="color:var(--text-muted);font-size:12px">
                     <?= $agent['last_activity'] ? date('d M Y', strtotime($agent['last_activity'])) : '—' ?>
                 </td>
+                <td>
+                    <a href="<?= APP_URL ?>/admin/agent/<?= (int)$agent['id'] ?>" class="btn btn-secondary btn-sm">View Details</a>
+                </td>
             </tr>
         <?php endforeach; ?>
         <?php if (empty($agents)): ?>
-            <tr><td colspan="7" class="empty-row">No agents yet.</td></tr>
+            <tr><td colspan="8" class="empty-row">No agents yet.</td></tr>
         <?php endif; ?>
         </tbody>
     </table>

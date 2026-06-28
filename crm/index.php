@@ -55,6 +55,7 @@ if ($section === 'admin') {
         'leads'        => $ctrl->leads(),
         'lead'         => $ctrl->leadDetail((int)$param),
         'agents'       => $ctrl->agents(),
+        'agent'        => $ctrl->agentDetail((int)$param),
         'reports'      => $ctrl->reports(),
         'csv-template' => $ctrl->downloadCsvTemplate(),
         'password'     => $ctrl->changePassword(),

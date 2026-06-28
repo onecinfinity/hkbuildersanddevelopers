@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CRM Work Plan</title>
+<style>
+body{font-family:Arial,Helvetica,sans-serif;color:#222;line-height:1.6;max-width:820px;margin:30px auto;padding:0 24px;font-size:15px}
+h1{font-size:26px;border-bottom:2px solid #333;padding-bottom:8px;margin-bottom:4px}
+.sub{color:#666;margin:0 0 28px;font-size:14px}
+h2{font-size:20px;margin:30px 0 8px;border-bottom:1px solid #ccc;padding-bottom:5px}
+h3{font-size:16px;margin:18px 0 6px}
+ul{margin:6px 0 14px;padding-left:22px}
+li{margin:4px 0}
+.opt{color:#555;font-size:13px}
+table{border-collapse:collapse;width:100%;margin:10px 0 16px;font-size:14px}
+th,td{border:1px solid #bbb;padding:7px 10px;text-align:left;vertical-align:top}
+th{background:#f0f0f0}
+.q{margin:6px 0}
+.note{background:#f6f6f6;border-left:3px solid #999;padding:8px 14px;margin:10px 0;font-size:14px}
+@media print{body{margin:0;max-width:100%}h2{page-break-after:avoid}ul,table{page-break-inside:avoid}}
+</style>
+</head>
+<body>
+
+<h1>CRM Work Plan — HK Builders</h1>
+<p class="sub">Next phase. Updated 24 June 2026.</p>
+
+<h2>1. Lead Details (Before Closing)</h2>
+<ul>
+  <li>Name <span class="opt">(optional)</span></li>
+  <li>Address <span class="opt">(optional)</span></li>
+  <li>Contact No. <span class="opt">(required — main identifier)</span></li>
+  <li>Project</li>
+  <li>Investment Amount</li>
+  <li>Unit</li>
+  <li>Category</li>
+  <li>Agent Name</li>
+  <li>Status</li>
+  <li>Lead From (source)</li>
+</ul>
+<p class="note">All fields optional except contact number. Sometimes we only have a phone number, so the form must accept a lead with just that.</p>
+
+<h2>2. Client Details (After Closing)</h2>
+<ul>
+  <li>Name</li>
+  <li>Address</li>
+  <li>Unit No.</li>
+  <li>Category</li>
+  <li>Project</li>
+  <li>Block</li>
+  <li>Contact No.</li>
+  <li>Booking Amount</li>
+  <li>Agent Name</li>
+  <li>Lead From</li>
+</ul>
+<p class="note">When a lead is marked "Won", it becomes a Client record with these booking details added.</p>
+
+<h2>3. Agent Details (When Creating an Agent)</h2>
+<ul>
+  <li>Name</li>
+  <li>Email Address</li>
+  <li>Contact No.</li>
+  <li>Address</li>
+  <li>CNIC No.</li>
+  <li>Guardian No.</li>
+  <li>Designation</li>
+</ul>
+
+<h2>4. Agent Detail Page</h2>
+<ul>
+  <li>Add a "View Details" button on each agent in the Agents page.</li>
+  <li>Add a "View Details" button on each agent in the Reports page.</li>
+  <li>Show how many leads/clients the agent contacted.</li>
+  <li>Show count for every status: New, Contacted, Qualified, Proposal, Negotiation, Won, Lost, Dead.</li>
+  <li>Show grouped totals: interested, not interested, qualified, rejected, all closings.</li>
+  <li>Add a month filter for the stats.</li>
+  <li>Make the agent report printable.</li>
+</ul>
+
+<h2>5. Agents Page Stats</h2>
+<ul>
+  <li>Add a stats bar at the top: number of agents, active, suspended, total leads, total closings, average conversion.</li>
+</ul>
+
+<h2>6. Teams &amp; Sales Managers</h2>
+<ul>
+  <li>List of sales managers, each leading a team.</li>
+  <li>Name teams: Team A, Team B, Team C — each with a team leader and agents under them.</li>
+  <li>Put this on a separate page.</li>
+  <li>Separate stats page per team: response, sales, and earnings of each team.</li>
+</ul>
+
+<h2>7. Accounts Panel (New)</h2>
+<h3>Salaries &amp; Commissions</h3>
+<ul>
+  <li>See each agent's salary and commission.</li>
+  <li>Mark salary/commission as paid or not paid.</li>
+</ul>
+<h3>Expenses &amp; Income</h3>
+<ul>
+  <li>Marketing expense, office expense, other costs.</li>
+  <li>Total income with date-wise filters.</li>
+</ul>
+<h3>Client Payments &amp; Immature Files</h3>
+<ul>
+  <li>Track client payments (e.g. down payment 6 lakh, file closed at 3 lakh = immature file).</li>
+  <li>On an immature file, agent commission/rebate stays pending.</li>
+  <li>Show the reason payment is due: no funds, or file is immature.</li>
+</ul>
+
+<h2>8. Printed Reports</h2>
+<ul>
+  <li>Print each agent's report professionally.</li>
+  <li>Print all reports (full company reports).</li>
+  <li>Team reports, salary sheets, and accounts summaries — all printable.</li>
+</ul>
+
+<h2>Build Order</h2>
+<table>
+  <tr><th>Step</th><th>What</th></tr>
+  <tr><td>1</td><td>Database changes + optional lead fields (phone-only leads)</td></tr>
+  <tr><td>2</td><td>Extended agent fields + create agent form</td></tr>
+  <tr><td>3</td><td>Agent detail page + agents page stats</td></tr>
+  <tr><td>4</td><td>Teams &amp; sales managers module</td></tr>
+  <tr><td>5</td><td>Clients table + Won-to-Client flow</td></tr>
+  <tr><td>6</td><td>Accounts panel</td></tr>
+  <tr><td>7</td><td>Print reports</td></tr>
+</table>
+
+<h2>Questions to Answer First</h2>
+<p class="q">1. Commission — fixed % of booking amount, or entered manually per deal?</p>
+<p class="q">2. Immature file — what triggers it? Payment below a set %, or admin flags it manually?</p>
+<p class="q">3. Sales manager — can they also work leads, or only view team stats?</p>
+<p class="q">4. Teams — can an agent be in multiple teams, or only one?</p>
+<p class="q">5. Phone-only leads — show "Unknown" or the phone number as the name?</p>
+<p class="q">6. Client payments — one booking amount only, or installment tracking?</p>
+
+</body>
+</html>

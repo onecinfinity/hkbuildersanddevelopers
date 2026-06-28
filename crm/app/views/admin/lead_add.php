@@ -50,15 +50,16 @@ ob_start();
             <h3>Contact Information</h3>
         </div>
         <div class="form-card-body">
+            <p style="font-size:13px;color:var(--text-muted);margin-bottom:14px">All fields are optional — enter at least a name <b>or</b> a contact number.</p>
             <div class="form-grid">
                 <div class="form-group">
-                    <label for="name">Full Name <span style="color:#ef4444">*</span></label>
-                    <input type="text" id="name" name="name" required
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" name="name"
                         value="<?= Security::e($old['name'] ?? '') ?>"
                         placeholder="e.g. Ahmed Khan">
                 </div>
                 <div class="form-group">
-                    <label for="phone">Phone Number</label>
+                    <label for="phone">Contact No.</label>
                     <input type="tel" id="phone" name="phone"
                         value="<?= Security::e($old['phone'] ?? '') ?>"
                         placeholder="e.g. 0300-1234567">
@@ -68,6 +69,12 @@ ob_start();
                     <input type="email" id="email" name="email"
                         value="<?= Security::e($old['email'] ?? '') ?>"
                         placeholder="e.g. ahmed@example.com">
+                </div>
+                <div class="form-group">
+                    <label for="address">Address</label>
+                    <input type="text" id="address" name="address"
+                        value="<?= Security::e($old['address'] ?? '') ?>"
+                        placeholder="e.g. Block 5, Clifton, Karachi">
                 </div>
                 <div class="form-group">
                     <label for="company">Company / Organization</label>
@@ -123,6 +130,45 @@ ob_start();
                         <option value="hot"  <?= ($old['priority'] ?? '') === 'hot'  ? 'selected' : '' ?>>Hot</option>
                         <option value="cold" <?= ($old['priority'] ?? '') === 'cold' ? 'selected' : '' ?>>Cold</option>
                     </select>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Property Interest -->
+    <div class="form-card" style="margin-bottom:20px">
+        <div class="form-card-header">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25"/></svg>
+            <h3>Property Interest</h3>
+        </div>
+        <div class="form-card-body">
+            <div class="form-grid form-grid-3">
+                <div class="form-group">
+                    <label for="project">Project</label>
+                    <input type="text" id="project" name="project"
+                        value="<?= Security::e($old['project'] ?? '') ?>"
+                        placeholder="e.g. Falaknaz Hills View">
+                </div>
+                <div class="form-group">
+                    <label for="category">Category</label>
+                    <select id="category" name="category">
+                        <option value="">— Select —</option>
+                        <?php foreach (['Residential','Commercial','Plot','Other'] as $cat): ?>
+                            <option value="<?= $cat ?>" <?= ($old['category'] ?? '') === $cat ? 'selected' : '' ?>><?= $cat ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="unit">Unit / Size</label>
+                    <input type="text" id="unit" name="unit"
+                        value="<?= Security::e($old['unit'] ?? '') ?>"
+                        placeholder="e.g. 2BHK, 120 sq yd">
+                </div>
+                <div class="form-group">
+                    <label for="investment_amount">Investment Amount (Rs.)</label>
+                    <input type="number" id="investment_amount" name="investment_amount"
+                        value="<?= Security::e($old['investment_amount'] ?? '') ?>"
+                        placeholder="e.g. 5000000" min="0" step="1000">
                 </div>
             </div>
         </div>

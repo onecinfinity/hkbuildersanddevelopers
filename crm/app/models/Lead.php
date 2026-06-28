@@ -113,7 +113,7 @@ class Lead {
     public function getAgentFollowUps(int $agentId, bool $doneOnly = false): array {
         $where = $doneOnly ? 'f.is_done = 1' : 'f.is_done = 0';
         $stmt  = $this->db->prepare("
-            SELECT f.*, l.name AS lead_name, l.phone AS lead_phone
+            SELECT f.*, COALESCE(l.name,'Unknown') AS lead_name, l.phone AS lead_phone
             FROM follow_ups f
             JOIN leads l ON l.id = f.lead_id
             WHERE f.agent_id = ? AND $where AND l.deleted_at IS NULL
@@ -203,9 +203,9 @@ class Lead {
             $params[] = $priority;
         }
         if ($search) {
-            $where[] = '(l.name LIKE ? OR l.phone LIKE ? OR l.email LIKE ? OR l.company LIKE ?)';
+            $where[] = '(l.name LIKE ? OR l.phone LIKE ? OR l.email LIKE ? OR l.company LIKE ? OR l.project LIKE ?)';
             $params[] = $search; $params[] = $search;
-            $params[] = $search; $params[] = $search;
+            $params[] = $search; $params[] = $search; $params[] = $search;
         }
         if ($dateFrom) {
             $where[] = 'DATE(l.created_at) >= ?';
@@ -217,7 +217,8 @@ class Lead {
         }
 
         $sql = "
-            SELECT l.*, s.name AS status_name, s.color_hex AS status_color,
+            SELECT l.*, COALESCE(l.name,'Unknown') AS display_name,
+                   s.name AS status_name, s.color_hex AS status_color,
                    src.name AS source_name, u.name AS agent_name
             FROM leads l
             LEFT JOIN lead_statuses  s   ON s.id   = l.status_id
@@ -235,7 +236,8 @@ class Lead {
 
     public function findById(int $id) {
         $stmt = $this->db->prepare("
-            SELECT l.*, s.name AS status_name, s.color_hex AS status_color,
+            SELECT l.*, COALESCE(l.name,'Unknown') AS display_name,
+                   s.name AS status_name, s.color_hex AS status_color,
                    src.name AS source_name, u.name AS agent_name
             FROM leads l
             LEFT JOIN lead_statuses  s   ON s.id   = l.status_id
@@ -250,19 +252,26 @@ class Lead {
 
     public function create(array $data, int $createdBy): int {
         $stmt = $this->db->prepare("
-            INSERT INTO leads (name, email, phone, company, country, source_id, status_id, priority, initial_notes, created_by)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            INSERT INTO leads (name, email, phone, company, country, address, project,
+                               investment_amount, unit, category,
+                               source_id, status_id, priority, initial_notes, created_by)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         ");
         $stmt->execute([
-            $data['name'],
-            $data['email']    ?? null,
-            $data['phone']    ?? null,
-            $data['company']  ?? null,
-            $data['country']  ?? null,
-            $data['source_id']  ?? null,
-            $data['status_id']  ?? 1,
-            $data['priority']   ?? 'warm',
-            $data['initial_notes'] ?? null,
+            ($data['name'] ?? '') !== '' ? $data['name'] : null,
+            $data['email']             ?? null,
+            $data['phone']             ?? null,
+            $data['company']           ?? null,
+            $data['country']           ?? null,
+            $data['address']           ?? null,
+            $data['project']           ?? null,
+            !empty($data['investment_amount']) ? (float)$data['investment_amount'] : null,
+            $data['unit']              ?? null,
+            $data['category']          ?? null,
+            $data['source_id']         ?? null,
+            $data['status_id']         ?? 1,
+            $data['priority']          ?? 'warm',
+            $data['initial_notes']     ?? null,
             $createdBy,
         ]);
         return (int)$this->db->lastInsertId();
@@ -271,15 +280,21 @@ class Lead {
     public function update(int $id, array $data): void {
         $stmt = $this->db->prepare("
             UPDATE leads SET name=?, email=?, phone=?, company=?, country=?,
+                address=?, project=?, investment_amount=?, unit=?, category=?,
                 source_id=?, status_id=?, priority=?
             WHERE id=?
         ");
         $stmt->execute([
-            $data['name'],
-            $data['email']   ?? null,
-            $data['phone']   ?? null,
-            $data['company'] ?? null,
-            $data['country'] ?? null,
+            ($data['name'] ?? '') !== '' ? $data['name'] : null,
+            $data['email']    ?? null,
+            $data['phone']    ?? null,
+            $data['company']  ?? null,
+            $data['country']  ?? null,
+            $data['address']  ?? null,
+            $data['project']  ?? null,
+            !empty($data['investment_amount']) ? (float)$data['investment_amount'] : null,
+            $data['unit']     ?? null,
+            $data['category'] ?? null,
             $data['source_id'] ?? null,
             $data['status_id'] ?? 1,
             $data['priority']  ?? 'warm',

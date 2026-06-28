@@ -115,32 +115,41 @@ class AdminController {
             exit;
         }
 
-        $name = trim($_POST['name'] ?? '');
-        if ($name === '') {
-            $_SESSION['error'] = 'Name is required.';
+        $name  = trim($_POST['name'] ?? '');
+        $phone = trim($_POST['phone'] ?? '');
+
+        // At least name or phone required
+        if ($name === '' && $phone === '') {
+            $_SESSION['error'] = 'Please enter at least a name or contact number.';
             $_SESSION['form']  = $_POST;
             header('Location: ' . APP_URL . '/admin/leads?action=add');
             exit;
         }
 
         $data = [
-            'name'          => $name,
-            'email'         => trim($_POST['email'] ?? '') ?: null,
-            'phone'         => trim($_POST['phone'] ?? '') ?: null,
-            'company'       => trim($_POST['company'] ?? '') ?: null,
-            'country'       => trim($_POST['country'] ?? '') ?: null,
-            'source_id'     => !empty($_POST['source_id']) ? (int)$_POST['source_id'] : null,
-            'status_id'     => (int)($_POST['status_id'] ?? 1),
-            'priority'      => in_array($_POST['priority'] ?? '', ['hot','warm','cold']) ? $_POST['priority'] : 'warm',
-            'initial_notes' => trim($_POST['initial_notes'] ?? '') ?: null,
+            'name'              => $name ?: null,
+            'email'             => trim($_POST['email'] ?? '') ?: null,
+            'phone'             => $phone ?: null,
+            'company'           => trim($_POST['company'] ?? '') ?: null,
+            'country'           => trim($_POST['country'] ?? '') ?: null,
+            'address'           => trim($_POST['address'] ?? '') ?: null,
+            'project'           => trim($_POST['project'] ?? '') ?: null,
+            'investment_amount' => trim($_POST['investment_amount'] ?? '') ?: null,
+            'unit'              => trim($_POST['unit'] ?? '') ?: null,
+            'category'          => trim($_POST['category'] ?? '') ?: null,
+            'source_id'         => !empty($_POST['source_id']) ? (int)$_POST['source_id'] : null,
+            'status_id'         => (int)($_POST['status_id'] ?? 1),
+            'priority'          => in_array($_POST['priority'] ?? '', ['hot','warm','cold']) ? $_POST['priority'] : 'warm',
+            'initial_notes'     => trim($_POST['initial_notes'] ?? '') ?: null,
         ];
 
-        $leadId = $this->lead->create($data, (int)$_SESSION['user_id']);
-        $note   = 'Lead created by admin.';
+        $leadId  = $this->lead->create($data, (int)$_SESSION['user_id']);
+        $display = $name ?: $phone;
+        $note    = 'Lead created by admin.';
         if ($data['initial_notes']) $note .= ' Notes: ' . $data['initial_notes'];
         $this->lead->logActivity($leadId, (int)$_SESSION['user_id'], 'note', $note);
 
-        $_SESSION['success'] = 'Lead "' . htmlspecialchars($name, ENT_QUOTES) . '" added successfully.';
+        $_SESSION['success'] = 'Lead "' . htmlspecialchars($display, ENT_QUOTES) . '" added successfully.';
         header('Location: ' . APP_URL . '/admin/lead/' . $leadId);
         exit;
     }
@@ -224,22 +233,29 @@ class AdminController {
     }
 
     private function updateLead(int $id): void {
-        $name = trim($_POST['name'] ?? '');
-        if ($name === '') {
-            $_SESSION['error'] = 'Name is required.';
+        $name  = trim($_POST['name'] ?? '');
+        $phone = trim($_POST['phone'] ?? '');
+
+        if ($name === '' && $phone === '') {
+            $_SESSION['error'] = 'Please enter at least a name or contact number.';
             header('Location: ' . APP_URL . '/admin/lead/' . $id . '?edit=1');
             exit;
         }
 
         $this->lead->update($id, [
-            'name'      => $name,
-            'email'     => trim($_POST['email'] ?? '') ?: null,
-            'phone'     => trim($_POST['phone'] ?? '') ?: null,
-            'company'   => trim($_POST['company'] ?? '') ?: null,
-            'country'   => trim($_POST['country'] ?? '') ?: null,
-            'source_id' => !empty($_POST['source_id']) ? (int)$_POST['source_id'] : null,
-            'status_id' => (int)($_POST['status_id'] ?? 1),
-            'priority'  => in_array($_POST['priority'] ?? '', ['hot','warm','cold']) ? $_POST['priority'] : 'warm',
+            'name'              => $name ?: null,
+            'email'             => trim($_POST['email'] ?? '') ?: null,
+            'phone'             => $phone ?: null,
+            'company'           => trim($_POST['company'] ?? '') ?: null,
+            'country'           => trim($_POST['country'] ?? '') ?: null,
+            'address'           => trim($_POST['address'] ?? '') ?: null,
+            'project'           => trim($_POST['project'] ?? '') ?: null,
+            'investment_amount' => trim($_POST['investment_amount'] ?? '') ?: null,
+            'unit'              => trim($_POST['unit'] ?? '') ?: null,
+            'category'          => trim($_POST['category'] ?? '') ?: null,
+            'source_id'         => !empty($_POST['source_id']) ? (int)$_POST['source_id'] : null,
+            'status_id'         => (int)($_POST['status_id'] ?? 1),
+            'priority'          => in_array($_POST['priority'] ?? '', ['hot','warm','cold']) ? $_POST['priority'] : 'warm',
         ]);
         $this->lead->logActivity($id, (int)$_SESSION['user_id'], 'note', 'Lead details updated by admin.');
         $_SESSION['success'] = 'Lead updated.';
@@ -268,6 +284,19 @@ class AdminController {
         }
 
         require_once __DIR__ . '/../views/admin/agents.php';
+    }
+
+    public function agentDetail(int $id): void {
+        $month  = $_GET['month'] ?? '';
+        $detail = $this->user->getAgentDetail($id, $month);
+        if (!$detail) {
+            $_SESSION['error'] = 'Agent not found.';
+            header('Location: ' . APP_URL . '/admin/agents');
+            exit;
+        }
+        $agentLeads = $this->user->getAgentLeads($id, $month);
+        $months     = $this->user->getAvailableMonths();
+        require_once __DIR__ . '/../views/admin/agent_detail.php';
     }
 
     private function saveAgent(): void {
@@ -305,7 +334,19 @@ class AdminController {
             exit;
         }
 
-        $this->user->createAgent($name, $email, $password);
+        $this->user->createAgent([
+            'name'            => $name,
+            'email'           => $email,
+            'password'        => $password,
+            'role'            => in_array($_POST['role'] ?? '', ['agent','sales_manager']) ? $_POST['role'] : 'agent',
+            'phone'           => trim($_POST['phone'] ?? '') ?: null,
+            'address'         => trim($_POST['address'] ?? '') ?: null,
+            'cnic'            => trim($_POST['cnic'] ?? '') ?: null,
+            'guardian_phone'  => trim($_POST['guardian_phone'] ?? '') ?: null,
+            'designation'     => trim($_POST['designation'] ?? '') ?: null,
+            'base_salary'     => $_POST['base_salary'] ?? 0,
+            'commission_rate' => $_POST['commission_rate'] ?? 0,
+        ]);
         $_SESSION['success'] = 'Agent "' . htmlspecialchars($name, ENT_QUOTES) . '" created successfully.';
         header('Location: ' . APP_URL . '/admin/agents');
         exit;

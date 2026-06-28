@@ -19,7 +19,9 @@ class User {
 
     public function findById(int $id): array|false {
         $stmt = $this->db->prepare(
-            'SELECT id, name, email, role, status, created_at FROM users WHERE id = ? LIMIT 1'
+            'SELECT id, name, email, role, status, phone, address, cnic, guardian_phone,
+                    designation, base_salary, commission_rate, team_id, created_at
+             FROM users WHERE id = ? LIMIT 1'
         );
         $stmt->execute([$id]);
         return $stmt->fetch();
@@ -44,24 +46,62 @@ class User {
         )->execute([$id]);
     }
 
-    public function createAgent(string $name, string $email, string $password): int {
-        $hash = password_hash($password, PASSWORD_BCRYPT, ['cost' => 12]);
+    public function createAgent(array $data): int {
+        $hash = password_hash($data['password'], PASSWORD_BCRYPT, ['cost' => 12]);
+        $role = in_array($data['role'] ?? 'agent', ['agent','sales_manager']) ? ($data['role'] ?? 'agent') : 'agent';
         $stmt = $this->db->prepare(
-            'INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, "agent")'
+            'INSERT INTO users (name, email, password, role, phone, address, cnic, guardian_phone,
+                                designation, base_salary, commission_rate)
+             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
         );
-        $stmt->execute([$name, $email, $hash]);
+        $stmt->execute([
+            $data['name'],
+            $data['email'],
+            $hash,
+            $role,
+            $data['phone']           ?? null,
+            $data['address']         ?? null,
+            $data['cnic']            ?? null,
+            $data['guardian_phone']  ?? null,
+            $data['designation']     ?? null,
+            (float)($data['base_salary']      ?? 0),
+            (float)($data['commission_rate']  ?? 0),
+        ]);
         return (int)$this->db->lastInsertId();
+    }
+
+    public function updateAgent(int $id, array $data): void {
+        $role = in_array($data['role'] ?? 'agent', ['agent','sales_manager']) ? ($data['role'] ?? 'agent') : 'agent';
+        $stmt = $this->db->prepare(
+            'UPDATE users SET name=?, email=?, role=?, phone=?, address=?, cnic=?,
+                              guardian_phone=?, designation=?, base_salary=?, commission_rate=?
+             WHERE id=?'
+        );
+        $stmt->execute([
+            $data['name'],
+            $data['email'],
+            $role,
+            $data['phone']           ?? null,
+            $data['address']         ?? null,
+            $data['cnic']            ?? null,
+            $data['guardian_phone']  ?? null,
+            $data['designation']     ?? null,
+            (float)($data['base_salary']     ?? 0),
+            (float)($data['commission_rate'] ?? 0),
+            $id,
+        ]);
     }
 
     public function getAllAgents(): array {
         return $this->db->query(
-            'SELECT id, name, email, status, created_at FROM users WHERE role = "agent" ORDER BY name'
+            "SELECT id, name, email, role, status, designation, phone, created_at
+             FROM users WHERE role IN ('agent','sales_manager') ORDER BY name"
         )->fetchAll();
     }
 
     public function getAllAgentsWithStats(): array {
         return $this->db->query("
-            SELECT u.id, u.name, u.email, u.status, u.created_at,
+            SELECT u.id, u.name, u.email, u.role, u.status, u.designation, u.created_at,
                 COUNT(l.id)                                          AS total_leads,
                 SUM(l.assigned_to IS NOT NULL AND s.is_closed = 0)  AS active_leads,
                 SUM(s.name = 'Won')                                  AS won,
@@ -69,9 +109,85 @@ class User {
             FROM users u
             LEFT JOIN leads l ON l.assigned_to = u.id AND l.deleted_at IS NULL
             LEFT JOIN lead_statuses s ON s.id = l.status_id
-            WHERE u.role = 'agent'
+            WHERE u.role IN ('agent','sales_manager')
             GROUP BY u.id
             ORDER BY u.name
+        ")->fetchAll();
+    }
+
+    public function getAgentSummaryStats(): array {
+        $row = $this->db->query("
+            SELECT
+                COUNT(*) AS total,
+                SUM(status = 'active') AS active,
+                SUM(status = 'suspended') AS suspended
+            FROM users WHERE role IN ('agent','sales_manager')
+        ")->fetch();
+        return $row ?: ['total'=>0,'active'=>0,'suspended'=>0];
+    }
+
+    public function getAgentDetail(int $id, string $month = ''): array|false {
+        $agent = $this->findById($id);
+        if (!$agent) return false;
+
+        $params = [$id];
+        $monthWhere = '';
+        if ($month) {
+            $monthWhere = "AND DATE_FORMAT(l.created_at,'%Y-%m') = ?";
+            $params[] = $month;
+        }
+
+        $stmt = $this->db->prepare("
+            SELECT
+                COUNT(l.id) AS total_leads,
+                SUM(s.name = 'New')         AS st_new,
+                SUM(s.name = 'Contacted')   AS st_contacted,
+                SUM(s.name = 'Qualified')   AS st_qualified,
+                SUM(s.name = 'Proposal')    AS st_proposal,
+                SUM(s.name = 'Negotiation') AS st_negotiation,
+                SUM(s.name = 'Won')         AS st_won,
+                SUM(s.name = 'Lost')        AS st_lost,
+                SUM(s.name = 'Dead')        AS st_dead,
+                SUM(s.name IN ('Qualified','Proposal','Negotiation')) AS interested,
+                SUM(s.name IN ('Lost','Dead'))                         AS not_interested,
+                SUM(s.name = 'Won')                                    AS closed
+            FROM leads l
+            LEFT JOIN lead_statuses s ON s.id = l.status_id
+            WHERE l.assigned_to = ? AND l.deleted_at IS NULL $monthWhere
+        ");
+        $stmt->execute($params);
+        $stats = $stmt->fetch() ?: [];
+
+        return array_merge($agent, ['stats' => $stats]);
+    }
+
+    public function getAgentLeads(int $id, string $month = '', int $limit = 100, int $offset = 0): array {
+        $params = [$id];
+        $monthWhere = '';
+        if ($month) {
+            $monthWhere = "AND DATE_FORMAT(l.created_at,'%Y-%m') = ?";
+            $params[] = $month;
+        }
+        $stmt = $this->db->prepare("
+            SELECT l.id, COALESCE(l.name,'Unknown') AS name, l.phone, l.project, l.category,
+                   s.name AS status_name, s.color_hex AS status_color, l.created_at
+            FROM leads l
+            LEFT JOIN lead_statuses s ON s.id = l.status_id
+            WHERE l.assigned_to = ? AND l.deleted_at IS NULL $monthWhere
+            ORDER BY l.created_at DESC
+            LIMIT $limit OFFSET $offset
+        ");
+        $stmt->execute($params);
+        return $stmt->fetchAll();
+    }
+
+    public function getAvailableMonths(): array {
+        return $this->db->query("
+            SELECT DISTINCT DATE_FORMAT(created_at,'%Y-%m') AS ym,
+                   DATE_FORMAT(created_at,'%M %Y') AS label
+            FROM leads WHERE deleted_at IS NULL
+            ORDER BY ym DESC
+            LIMIT 24
         ")->fetchAll();
     }
 
