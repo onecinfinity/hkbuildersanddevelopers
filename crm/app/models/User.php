@@ -191,6 +191,67 @@ class User {
         ")->fetchAll();
     }
 
+    public function getAgentMonthlyTrend(int $id): array {
+        $stmt = $this->db->prepare("
+            SELECT DATE_FORMAT(l.created_at,'%b %Y')  AS label,
+                   DATE_FORMAT(l.created_at,'%Y-%m')  AS ym,
+                   COUNT(l.id)                         AS total,
+                   SUM(ls.name = 'Won')                AS won
+            FROM leads l
+            LEFT JOIN lead_statuses ls ON ls.id = l.status_id
+            WHERE l.assigned_to = ? AND l.deleted_at IS NULL
+              AND l.created_at >= DATE_SUB(NOW(), INTERVAL 6 MONTH)
+            GROUP BY ym, label
+            ORDER BY ym ASC
+        ");
+        $stmt->execute([$id]);
+        return $stmt->fetchAll();
+    }
+
+    public function getAgentFollowUpStats(int $id): array {
+        $stmt = $this->db->prepare("
+            SELECT
+                COUNT(*)                                         AS total,
+                SUM(is_done = 1)                                 AS done,
+                SUM(is_done = 0)                                 AS pending,
+                SUM(is_done = 0 AND scheduled_at < NOW())        AS overdue
+            FROM follow_ups
+            WHERE agent_id = ?
+        ");
+        $stmt->execute([$id]);
+        return $stmt->fetch() ?: ['total'=>0,'done'=>0,'pending'=>0,'overdue'=>0];
+    }
+
+    public function getAgentSourceBreakdown(int $id): array {
+        $stmt = $this->db->prepare("
+            SELECT COALESCE(src.name,'Unknown') AS source_name,
+                   COUNT(l.id)                  AS total,
+                   SUM(ls.name = 'Won')          AS won,
+                   SUM(ls.name = 'Lost')         AS lost
+            FROM leads l
+            LEFT JOIN lead_sources  src ON src.id = l.source_id
+            LEFT JOIN lead_statuses ls  ON ls.id  = l.status_id
+            WHERE l.assigned_to = ? AND l.deleted_at IS NULL
+            GROUP BY l.source_id, src.name
+            ORDER BY total DESC
+        ");
+        $stmt->execute([$id]);
+        return $stmt->fetchAll();
+    }
+
+    public function getAgentWonDeals(int $id): array {
+        $stmt = $this->db->prepare("
+            SELECT l.id, COALESCE(l.name,'Unknown') AS name, l.phone,
+                   l.project, l.category, l.investment_amount, l.updated_at
+            FROM leads l
+            JOIN lead_statuses ls ON ls.id = l.status_id
+            WHERE l.assigned_to = ? AND ls.name = 'Won' AND l.deleted_at IS NULL
+            ORDER BY l.updated_at DESC
+        ");
+        $stmt->execute([$id]);
+        return $stmt->fetchAll();
+    }
+
     public function setStatus(int $id, string $status): void {
         $this->db->prepare(
             'UPDATE users SET status = ? WHERE id = ?'

@@ -344,8 +344,12 @@ class AdminController {
             header('Location: ' . APP_URL . '/admin/agents');
             exit;
         }
-        $agentLeads = $this->user->getAgentLeads($id, $month);
-        $months     = $this->user->getAvailableMonths();
+        $agentLeads     = $this->user->getAgentLeads($id, $month);
+        $months         = $this->user->getAvailableMonths();
+        $monthlyTrend   = $this->user->getAgentMonthlyTrend($id);
+        $followUpStats  = $this->user->getAgentFollowUpStats($id);
+        $sourceBreakdown = $this->user->getAgentSourceBreakdown($id);
+        $wonDeals       = $this->user->getAgentWonDeals($id);
         require_once __DIR__ . '/../views/admin/agent_detail.php';
     }
 

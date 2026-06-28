@@ -1,6 +1,5 @@
 <?php
 Security::requireAdmin();
-// $detail, $agentLeads, $months injected by AdminController::agentDetail()
 $agent  = $detail;
 $stats  = $agent['stats'];
 $month  = $_GET['month'] ?? '';
@@ -16,6 +15,19 @@ $closed     = $won + $lost;
 $conversion = $closed > 0 ? round(($won / $closed) * 100) : 0;
 $initials   = strtoupper(substr($agent['name'] ?? 'A', 0, 1));
 $isSM       = $agent['role'] === 'sales_manager';
+
+// Commission estimate from won deals
+$totalBooking    = array_sum(array_column($wonDeals, 'investment_amount'));
+$estCommission   = $totalBooking * ((float)$agent['commission_rate'] / 100);
+
+// Follow-up completion rate
+$fuTotal = (int)$followUpStats['total'];
+$fuRate  = $fuTotal > 0 ? round(((int)$followUpStats['done'] / $fuTotal) * 100) : 0;
+
+// Chart data
+$chartLabels = json_encode(array_column($monthlyTrend, 'label'));
+$chartTotal  = json_encode(array_map(fn($r) => (int)$r['total'], $monthlyTrend));
+$chartWon    = json_encode(array_map(fn($r) => (int)$r['won'],   $monthlyTrend));
 ?>
 
 <div class="page-header">
@@ -37,14 +49,12 @@ $isSM       = $agent['role'] === 'sales_manager';
 </div>
 
 <!-- Month Filter -->
-<form method="GET" action="<?= APP_URL ?>/admin/agent/<?= (int)$agent['id'] ?>" style="margin-bottom:20px;display:flex;align-items:center;gap:12px">
+<form method="GET" action="<?= APP_URL ?>/admin/agent/<?= (int)$agent['id'] ?>" style="margin-bottom:20px;display:flex;align-items:center;gap:12px;flex-wrap:wrap">
     <label style="font-size:13px;font-weight:500;color:var(--text-muted)">Filter by month:</label>
     <select name="month" onchange="this.form.submit()" style="font-size:13px;padding:7px 12px;border:1px solid var(--border);border-radius:8px;background:#fff">
         <option value="">All Time</option>
         <?php foreach ($months as $m): ?>
-            <option value="<?= Security::e($m['ym']) ?>" <?= $month === $m['ym'] ? 'selected' : '' ?>>
-                <?= Security::e($m['label']) ?>
-            </option>
+            <option value="<?= Security::e($m['ym']) ?>" <?= $month === $m['ym'] ? 'selected' : '' ?>><?= Security::e($m['label']) ?></option>
         <?php endforeach; ?>
     </select>
     <?php if ($month): ?>
@@ -52,72 +62,102 @@ $isSM       = $agent['role'] === 'sales_manager';
     <?php endif; ?>
 </form>
 
-<div style="display:grid;grid-template-columns:320px 1fr;gap:24px;align-items:start">
+<div style="display:grid;grid-template-columns:300px 1fr;gap:24px;align-items:start">
 
-    <!-- Profile Card -->
-    <div class="card">
-        <div style="text-align:center;padding:20px 0 14px">
-            <div class="sidebar-avatar" style="width:70px;height:70px;font-size:28px;margin:0 auto 12px;<?= $isSM ? 'background:var(--gold);color:var(--navy)' : '' ?>">
-                <?= Security::e($initials) ?>
-            </div>
-            <div style="font-size:18px;font-weight:600;color:var(--navy)"><?= Security::e($agent['name'] ?? '—') ?></div>
-            <div style="margin-top:6px">
-                <?php if ($isSM): ?>
-                    <span class="status-pill" style="background:#fff8e8;color:#92600a;border:1px solid #f0e2bd">Sales Manager</span>
-                <?php else: ?>
-                    <span class="status-pill" style="background:#f0f4ff;color:#3b5bdb;border:1px solid #c5d0fa">Agent</span>
-                <?php endif; ?>
-                <?php if ($agent['status'] === 'suspended'): ?>
-                    <span class="status-pill" style="background:#fef2f2;color:#dc2626;border:1px solid #fecaca;margin-left:4px">Suspended</span>
-                <?php endif; ?>
-            </div>
-            <?php if ($agent['designation']): ?>
-                <div style="font-size:13px;color:var(--text-muted);margin-top:8px"><?= Security::e($agent['designation']) ?></div>
-            <?php endif; ?>
-        </div>
-        <hr style="border:none;border-top:1px solid var(--border);margin:0 0 16px">
-        <div style="display:flex;flex-direction:column;gap:12px;padding:0 4px 8px">
-            <?php $rows = [
-                ['Email',    $agent['email']          ?? null],
-                ['Phone',    $agent['phone']          ?? null],
-                ['CNIC',     $agent['cnic']           ?? null],
-                ['Guardian', $agent['guardian_phone'] ?? null],
-                ['Address',  $agent['address']        ?? null],
-            ]; ?>
-            <?php foreach ($rows as [$label, $value]): ?>
-                <?php if ($value): ?>
-                <div style="display:flex;gap:10px;font-size:13px">
-                    <span style="color:var(--text-muted);width:70px;flex-shrink:0"><?= $label ?></span>
-                    <span style="color:var(--navy);font-weight:500;word-break:break-word"><?= Security::e($value) ?></span>
+    <!-- LEFT: Profile Card -->
+    <div style="display:flex;flex-direction:column;gap:18px">
+        <div class="card">
+            <div style="text-align:center;padding:20px 0 14px">
+                <div class="sidebar-avatar" style="width:70px;height:70px;font-size:28px;margin:0 auto 12px;<?= $isSM ? 'background:var(--gold);color:var(--navy)' : '' ?>">
+                    <?= Security::e($initials) ?>
                 </div>
+                <div style="font-size:18px;font-weight:600;color:var(--navy)"><?= Security::e($agent['name'] ?? '—') ?></div>
+                <div style="margin-top:6px">
+                    <?php if ($isSM): ?>
+                        <span class="status-pill" style="background:#fff8e8;color:#92600a;border:1px solid #f0e2bd">Sales Manager</span>
+                    <?php else: ?>
+                        <span class="status-pill" style="background:#f0f4ff;color:#3b5bdb;border:1px solid #c5d0fa">Agent</span>
+                    <?php endif; ?>
+                    <?php if ($agent['status'] === 'suspended'): ?>
+                        <span class="status-pill" style="background:#fef2f2;color:#dc2626;border:1px solid #fecaca;margin-left:4px">Suspended</span>
+                    <?php endif; ?>
+                </div>
+                <?php if ($agent['designation']): ?>
+                    <div style="font-size:13px;color:var(--text-muted);margin-top:6px"><?= Security::e($agent['designation']) ?></div>
                 <?php endif; ?>
-            <?php endforeach; ?>
-            <div style="display:flex;gap:10px;font-size:13px">
-                <span style="color:var(--text-muted);width:70px;flex-shrink:0">Joined</span>
-                <span style="color:var(--navy);font-weight:500"><?= date('d M Y', strtotime($agent['created_at'])) ?></span>
             </div>
-            <div style="display:flex;gap:10px;font-size:13px">
-                <span style="color:var(--text-muted);width:70px;flex-shrink:0">Salary</span>
-                <span style="color:var(--navy);font-weight:500">Rs. <?= number_format((float)$agent['base_salary']) ?>/mo</span>
+            <hr style="border:none;border-top:1px solid var(--border);margin:0 0 14px">
+            <div style="display:flex;flex-direction:column;gap:10px;padding:0 4px 10px">
+                <?php foreach ([
+                    ['Email',    $agent['email']          ?? null],
+                    ['Phone',    $agent['phone']          ?? null],
+                    ['CNIC',     $agent['cnic']           ?? null],
+                    ['Guardian', $agent['guardian_phone'] ?? null],
+                    ['Address',  $agent['address']        ?? null],
+                ] as [$label, $value]): ?>
+                    <?php if ($value): ?>
+                    <div style="display:flex;gap:10px;font-size:13px">
+                        <span style="color:var(--text-muted);width:70px;flex-shrink:0"><?= $label ?></span>
+                        <span style="color:var(--navy);font-weight:500;word-break:break-word"><?= Security::e($value) ?></span>
+                    </div>
+                    <?php endif; ?>
+                <?php endforeach; ?>
+                <div style="display:flex;gap:10px;font-size:13px">
+                    <span style="color:var(--text-muted);width:70px;flex-shrink:0">Joined</span>
+                    <span style="color:var(--navy);font-weight:500"><?= date('d M Y', strtotime($agent['created_at'])) ?></span>
+                </div>
+                <div style="display:flex;gap:10px;font-size:13px">
+                    <span style="color:var(--text-muted);width:70px;flex-shrink:0">Salary</span>
+                    <span style="color:var(--navy);font-weight:500">Rs. <?= number_format((float)$agent['base_salary']) ?>/mo</span>
+                </div>
+                <div style="display:flex;gap:10px;font-size:13px">
+                    <span style="color:var(--text-muted);width:70px;flex-shrink:0">Commission</span>
+                    <span style="color:var(--navy);font-weight:500"><?= number_format((float)$agent['commission_rate'], 1) ?>% of booking</span>
+                </div>
             </div>
-            <div style="display:flex;gap:10px;font-size:13px">
-                <span style="color:var(--text-muted);width:70px;flex-shrink:0">Commission</span>
-                <span style="color:var(--navy);font-weight:500"><?= number_format((float)$agent['commission_rate'], 1) ?>% of booking</span>
+        </div>
+
+        <!-- Follow-up Stats Card -->
+        <div class="card">
+            <div style="font-size:14px;font-weight:600;color:var(--navy);margin-bottom:14px">Follow-up Discipline</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px">
+                <?php foreach ([
+                    ['Total',   $followUpStats['total'],   'var(--navy)'],
+                    ['Done',    $followUpStats['done'],    '#10b981'],
+                    ['Pending', $followUpStats['pending'], '#f59e0b'],
+                    ['Overdue', $followUpStats['overdue'], '#ef4444'],
+                ] as [$label, $val, $color]): ?>
+                <div style="background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:12px;text-align:center">
+                    <div style="font-size:22px;font-weight:700;color:<?= $color ?>"><?= (int)$val ?></div>
+                    <div style="font-size:11px;color:var(--text-muted);margin-top:2px"><?= $label ?></div>
+                </div>
+                <?php endforeach; ?>
             </div>
+            <!-- Completion bar -->
+            <div style="font-size:12px;color:var(--text-muted);margin-bottom:6px">Completion rate</div>
+            <div style="background:#f0f0f0;border-radius:20px;height:8px;overflow:hidden">
+                <div style="height:100%;width:<?= $fuRate ?>%;background:linear-gradient(90deg,#10b981,#34d399);border-radius:20px;transition:width .4s"></div>
+            </div>
+            <div style="font-size:13px;font-weight:600;color:#10b981;margin-top:6px"><?= $fuRate ?>% completed</div>
+            <?php if ((int)$followUpStats['overdue'] > 0): ?>
+            <div style="margin-top:10px;background:#fef2f2;border:1px solid #fecaca;border-radius:8px;padding:8px 12px;font-size:12px;color:#dc2626">
+                ⚠ <?= (int)$followUpStats['overdue'] ?> overdue follow-up<?= $followUpStats['overdue'] > 1 ? 's' : '' ?> need attention
+            </div>
+            <?php endif; ?>
         </div>
     </div>
 
-    <!-- Stats + Leads -->
+    <!-- RIGHT: Analytics -->
     <div style="display:flex;flex-direction:column;gap:20px">
 
-        <!-- Summary Stats -->
+        <!-- Summary Stats Row -->
         <div class="stats-grid">
             <div class="stat-card">
                 <div class="stat-label">Total Leads</div>
                 <div class="stat-value"><?= $total ?></div>
             </div>
             <div class="stat-card">
-                <div class="stat-label">Won / Closed</div>
+                <div class="stat-label">Won</div>
                 <div class="stat-value" style="color:#10b981"><?= $won ?></div>
             </div>
             <div class="stat-card">
@@ -132,16 +172,27 @@ $isSM       = $agent['role'] === 'sales_manager';
                 <div class="stat-label">Conversion</div>
                 <div class="stat-value"><?= $conversion ?>%</div>
             </div>
+            <div class="stat-card">
+                <div class="stat-label">Est. Commission</div>
+                <div class="stat-value" style="font-size:16px;color:#10b981">Rs. <?= number_format($estCommission) ?></div>
+            </div>
         </div>
+
+        <!-- Monthly Trend Chart -->
+        <?php if (!empty($monthlyTrend)): ?>
+        <div class="card">
+            <div style="font-size:14px;font-weight:600;color:var(--navy);margin-bottom:16px">
+                Monthly Trend — Last 6 Months
+            </div>
+            <canvas id="trendChart" height="90"></canvas>
+        </div>
+        <?php endif; ?>
 
         <!-- Status Breakdown -->
         <div class="card">
-            <div class="card-header" style="font-size:14px;font-weight:600;color:var(--navy);padding:14px 18px 12px;border-bottom:1px solid var(--border)">
-                Status Breakdown
-            </div>
-            <div style="padding:14px 18px;display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px">
-                <?php
-                $statusRows = [
+            <div style="font-size:14px;font-weight:600;color:var(--navy);margin-bottom:14px">Status Breakdown</div>
+            <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:10px">
+                <?php foreach ([
                     ['New',         $stats['st_new'],         '#3B82F6'],
                     ['Contacted',   $stats['st_contacted'],   '#8B5CF6'],
                     ['Qualified',   $stats['st_qualified'],   '#F59E0B'],
@@ -150,33 +201,128 @@ $isSM       = $agent['role'] === 'sales_manager';
                     ['Won',         $stats['st_won'],         '#10B981'],
                     ['Lost',        $stats['st_lost'],        '#EF4444'],
                     ['Dead',        $stats['st_dead'],        '#6B7280'],
-                ];
-                foreach ($statusRows as [$label, $count, $color]):
-                ?>
+                ] as [$label, $count, $color]): ?>
                 <div style="background:#f9fafb;border:1px solid var(--border);border-radius:10px;padding:12px 14px;border-left:3px solid <?= $color ?>">
                     <div style="font-size:22px;font-weight:700;color:<?= $color ?>"><?= (int)$count ?></div>
-                    <div style="font-size:12px;color:var(--text-muted);margin-top:2px"><?= $label ?></div>
+                    <div style="font-size:11px;color:var(--text-muted);margin-top:2px"><?= $label ?></div>
                 </div>
                 <?php endforeach; ?>
             </div>
         </div>
 
-        <!-- Leads Table -->
+        <!-- Lead Source Breakdown -->
+        <?php if (!empty($sourceBreakdown)): ?>
         <div class="card" style="padding:0">
             <div style="padding:14px 18px 12px;border-bottom:1px solid var(--border);font-size:14px;font-weight:600;color:var(--navy)">
-                Leads<?= $month ? ' — ' . Security::e($month) : '' ?> (<?= count($agentLeads) ?>)
+                Lead Source Breakdown
             </div>
             <div class="table-wrapper" style="margin:0">
                 <table class="data-table">
                     <thead>
                         <tr>
-                            <th>Name / Phone</th>
+                            <th>Source</th>
+                            <th>Total Leads</th>
+                            <th>Won</th>
+                            <th>Lost</th>
+                            <th>Conversion</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    <?php foreach ($sourceBreakdown as $src):
+                        $sWon    = (int)$src['won'];
+                        $sLost   = (int)$src['lost'];
+                        $sClosed = $sWon + $sLost;
+                        $sConv   = $sClosed > 0 ? round(($sWon / $sClosed) * 100) : 0;
+                    ?>
+                    <tr>
+                        <td style="font-weight:500;color:var(--navy)"><?= Security::e($src['source_name']) ?></td>
+                        <td style="font-weight:600"><?= (int)$src['total'] ?></td>
+                        <td style="color:#10b981;font-weight:500"><?= $sWon ?></td>
+                        <td style="color:#ef4444;font-weight:500"><?= $sLost ?></td>
+                        <td>
+                            <?php if ($sClosed > 0): ?>
+                            <div style="display:flex;align-items:center;gap:8px">
+                                <div class="conv-bar" style="width:60px"><div class="conv-fill" style="width:<?= $sConv ?>%"></div></div>
+                                <span style="font-size:12px;font-weight:600;color:var(--navy)"><?= $sConv ?>%</span>
+                            </div>
+                            <?php else: ?>
+                                <span style="color:var(--text-muted);font-size:12px">—</span>
+                            <?php endif; ?>
+                        </td>
+                    </tr>
+                    <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <?php endif; ?>
+
+        <!-- Won Deals -->
+        <div class="card" style="padding:0">
+            <div style="padding:14px 18px 12px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center">
+                <span style="font-size:14px;font-weight:600;color:var(--navy)">Won Deals (<?= count($wonDeals) ?>)</span>
+                <?php if ($totalBooking > 0): ?>
+                <span style="font-size:13px;color:var(--text-muted)">
+                    Total Value: <b style="color:var(--navy)">Rs. <?= number_format($totalBooking) ?></b>
+                    &nbsp;·&nbsp; Est. Commission: <b style="color:#10b981">Rs. <?= number_format($estCommission) ?></b>
+                </span>
+                <?php endif; ?>
+            </div>
+            <div class="table-wrapper" style="margin:0">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Client</th>
                             <th>Project</th>
                             <th>Category</th>
-                            <th>Status</th>
-                            <th>Date</th>
+                            <th>Investment</th>
+                            <th>Est. Commission</th>
+                            <th>Closed On</th>
                             <th></th>
                         </tr>
+                    </thead>
+                    <tbody>
+                    <?php foreach ($wonDeals as $deal):
+                        $dealComm = $deal['investment_amount']
+                            ? $deal['investment_amount'] * ((float)$agent['commission_rate'] / 100)
+                            : 0;
+                    ?>
+                    <tr>
+                        <td>
+                            <div style="font-weight:500;color:var(--navy)"><?= Security::e($deal['name']) ?></div>
+                            <?php if ($deal['phone']): ?>
+                                <div style="font-size:11px;color:var(--text-muted)"><?= Security::e($deal['phone']) ?></div>
+                            <?php endif; ?>
+                        </td>
+                        <td style="font-size:13px"><?= $deal['project'] ? Security::e($deal['project']) : '—' ?></td>
+                        <td style="font-size:13px"><?= $deal['category'] ? Security::e($deal['category']) : '—' ?></td>
+                        <td style="font-weight:600;color:var(--navy)">
+                            <?= $deal['investment_amount'] ? 'Rs. ' . number_format((float)$deal['investment_amount']) : '—' ?>
+                        </td>
+                        <td style="color:#10b981;font-weight:500">
+                            <?= $dealComm > 0 ? 'Rs. ' . number_format($dealComm) : '—' ?>
+                        </td>
+                        <td style="font-size:12px;color:var(--text-muted)"><?= date('d M Y', strtotime($deal['updated_at'])) ?></td>
+                        <td><a href="<?= APP_URL ?>/admin/lead/<?= (int)$deal['id'] ?>" class="btn btn-secondary btn-sm">View</a></td>
+                    </tr>
+                    <?php endforeach; ?>
+                    <?php if (empty($wonDeals)): ?>
+                        <tr><td colspan="7" class="empty-row">No won deals yet.</td></tr>
+                    <?php endif; ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- All Leads Table -->
+        <div class="card" style="padding:0">
+            <div style="padding:14px 18px 12px;border-bottom:1px solid var(--border);font-size:14px;font-weight:600;color:var(--navy)">
+                All Leads<?= $month ? ' — ' . Security::e($month) : '' ?> (<?= count($agentLeads) ?>)
+            </div>
+            <div class="table-wrapper" style="margin:0">
+                <table class="data-table">
+                    <thead>
+                        <tr><th>Name / Phone</th><th>Project</th><th>Category</th><th>Status</th><th>Date</th><th></th></tr>
                     </thead>
                     <tbody>
                     <?php foreach ($agentLeads as $row): ?>
@@ -195,9 +341,7 @@ $isSM       = $agent['role'] === 'sales_manager';
                                 </span>
                             </td>
                             <td style="font-size:12px;color:var(--text-muted)"><?= date('d M Y', strtotime($row['created_at'])) ?></td>
-                            <td>
-                                <a href="<?= APP_URL ?>/admin/lead/<?= (int)$row['id'] ?>" class="btn btn-secondary btn-sm">View</a>
-                            </td>
+                            <td><a href="<?= APP_URL ?>/admin/lead/<?= (int)$row['id'] ?>" class="btn btn-secondary btn-sm">View</a></td>
                         </tr>
                     <?php endforeach; ?>
                     <?php if (empty($agentLeads)): ?>
@@ -211,12 +355,58 @@ $isSM       = $agent['role'] === 'sales_manager';
     </div><!-- /right col -->
 </div>
 
+<!-- Chart.js -->
+<?php if (!empty($monthlyTrend)): ?>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script>
+(function(){
+    const ctx = document.getElementById('trendChart');
+    if (!ctx) return;
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: <?= $chartLabels ?>,
+            datasets: [
+                {
+                    label: 'Leads',
+                    data: <?= $chartTotal ?>,
+                    backgroundColor: 'rgba(59,130,246,0.15)',
+                    borderColor: '#3b82f6',
+                    borderWidth: 2,
+                    borderRadius: 6,
+                    order: 2
+                },
+                {
+                    label: 'Won',
+                    data: <?= $chartWon ?>,
+                    backgroundColor: 'rgba(16,185,129,0.85)',
+                    borderColor: '#10b981',
+                    borderWidth: 0,
+                    borderRadius: 6,
+                    order: 1
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { position: 'bottom', labels: { font: { size: 12 } } },
+                tooltip: { mode: 'index' }
+            },
+            scales: {
+                y: { beginAtZero: true, ticks: { stepSize: 1 }, grid: { color: '#f0f0f0' } },
+                x: { grid: { display: false } }
+            }
+        }
+    });
+})();
+</script>
+<?php endif; ?>
+
 <style>
 @media print {
-    .sidebar, .page-header-actions, .breadcrumb, form[method="GET"], .btn, thead { }
-    .sidebar, .hamburger-btn, .sidebar-overlay { display:none !important }
+    .sidebar, .hamburger-btn, .sidebar-overlay, .page-header-actions, form[method="GET"] { display:none !important }
     .main-content { margin:0 !important; padding:20px !important }
-    .page-header-actions { display:none !important }
     body::before {
         content: "HK Builders & Developers — Agent Report — <?= date('d M Y') ?>";
         display:block; font-size:13px; color:#666; margin-bottom:20px;
