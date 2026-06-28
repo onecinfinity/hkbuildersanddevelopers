@@ -66,8 +66,8 @@ $chartWon    = json_encode(array_map(fn($r) => (int)$r['won'],   $monthlyTrend))
 
     <!-- LEFT: Profile Card -->
     <div style="display:flex;flex-direction:column;gap:18px">
-        <div class="card">
-            <div style="text-align:center;padding:20px 0 14px">
+        <div class="card" style="padding:20px">
+            <div style="text-align:center;padding:0 0 14px">
                 <div class="sidebar-avatar" style="width:70px;height:70px;font-size:28px;margin:0 auto 12px;<?= $isSM ? 'background:var(--gold);color:var(--navy)' : '' ?>">
                     <?= Security::e($initials) ?>
                 </div>
@@ -87,7 +87,7 @@ $chartWon    = json_encode(array_map(fn($r) => (int)$r['won'],   $monthlyTrend))
                 <?php endif; ?>
             </div>
             <hr style="border:none;border-top:1px solid var(--border);margin:0 0 14px">
-            <div style="display:flex;flex-direction:column;gap:10px;padding:0 4px 10px">
+            <div style="display:flex;flex-direction:column;gap:10px;padding:0 0 4px">
                 <?php foreach ([
                     ['Email',    $agent['email']          ?? null],
                     ['Phone',    $agent['phone']          ?? null],
@@ -118,7 +118,7 @@ $chartWon    = json_encode(array_map(fn($r) => (int)$r['won'],   $monthlyTrend))
         </div>
 
         <!-- Follow-up Stats Card -->
-        <div class="card">
+        <div class="card" style="padding:20px">
             <div style="font-size:14px;font-weight:600;color:var(--navy);margin-bottom:14px">Follow-up Discipline</div>
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px">
                 <?php foreach ([
@@ -180,7 +180,7 @@ $chartWon    = json_encode(array_map(fn($r) => (int)$r['won'],   $monthlyTrend))
 
         <!-- Monthly Trend Chart -->
         <?php if (!empty($monthlyTrend)): ?>
-        <div class="card">
+        <div class="card" style="padding:20px">
             <div style="font-size:14px;font-weight:600;color:var(--navy);margin-bottom:16px">
                 Monthly Trend — Last 6 Months
             </div>
@@ -189,7 +189,7 @@ $chartWon    = json_encode(array_map(fn($r) => (int)$r['won'],   $monthlyTrend))
         <?php endif; ?>
 
         <!-- Status Breakdown -->
-        <div class="card">
+        <div class="card" style="padding:20px">
             <div style="font-size:14px;font-weight:600;color:var(--navy);margin-bottom:14px">Status Breakdown</div>
             <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:10px">
                 <?php foreach ([
