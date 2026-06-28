@@ -14,6 +14,56 @@ class AdminController {
         $this->user = new User();
     }
 
+    // ---- Teams --------------------------------------------------
+
+    public function teams(): void {
+        require_once APP_ROOT . '/app/models/Team.php';
+        $team = new Team();
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            if (!Security::verifyCsrfToken($_POST['csrf_token'] ?? '')) {
+                $_SESSION['error'] = 'Invalid request.';
+                header('Location: ' . APP_URL . '/admin/teams');
+                exit;
+            }
+
+            $action = $_POST['action'] ?? '';
+
+            if ($action === 'create') {
+                $name = trim($_POST['name'] ?? '');
+                if ($name === '') { $_SESSION['error'] = 'Team name required.'; header('Location: ' . APP_URL . '/admin/teams'); exit; }
+                $team->create($name, !empty($_POST['manager_id']) ? (int)$_POST['manager_id'] : null);
+                $_SESSION['success'] = 'Team "' . htmlspecialchars($name, ENT_QUOTES) . '" created.';
+
+            } elseif ($action === 'edit') {
+                $id   = (int)($_POST['team_id'] ?? 0);
+                $name = trim($_POST['name'] ?? '');
+                if ($id && $name !== '') {
+                    $team->update($id, $name, !empty($_POST['manager_id']) ? (int)$_POST['manager_id'] : null);
+                    $_SESSION['success'] = 'Team updated.';
+                }
+
+            } elseif ($action === 'delete') {
+                $id = (int)($_POST['team_id'] ?? 0);
+                if ($id) { $team->delete($id); $_SESSION['success'] = 'Team deleted.'; }
+
+            } elseif ($action === 'assign_agent') {
+                $agentId = (int)($_POST['agent_id'] ?? 0);
+                $teamId  = !empty($_POST['team_id']) ? (int)$_POST['team_id'] : null;
+                if ($agentId) { $team->assignAgent($agentId, $teamId); $_SESSION['success'] = 'Agent assigned.'; }
+
+            } elseif ($action === 'remove_agent') {
+                $agentId = (int)($_POST['agent_id'] ?? 0);
+                if ($agentId) { $team->assignAgent($agentId, null); $_SESSION['success'] = 'Agent removed from team.'; }
+            }
+
+            header('Location: ' . APP_URL . '/admin/teams');
+            exit;
+        }
+
+        require_once __DIR__ . '/../views/admin/teams.php';
+    }
+
     public function dashboard(): void {
         require_once __DIR__ . '/../views/admin/dashboard.php';
     }

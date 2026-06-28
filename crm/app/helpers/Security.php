@@ -66,7 +66,7 @@ class Security {
 
     public static function requireAgent(): void {
         self::requireLogin();
-        if ($_SESSION['user_role'] !== 'agent') {
+        if (!in_array($_SESSION['user_role'] ?? '', ['agent', 'sales_manager'])) {
             header('Location: ' . APP_URL . '/admin/dashboard');
             exit;
         }

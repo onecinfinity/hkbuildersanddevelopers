@@ -1,14 +1,29 @@
 <?php
 Security::requireLogin();
 require_once __DIR__ . '/../../models/Lead.php';
+require_once __DIR__ . '/../../models/Team.php';
 
 $leadModel  = new Lead();
 $agentId    = (int)$_SESSION['user_id'];
+$isSM       = ($_SESSION['user_role'] ?? '') === 'sales_manager';
 $stats      = $leadModel->getAgentStats($agentId);
 $myLeads    = $leadModel->getAll(['agent_id' => $agentId, 'limit' => 8]);
 $poolCount  = $leadModel->countUnclaimed();
 $followUps  = $leadModel->getAgentFollowUps($agentId);
 $overdueCount = count(array_filter($followUps, fn($f) => strtotime($f['scheduled_at']) < time()));
+
+// Sales manager — load team data
+$myTeam      = null;
+$teamMembers = [];
+$teamStats   = [];
+if ($isSM) {
+    $teamModel   = new Team();
+    $myTeam      = $teamModel->getManagerTeam($agentId);
+    if ($myTeam) {
+        $teamMembers = $teamModel->getMembers((int)$myTeam['id']);
+        $teamStats   = $teamModel->getTeamStats((int)$myTeam['id']);
+    }
+}
 
 $pageTitle  = 'My Dashboard';
 $activePage = 'dashboard';
@@ -132,6 +147,71 @@ ob_start();
         <?php endforeach; ?>
         </tbody>
     </table>
+</div>
+<?php endif; ?>
+
+<?php if ($isSM && $myTeam): ?>
+<div class="card" style="margin-top:24px;padding:0">
+    <div style="padding:16px 20px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center">
+        <div style="font-size:15px;font-weight:600;color:var(--navy)">
+            My Team — <?= Security::e($myTeam['name']) ?>
+        </div>
+        <div style="display:flex;gap:16px;font-size:13px">
+            <span style="color:#10b981;font-weight:600"><?= (int)($teamStats['st_won'] ?? 0) ?> Won</span>
+            <span style="color:#3b82f6;font-weight:600"><?= (int)($teamStats['total_leads'] ?? 0) ?> Leads</span>
+        </div>
+    </div>
+    <?php if (empty($teamMembers)): ?>
+        <div style="padding:24px;text-align:center;color:var(--text-muted);font-size:13px">No agents assigned to your team yet.</div>
+    <?php else: ?>
+    <div class="table-wrapper" style="margin:0">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Agent</th>
+                    <th>Total Leads</th>
+                    <th>Active</th>
+                    <th>Won</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+            <?php foreach ($teamMembers as $m):
+                $mWon    = (int)$m['won'];
+                $mLost   = (int)$m['lost'];
+                $mClosed = $mWon + $mLost;
+                $mConv   = $mClosed > 0 ? round(($mWon / $mClosed) * 100) : 0;
+            ?>
+            <tr>
+                <td>
+                    <div style="display:flex;align-items:center;gap:9px">
+                        <div class="sidebar-avatar" style="width:30px;height:30px;font-size:12px"><?= strtoupper(substr($m['name'],0,1)) ?></div>
+                        <div>
+                            <div style="font-weight:500;color:var(--navy);font-size:13px"><?= Security::e($m['name']) ?></div>
+                            <div style="font-size:11px;color:var(--text-muted)"><?= $m['designation'] ? Security::e($m['designation']) : '' ?></div>
+                        </div>
+                    </div>
+                </td>
+                <td style="font-weight:600;color:var(--navy)"><?= (int)$m['total_leads'] ?></td>
+                <td style="color:#f59e0b;font-weight:500"><?= (int)$m['active'] ?></td>
+                <td style="color:#10b981;font-weight:500"><?= $mWon ?> <?php if ($mClosed): ?><span style="color:var(--text-muted);font-weight:400;font-size:11px">(<?= $mConv ?>%)</span><?php endif; ?></td>
+                <td>
+                    <?php if ($m['status'] === 'active'): ?>
+                        <span class="status-pill" style="background:#f0fdf4;color:#16a34a;border:1px solid #bbf7d0">Active</span>
+                    <?php else: ?>
+                        <span class="status-pill" style="background:#fef2f2;color:#dc2626;border:1px solid #fecaca">Suspended</span>
+                    <?php endif; ?>
+                </td>
+            </tr>
+            <?php endforeach; ?>
+            </tbody>
+        </table>
+    </div>
+    <?php endif; ?>
+</div>
+<?php elseif ($isSM && !$myTeam): ?>
+<div class="card" style="margin-top:24px;padding:24px;text-align:center;color:var(--text-muted)">
+    You haven't been assigned to a team yet. Contact admin to set up your team.
 </div>
 <?php endif; ?>
 
