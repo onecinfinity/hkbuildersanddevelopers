@@ -78,13 +78,13 @@ $isSM       = $agent['role'] === 'sales_manager';
         <hr style="border:none;border-top:1px solid var(--border);margin:0 0 16px">
         <div style="display:flex;flex-direction:column;gap:12px;padding:0 4px 8px">
             <?php $rows = [
-                ['Email',    $agent['email']         ?? null, false],
-                ['Phone',    $agent['phone']         ?? null, false],
-                ['CNIC',     $agent['cnic']          ?? null, false],
-                ['Guardian', $agent['guardian_phone'] ?? null, false],
-                ['Address',  $agent['address']       ?? null, false],
+                ['Email',    $agent['email']          ?? null],
+                ['Phone',    $agent['phone']          ?? null],
+                ['CNIC',     $agent['cnic']           ?? null],
+                ['Guardian', $agent['guardian_phone'] ?? null],
+                ['Address',  $agent['address']        ?? null],
             ]; ?>
-            <?php foreach ($rows as [$label, $value, $]): ?>
+            <?php foreach ($rows as [$label, $value]): ?>
                 <?php if ($value): ?>
                 <div style="display:flex;gap:10px;font-size:13px">
                     <span style="color:var(--text-muted);width:70px;flex-shrink:0"><?= $label ?></span>
