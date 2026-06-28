@@ -76,11 +76,31 @@ class AgentController {
                 $statusId = (int)($_POST['status_id'] ?? 0);
                 $note     = trim($_POST['note'] ?? '');
                 if (!$statusId) break;
+
+                // Check if new status is Won
+                $statuses   = $this->lead->getStatuses();
+                $statusName = '';
+                foreach ($statuses as $s) {
+                    if ((int)$s['id'] === $statusId) { $statusName = $s['name']; break; }
+                }
+
                 $this->lead->updateStatus($id, $statusId);
                 $this->lead->logActivity($id, $agentId, 'status_change',
                     $note ?: 'Status updated by agent.',
                     ['from_status' => (int)$lead['status_id'], 'to_status' => $statusId]
                 );
+
+                // Won → redirect to convert-client page
+                if ($statusName === 'Won') {
+                    require_once APP_ROOT . '/app/models/Client.php';
+                    $clientModel = new Client();
+                    $existing    = $clientModel->findByLeadId($id);
+                    if (!$existing) {
+                        $_SESSION['success'] = 'Great work! Deal marked as Won. Please fill in the client details below.';
+                        header('Location: ' . APP_URL . '/agent/lead/' . $id . '/convert');
+                        exit;
+                    }
+                }
                 $_SESSION['success'] = 'Status updated.';
                 break;
 
@@ -110,6 +130,63 @@ class AgentController {
 
         header('Location: ' . $back);
         exit;
+    }
+
+    public function convertClient(int $id): void {
+        Security::requireLogin();
+        require_once APP_ROOT . '/app/models/Client.php';
+
+        $lead = $this->lead->findById($id);
+        if (!$lead || (int)$lead['assigned_to'] !== (int)$_SESSION['user_id']) {
+            $_SESSION['error'] = 'Access denied.';
+            header('Location: ' . APP_URL . '/agent/leads');
+            exit;
+        }
+
+        // Already converted — go back to lead
+        $clientModel = new Client();
+        $existing    = $clientModel->findByLeadId($id);
+        if ($existing) {
+            $_SESSION['success'] = 'Client record already exists.';
+            header('Location: ' . APP_URL . '/agent/lead/' . $id);
+            exit;
+        }
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            if (!Security::verifyCsrfToken($_POST['csrf_token'] ?? '')) {
+                $_SESSION['error'] = 'Invalid request.';
+                header('Location: ' . APP_URL . '/agent/lead/' . $id . '/convert');
+                exit;
+            }
+
+            $clientModel->create([
+                'lead_id'        => $id,
+                'name'           => trim($_POST['name']           ?? '') ?: ($lead['name'] ?? null),
+                'address'        => trim($_POST['address']        ?? '') ?: null,
+                'contact_no'     => trim($_POST['contact_no']     ?? '') ?: ($lead['phone'] ?? null),
+                'project'        => trim($_POST['project']        ?? '') ?: null,
+                'block'          => trim($_POST['block']          ?? '') ?: null,
+                'unit_no'        => trim($_POST['unit_no']        ?? '') ?: null,
+                'category'       => trim($_POST['category']       ?? '') ?: null,
+                'booking_amount' => trim($_POST['booking_amount'] ?? '') ?: null,
+                'agent_id'       => (int)$_SESSION['user_id'],
+                'source_id'      => $lead['source_id'] ?? null,
+                'file_status'    => in_array($_POST['file_status'] ?? '', ['mature','immature']) ? $_POST['file_status'] : 'mature',
+                'flag_reason'    => trim($_POST['flag_reason']    ?? '') ?: null,
+            ], (int)$_SESSION['user_id']);
+
+            $this->lead->logActivity($id, (int)$_SESSION['user_id'], 'note',
+                'Client record created. Booking amount: ' .
+                (!empty($_POST['booking_amount']) ? 'Rs. ' . number_format((float)$_POST['booking_amount']) : 'not specified') . '.'
+            );
+
+            $_SESSION['success'] = 'Client record saved successfully!';
+            header('Location: ' . APP_URL . '/agent/lead/' . $id);
+            exit;
+        }
+
+        $sources = $this->lead->getSources();
+        require_once __DIR__ . '/../views/agent/convert_client.php';
     }
 
     public function claimLead(int $id): void {

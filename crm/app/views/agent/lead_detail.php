@@ -1,12 +1,19 @@
 <?php
 Security::requireLogin();
 require_once __DIR__ . '/../../models/Lead.php';
+require_once __DIR__ . '/../../models/Client.php';
 
 $leadModel   = new Lead();
+$clientModel = new Client();
 $row         = $leadModel->findById($id);
 $activities  = $leadModel->getActivities($id);
 $statuses    = $leadModel->getStatuses();
 $followUps   = $leadModel->getAgentFollowUps((int)$_SESSION['user_id']);
+$client      = $clientModel->findByLeadId($id);
+
+// Is this a Won lead with no client record yet?
+$isWon        = $row['status_name'] === 'Won';
+$needsConvert = $isWon && !$client;
 
 $pageTitle  = Security::e($row['name']);
 $activePage = 'leads';
@@ -51,13 +58,41 @@ ob_start();
     <?php unset($_SESSION['error']); ?>
 <?php endif; ?>
 
+<?php if ($needsConvert): ?>
+<div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:12px;padding:16px 20px;margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap">
+    <div style="display:flex;align-items:center;gap:12px">
+        <span style="font-size:20px">🎉</span>
+        <div>
+            <div style="font-weight:600;color:#15803d">Deal is Won — Client details missing</div>
+            <div style="font-size:13px;color:#166534;margin-top:2px">Please fill in the booking details to complete this client's record.</div>
+        </div>
+    </div>
+    <a href="<?= APP_URL ?>/agent/lead/<?= (int)$row['id'] ?>/convert" class="btn btn-primary" style="background:#10b981;border-color:#10b981;white-space:nowrap">
+        Fill Client Details →
+    </a>
+</div>
+<?php endif; ?>
+
+<?php if ($client): ?>
+<div style="background:#f0f4ff;border:1px solid #c5d0fa;border-radius:12px;padding:14px 20px;margin-bottom:20px;display:flex;align-items:center;gap:12px">
+    <span style="font-size:18px">✓</span>
+    <div style="font-size:13px;color:#3b5bdb">
+        <b>Client record created.</b>
+        Unit: <?= $client['unit_no'] ? Security::e($client['unit_no']) : '—' ?> &nbsp;·&nbsp;
+        Block: <?= $client['block'] ? Security::e($client['block']) : '—' ?> &nbsp;·&nbsp;
+        Booking: <?= $client['booking_amount'] ? 'Rs. ' . number_format((float)$client['booking_amount']) : '—' ?> &nbsp;·&nbsp;
+        File: <b style="color:<?= $client['file_status'] === 'mature' ? '#10b981' : '#f59e0b' ?>"><?= ucfirst($client['file_status']) ?></b>
+    </div>
+</div>
+<?php endif; ?>
+
 <div class="page-header">
     <div class="page-header-left">
-        <h1><?= Security::e($row['name']) ?></h1>
+        <h1><?= Security::e($row['display_name'] ?? $row['name'] ?? 'Lead') ?></h1>
         <div class="breadcrumb">
             <a href="<?= APP_URL ?>/agent/leads" style="color:var(--text-muted)">My Leads</a>
             <span class="sep">/</span>
-            <span class="current"><?= Security::e($row['name']) ?></span>
+            <span class="current"><?= Security::e($row['display_name'] ?? $row['name'] ?? 'Lead') ?></span>
         </div>
     </div>
     <div class="page-header-actions">

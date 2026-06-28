@@ -21,6 +21,7 @@ $segments = explode('/', $url);
 $section  = $segments[0] ?? '';
 $action   = $segments[1] ?? '';
 $param    = $segments[2] ?? null;
+$sub      = $segments[3] ?? null;
 
 // ---- Route Table --------------------------------------------
 
@@ -57,6 +58,8 @@ if ($section === 'admin') {
         'agents'       => $ctrl->agents(),
         'agent'        => $ctrl->agentDetail((int)$param),
         'teams'        => $ctrl->teams(),
+        'clients'      => $ctrl->clients(),
+        'client'       => $ctrl->clientDetail((int)$param),
         'reports'      => $ctrl->reports(),
         'csv-template' => $ctrl->downloadCsvTemplate(),
         'password'     => $ctrl->changePassword(),
@@ -73,7 +76,7 @@ if ($section === 'agent') {
     match($action) {
         'leads'    => $ctrl->myLeads(),
         'pool'     => $ctrl->leadPool(),
-        'lead'     => $ctrl->leadDetail((int)$param),
+        'lead'     => $sub === 'convert' ? $ctrl->convertClient((int)$param) : $ctrl->leadDetail((int)$param),
         'claim'    => $ctrl->claimLead((int)$param),
         'password' => $ctrl->changePassword(),
         default    => $ctrl->dashboard(),

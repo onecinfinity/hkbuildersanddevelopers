@@ -488,6 +488,49 @@ class AdminController {
         require_once __DIR__ . '/../views/admin/change_password.php';
     }
 
+    public function clients(): void {
+        require_once APP_ROOT . '/app/models/Client.php';
+        require_once __DIR__ . '/../views/admin/clients.php';
+    }
+
+    public function clientDetail(int $id): void {
+        require_once APP_ROOT . '/app/models/Client.php';
+        $clientModel = new Client();
+        $client      = $clientModel->findById($id);
+        if (!$client) {
+            $_SESSION['error'] = 'Client not found.';
+            header('Location: ' . APP_URL . '/admin/clients');
+            exit;
+        }
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            if (!Security::verifyCsrfToken($_POST['csrf_token'] ?? '')) {
+                $_SESSION['error'] = 'Invalid request.';
+                header('Location: ' . APP_URL . '/admin/client/' . $id);
+                exit;
+            }
+            $clientModel->update($id, [
+                'name'           => trim($_POST['name']           ?? ''),
+                'address'        => trim($_POST['address']        ?? ''),
+                'contact_no'     => trim($_POST['contact_no']     ?? ''),
+                'project'        => trim($_POST['project']        ?? ''),
+                'block'          => trim($_POST['block']          ?? ''),
+                'unit_no'        => trim($_POST['unit_no']        ?? ''),
+                'category'       => trim($_POST['category']       ?? ''),
+                'booking_amount' => trim($_POST['booking_amount'] ?? ''),
+                'source_id'      => !empty($_POST['source_id']) ? (int)$_POST['source_id'] : null,
+                'file_status'    => in_array($_POST['file_status'] ?? '', ['mature','immature']) ? $_POST['file_status'] : 'mature',
+                'flag_reason'    => trim($_POST['flag_reason']    ?? ''),
+            ], (int)$_SESSION['user_id']);
+            $_SESSION['success'] = 'Client updated.';
+            header('Location: ' . APP_URL . '/admin/client/' . $id);
+            exit;
+        }
+
+        $sources = $this->lead->getSources();
+        require_once __DIR__ . '/../views/admin/client_detail.php';
+    }
+
     public function reports(): void {
         if (($_GET['export'] ?? '') === 'csv') {
             $this->exportLeadsCsv();
