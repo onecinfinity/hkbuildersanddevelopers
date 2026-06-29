@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HK Builders CRM — Work Plan</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0a1628; --navy-light:#13233d; --gold:#c9a84c; --gold-light:#e3c878;
+  --gold-grad:linear-gradient(135deg,#c9a84c 0%,#e3c878 50%,#b8983f 100%);
+  --ink:#1c2434; --muted:#5b6678; --line:#e4e8ef; --bg:#f6f8fb; --white:#fff;
+  --green:#10b981; --amber:#f59e0b; --red:#ef4444; --blue:#3b82f6; --purple:#8b5cf6;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Jost',sans-serif;color:var(--ink);background:var(--bg);line-height:1.7;font-weight:300}
+.page{max-width:980px;margin:0 auto;background:var(--white);box-shadow:0 4px 40px rgba(10,22,40,.08)}
+
+/* Header */
+.masthead{background:var(--navy);color:#fff;padding:54px 60px 46px;position:relative;overflow:hidden}
+.masthead::after{content:"";position:absolute;top:0;right:0;width:340px;height:100%;background:radial-gradient(circle at top right,rgba(201,168,76,.18),transparent 70%)}
+.brand-row{display:flex;align-items:center;gap:18px;margin-bottom:30px;position:relative;z-index:2}
+.brand-mark{width:64px;height:64px;border:2px solid var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:30px;font-weight:700;color:var(--gold);flex-shrink:0}
+.brand-name{font-family:'Cormorant Garamond',serif;font-size:30px;font-weight:600;letter-spacing:.5px;line-height:1.1}
+.brand-name span{display:block;font-family:'Jost';font-size:11px;font-weight:400;letter-spacing:4px;color:var(--gold-light);text-transform:uppercase;margin-top:4px}
+.doc-title{font-family:'Cormorant Garamond',serif;font-size:52px;font-weight:700;line-height:1.05;position:relative;z-index:2;margin-bottom:14px}
+.doc-title em{color:var(--gold);font-style:normal}
+.doc-sub{font-size:15px;color:#aeb9cc;font-weight:300;max-width:640px;position:relative;z-index:2}
+.doc-meta{display:flex;gap:40px;margin-top:30px;position:relative;z-index:2}
+.doc-meta div{font-size:12px;letter-spacing:1px;text-transform:uppercase;color:#7d8aa0}
+.doc-meta strong{display:block;font-family:'Cormorant Garamond',serif;font-size:18px;color:#fff;text-transform:none;letter-spacing:0;margin-top:3px;font-weight:500}
+
+/* Gold rule */
+.rule{height:4px;background:var(--gold-grad)}
+
+/* Body */
+.body{padding:50px 60px 60px}
+.intro{font-size:17px;color:var(--muted);border-left:3px solid var(--gold);padding:6px 0 6px 22px;margin-bottom:48px;font-weight:300}
+
+.section{margin-bottom:52px;page-break-inside:avoid}
+.sec-head{display:flex;align-items:center;gap:16px;margin-bottom:24px}
+.sec-num{width:46px;height:46px;background:var(--navy);color:var(--gold);border-radius:10px;display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:700;flex-shrink:0}
+.sec-title{font-family:'Cormorant Garamond',serif;font-size:30px;font-weight:600;color:var(--navy);line-height:1.1}
+.sec-tag{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);font-weight:500;margin-top:2px}
+
+.card{background:var(--bg);border:1px solid var(--line);border-radius:14px;padding:26px 28px;margin-bottom:18px}
+.card h4{font-family:'Cormorant Garamond',serif;font-size:21px;color:var(--navy);font-weight:600;margin-bottom:12px;display:flex;align-items:center;gap:10px}
+.card h4 .dot{width:9px;height:9px;border-radius:50%;background:var(--gold);flex-shrink:0}
+
+/* Field list */
+.fields{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;margin-top:6px}
+.field{background:#fff;border:1px solid var(--line);border-radius:9px;padding:11px 14px;font-size:14px;display:flex;flex-direction:column;gap:2px}
+.field b{font-weight:500;color:var(--ink)}
+.field small{color:var(--muted);font-size:12px;letter-spacing:.3px}
+.field.opt{border-left:3px solid var(--amber)}
+.field.req{border-left:3px solid var(--green)}
+
+.note{font-size:13px;color:var(--muted);margin-top:14px;background:#fff8e8;border:1px solid #f0e2bd;border-radius:9px;padding:12px 16px}
+.note b{color:#9a7d1f}
+
+/* status pills */
+.pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.pill{font-size:12.5px;font-weight:400;padding:5px 14px;border-radius:30px;color:#fff;letter-spacing:.3px}
+
+/* steps */
+.steps{counter-reset:s;list-style:none}
+.steps li{counter-increment:s;position:relative;padding:14px 0 14px 52px;border-bottom:1px solid var(--line)}
+.steps li:last-child{border-bottom:none}
+.steps li::before{content:counter(s);position:absolute;left:0;top:11px;width:34px;height:34px;background:var(--gold-grad);color:var(--navy);border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:600;font-size:15px}
+.steps li b{color:var(--navy);font-weight:500}
+.steps li small{display:block;color:var(--muted);font-size:13px}
+
+ul.bullets{list-style:none;margin-top:6px}
+ul.bullets li{position:relative;padding:5px 0 5px 22px;font-size:14.5px;color:var(--ink)}
+ul.bullets li::before{content:"";position:absolute;left:0;top:13px;width:7px;height:7px;background:var(--gold);border-radius:50%}
+ul.bullets li b{font-weight:500;color:var(--navy)}
+
+/* questions */
+.q{background:var(--navy-light);color:#dde4ef;border-radius:12px;padding:18px 22px;margin-bottom:12px;display:flex;gap:16px}
+.q .qn{font-family:'Cormorant Garamond',serif;font-size:26px;color:var(--gold);font-weight:700;line-height:1;flex-shrink:0}
+.q b{color:#fff;font-weight:500}
+.q small{color:#9fadc4;display:block;font-size:13px;margin-top:3px}
+
+/* build order table */
+.order{width:100%;border-collapse:collapse;margin-top:8px}
+.order th{background:var(--navy);color:var(--gold-light);text-align:left;padding:12px 16px;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;font-weight:500}
+.order td{padding:13px 16px;border-bottom:1px solid var(--line);font-size:14.5px;vertical-align:top}
+.order tr:nth-child(even) td{background:var(--bg)}
+.order .ph{font-family:'Cormorant Garamond',serif;font-weight:700;color:var(--navy);font-size:16px}
+.order .pri{font-size:11px;font-weight:500;padding:3px 11px;border-radius:20px;display:inline-block}
+.pri-1{background:#fdeceb;color:#c0392b}
+.pri-2{background:#fff4e0;color:#b9770f}
+.pri-3{background:#eafaf3;color:#0e8a5f}
+
+footer{background:var(--navy);color:#7d8aa0;padding:28px 60px;font-size:12.5px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}
+footer b{color:var(--gold);font-family:'Cormorant Garamond',serif;font-size:16px}
+
+@media print{
+  body{background:#fff}
+  .page{box-shadow:none;max-width:100%}
+  .section{page-break-inside:avoid}
+  .masthead::after{display:none}
+  @page{margin:14mm}
+}
+@media(max-width:680px){
+  .masthead,.body,footer{padding-left:26px;padding-right:26px}
+  .doc-title{font-size:38px}
+  .doc-meta{flex-wrap:wrap;gap:20px}
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header class="masthead">
+    <div class="brand-row">
+      <div class="brand-mark">HK</div>
+      <div class="brand-name">HK Builders &amp; Developers<span>Customer Relationship Management</span></div>
+    </div>
+    <h1 class="doc-title">CRM Expansion <em>Work Plan</em></h1>
+    <p class="doc-sub">A complete, field-by-field specification of the next development phase — extended lead &amp; client records, agent profiles, team hierarchy, an accounts module, and professional printable reporting.</p>
+    <div class="doc-meta">
+      <div>Prepared For<strong>Management</strong></div>
+      <div>Document<strong>Phase 8 – 14 Plan</strong></div>
+      <div>Date<strong>24 June 2026</strong></div>
+      <div>Status<strong>Awaiting Approval</strong></div>
+    </div>
+  </header>
+  <div class="rule"></div>
+
+  <main class="body">
+    <p class="intro">This document captures everything requested for the next build cycle. Each module below lists the exact data fields, screens, and behaviour so there is no ambiguity before development begins. Fields marked <b style="color:#0e8a5f">green</b> are required; <b style="color:#b9770f">amber</b> are optional.</p>
+
+    <!-- 1 -->
+    <section class="section">
+      <div class="sec-head">
+        <div class="sec-num">1</div>
+        <div><div class="sec-title">Lead &amp; Client Records</div><div class="sec-tag">Before vs. After Closing</div></div>
+      </div>
+
+      <div class="card">
+        <h4><span class="dot"></span>Client Details — Before Closing (Lead)</h4>
+        <div class="fields">
+          <div class="field opt"><b>Name</b><small>Optional</small></div>
+          <div class="field opt"><b>Address</b><small>Optional</small></div>
+          <div class="field req"><b>Contact No.</b><small>Primary identifier</small></div>
+          <div class="field opt"><b>Project</b><small>e.g. Falaknaz Hills</small></div>
+          <div class="field opt"><b>Investment Amount</b><small>Budget / intent</small></div>
+          <div class="field opt"><b>Unit</b><small>Unit type/size</small></div>
+          <div class="field opt"><b>Category</b><small>Residential / Commercial</small></div>
+          <div class="field opt"><b>Agent Name</b><small>Assigned agent</small></div>
+          <div class="field opt"><b>Status</b><small>Pipeline stage</small></div>
+          <div class="field opt"><b>Lead From</b><small>Source</small></div>
+        </div>
+        <div class="note"><b>Important:</b> Every field is optional except a way to reach the lead. Often we only have a phone number — the system must accept a lead with nothing but a contact number.</div>
+      </div>
+
+      <div class="card">
+        <h4><span class="dot"></span>Client Details — After Closing (Booked)</h4>
+        <div class="fields">
+          <div class="field opt"><b>Name</b><small></small></div>
+          <div class="field opt"><b>Address</b><small></small></div>
+          <div class="field opt"><b>Unit No.</b><small>Allotted unit</small></div>
+          <div class="field opt"><b>Category</b><small></small></div>
+          <div class="field opt"><b>Project</b><small></small></div>
+          <div class="field opt"><b>Block</b><small>Block / sector</small></div>
+          <div class="field req"><b>Contact No.</b><small></small></div>
+          <div class="field opt"><b>Booking Amount</b><small>Amount paid to book</small></div>
+          <div class="field opt"><b>Agent Name</b><small>Closing agent</small></div>
+          <div class="field opt"><b>Lead From</b><small>Source</small></div>
+        </div>
+        <div class="note"><b>Flow:</b> When a lead reaches the <b>Won</b> status, it is promoted into a <b>Client</b> record — carrying its history and adding booking details (unit no, block, booking amount).</div>
+      </div>
+    </section>
+
+    <!-- 2 -->
+    <section class="section">
+      <div class="sec-head">
+        <div class="sec-num">2</div>
+        <div><div class="sec-title">Employee (Agent) Profiles</div><div class="sec-tag">Captured at creation</div></div>
+      </div>
+      <div class="card">
+        <h4><span class="dot"></span>Fields added to the "Create Agent" form</h4>
+        <div class="fields">
+          <div class="field req"><b>Name</b><small>Existing</small></div>
+          <div class="field req"><b>Email Address</b><small>Login</small></div>
+          <div class="field opt"><b>Contact No.</b><small>New</small></div>
+          <div class="field opt"><b>Address</b><small>New</small></div>
+          <div class="field opt"><b>CNIC No.</b><small>New</small></div>
+          <div class="field opt"><b>Guardian No.</b><small>New</small></div>
+          <div class="field opt"><b>Designation</b><small>e.g. Sales Executive</small></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3 -->
+    <section class="section">
+      <div class="sec-head">
+        <div class="sec-num">3</div>
+        <div><div class="sec-title">Agent Detail Page</div><div class="sec-tag">Deep performance view per agent</div></div>
+      </div>
+      <div class="card">
+        <h4><span class="dot"></span>Where it's accessed</h4>
+        <ul class="bullets">
+          <li>A <b>"View Details"</b> button on every agent row in the <b>Agents</b> page.</li>
+          <li>A <b>"View Details"</b> button on every agent row in the <b>Reports</b> page.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h4><span class="dot"></span>What the page shows</h4>
+        <ul class="bullets">
+          <li><b>Profile card</b> — name, designation, contact, CNIC, guardian no, address.</li>
+          <li><b>How many leads / clients</b> this agent has contacted.</li>
+          <li><b>Count for every status</b> — each pipeline stage with its own number:</li>
+        </ul>
+        <div class="pills">
+          <span class="pill" style="background:#3B82F6">New</span>
+          <span class="pill" style="background:#8B5CF6">Contacted</span>
+          <span class="pill" style="background:#F59E0B">Qualified</span>
+          <span class="pill" style="background:#EC4899">Proposal</span>
+          <span class="pill" style="background:#F97316">Negotiation</span>
+          <span class="pill" style="background:#10B981">Won (Closed)</span>
+          <span class="pill" style="background:#EF4444">Lost (Rejected)</span>
+          <span class="pill" style="background:#6B7280">Dead</span>
+        </div>
+        <ul class="bullets" style="margin-top:14px">
+          <li><b>Grouped totals</b> — Interested, Not-Interested, Qualified, Rejected, and all closings of clients.</li>
+          <li><b>Month filter</b> — all stats filterable by month so you can review any period.</li>
+          <li><b>Printable</b> — the agent's full report can be printed professionally.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- 4 -->
+    <section class="section">
+      <div class="sec-head">
+        <div class="sec-num">4</div>
+        <div><div class="sec-title">Teams &amp; Sales Managers</div><div class="sec-tag">New hierarchy in the Leads section</div></div>
+      </div>
+      <div class="card">
+        <h4><span class="dot"></span>Structure</h4>
+        <ul class="bullets">
+          <li>A list of <b>Sales Managers</b>, each leading a team.</li>
+          <li>Teams can be named — <b>Team A, Team B, Team C</b> — each with a team leader and several agents working under them.</li>
+          <li>This lives on its own <b>separate page</b>.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h4><span class="dot"></span>Team statistics (per team, separate page)</h4>
+        <ul class="bullets">
+          <li><b>Response / activity</b> of each team.</li>
+          <li><b>Sales</b> of each team.</li>
+          <li><b>Earnings</b> of each team.</li>
+          <li>Drill down from a team to any individual agent's detail page.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- 5 -->
+    <section class="section">
+      <div class="sec-head">
+        <div class="sec-num">5</div>
+        <div><div class="sec-title">Accounts Panel</div><div class="sec-tag">Brand-new module</div></div>
+      </div>
+      <div class="card">
+        <h4><span class="dot"></span>Salaries &amp; Commissions</h4>
+        <ul class="bullets">
+          <li>View each agent's <b>salary</b> and <b>commission</b>.</li>
+          <li>Track whether salary / commission is <b>paid or not</b>.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h4><span class="dot"></span>Expenses &amp; Income</h4>
+        <ul class="bullets">
+          <li><b>Marketing expense</b>, <b>office expense</b>, and other costs.</li>
+          <li><b>Total income</b>, with <b>date-wise filters</b> throughout.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h4><span class="dot"></span>Client Payments &amp; Immature Files</h4>
+        <ul class="bullets">
+          <li>Track client payment details — e.g. down payment of <b>6 lakh</b>, but file closed at <b>3 lakh</b> → an <b>immature file</b>.</li>
+          <li>On an immature file, the <b>rebate / agent commission stays pending</b>.</li>
+          <li>See the <b>reason a payment is due</b> — whether we <b>don't have funds</b>, or the <b>file is immature</b>.</li>
+        </ul>
+        <div class="note"><b>Key concept:</b> An immature file holds commission in a "pending" state with a recorded reason, until the file matures or funds are available.</div>
+      </div>
+    </section>
+
+    <!-- 6 -->
+    <section class="section">
+      <div class="sec-head">
+        <div class="sec-num">6</div>
+        <div><div class="sec-title">Professional Printed Reports</div><div class="sec-tag">Across the system</div></div>
+      </div>
+      <div class="card">
+        <h4><span class="dot"></span>Printable, on company letterhead</h4>
+        <ul class="bullets">
+          <li>Print <b>each agent's</b> report professionally.</li>
+          <li>Print <b>all reports</b> too (full company reports).</li>
+          <li>Team reports, salary sheets, and accounts summaries — all print-ready with the HK Builders letterhead, logo, and generation date.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- 7 -->
+    <section class="section">
+      <div class="sec-head">
+        <div class="sec-num">7</div>
+        <div><div class="sec-title">Agents Page — Stats Bar</div><div class="sec-tag">Quick overview</div></div>
+      </div>
+      <div class="card">
+        <ul class="bullets">
+          <li>Summary stats at the top of the Agents page — <b>number of agents</b>, active vs suspended, total leads handled, total closings, and average conversion.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Build order -->
+    <section class="section">
+      <div class="sec-head">
+        <div class="sec-num">8</div>
+        <div><div class="sec-title">Recommended Build Order</div><div class="sec-tag">What we do first</div></div>
+      </div>
+      <table class="order">
+        <thead><tr><th>Step</th><th>Module</th><th>Why this order</th><th>Priority</th></tr></thead>
+        <tbody>
+          <tr><td class="ph">1</td><td>Schema changes &amp; optional lead fields</td><td>Everything else depends on the new fields &amp; phone-only leads</td><td><span class="pri pri-1">First</span></td></tr>
+          <tr><td class="ph">2</td><td>Extended agent profile + create form</td><td>Needed before agent detail page</td><td><span class="pri pri-1">First</span></td></tr>
+          <tr><td class="ph">3</td><td>Agent Detail Page + stats bar</td><td>High value, uses data we already collect</td><td><span class="pri pri-2">Next</span></td></tr>
+          <tr><td class="ph">4</td><td>Teams &amp; Sales Manager module</td><td>New hierarchy page &amp; team stats</td><td><span class="pri pri-2">Next</span></td></tr>
+          <tr><td class="ph">5</td><td>Clients table + Won → Client flow</td><td>Foundation for payments &amp; accounts</td><td><span class="pri pri-3">Then</span></td></tr>
+          <tr><td class="ph">6</td><td>Accounts Panel</td><td>Most complex; depends on clients &amp; payments</td><td><span class="pri pri-3">Then</span></td></tr>
+          <tr><td class="ph">7</td><td>Professional print reports</td><td>Applied last across every page</td><td><span class="pri pri-3">Last</span></td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Questions -->
+    <section class="section">
+      <div class="sec-head">
+        <div class="sec-num">?</div>
+        <div><div class="sec-title">Decisions Needed From You</div><div class="sec-tag">Answer before we start</div></div>
+      </div>
+      <div class="q"><div class="qn">1</div><div><b>Commission</b> — Is agent commission a fixed % of the booking amount, or entered manually per deal? <small>This decides how the accounts module calculates earnings.</small></div></div>
+      <div class="q"><div class="qn">2</div><div><b>Immature file</b> — What exactly triggers it? Client paying below a set % of the price, or admin manually flagging it? <small>Defines when commission goes "pending".</small></div></div>
+      <div class="q"><div class="qn">3</div><div><b>Sales Manager</b> — Can they also work leads like an agent, or only view their team's stats? <small>Affects their login &amp; permissions.</small></div></div>
+      <div class="q"><div class="qn">4</div><div><b>Teams</b> — Can an agent belong to multiple teams, or strictly one team only? <small>Affects the team membership design.</small></div></div>
+      <div class="q"><div class="qn">5</div><div><b>Phone-only leads</b> — What should display as the "name" when only a phone number exists — "Unknown", or the phone number itself? <small>For lead tables.</small></div></div>
+      <div class="q"><div class="qn">6</div><div><b>Client payments</b> — One booking amount only, or full installment tracking? <small>Decides how detailed the payments table is.</small></div></div>
+    </section>
+
+  </main>
+
+  <footer>
+    <div><b>HK Builders &amp; Developers</b> &nbsp;·&nbsp; CRM Work Plan</div>
+    <div>Generated 24 June 2026 &nbsp;·&nbsp; Confidential</div>
+  </footer>
+</div>
+</body>
+</html>

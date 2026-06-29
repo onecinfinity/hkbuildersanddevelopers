@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HK Builders CRM — Full Project Insights</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0a1628; --navy-light:#13233d; --navy-mid:#1b2c49; --gold:#c9a84c; --gold-light:#e3c878;
+  --gold-grad:linear-gradient(135deg,#c9a84c 0%,#e3c878 50%,#b8983f 100%);
+  --ink:#1c2434; --muted:#5b6678; --line:#e4e8ef; --bg:#f6f8fb; --white:#fff;
+  --green:#10b981; --amber:#f59e0b; --red:#ef4444; --blue:#3b82f6; --purple:#8b5cf6;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Jost',sans-serif;color:var(--ink);background:var(--bg);line-height:1.7;font-weight:300}
+.page{max-width:1000px;margin:0 auto;background:var(--white);box-shadow:0 4px 40px rgba(10,22,40,.08)}
+
+/* Cover */
+.cover{background:var(--navy);color:#fff;padding:70px 64px 60px;position:relative;overflow:hidden}
+.cover::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 80% 10%,rgba(201,168,76,.20),transparent 55%)}
+.cover::after{content:"";position:absolute;bottom:-60px;left:-40px;width:300px;height:300px;border:1px solid rgba(201,168,76,.25);border-radius:50%}
+.brand-row{display:flex;align-items:center;gap:18px;margin-bottom:46px;position:relative;z-index:2}
+.brand-mark{width:66px;height:66px;border:2px solid var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:31px;font-weight:700;color:var(--gold);flex-shrink:0}
+.brand-name{font-family:'Cormorant Garamond',serif;font-size:31px;font-weight:600;line-height:1.1}
+.brand-name span{display:block;font-family:'Jost';font-size:11px;font-weight:400;letter-spacing:4px;color:var(--gold-light);text-transform:uppercase;margin-top:5px}
+.eyebrow{position:relative;z-index:2;font-size:12px;letter-spacing:5px;text-transform:uppercase;color:var(--gold);margin-bottom:18px}
+.cover h1{position:relative;z-index:2;font-family:'Cormorant Garamond',serif;font-size:60px;font-weight:700;line-height:1.02;margin-bottom:20px}
+.cover h1 em{color:var(--gold);font-style:normal}
+.cover p{position:relative;z-index:2;font-size:16px;color:#b3bdcf;max-width:660px}
+.cover-meta{position:relative;z-index:2;display:flex;gap:46px;margin-top:42px;padding-top:30px;border-top:1px solid rgba(255,255,255,.12)}
+.cover-meta div{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#8290a8}
+.cover-meta strong{display:block;font-family:'Cormorant Garamond',serif;font-size:19px;color:#fff;text-transform:none;letter-spacing:0;margin-top:4px;font-weight:500}
+.rule{height:4px;background:var(--gold-grad)}
+
+.body{padding:54px 64px 60px}
+
+/* TOC */
+.toc{background:var(--bg);border:1px solid var(--line);border-radius:14px;padding:28px 32px;margin-bottom:54px}
+.toc h3{font-family:'Cormorant Garamond',serif;font-size:22px;color:var(--navy);margin-bottom:16px;font-weight:600}
+.toc ol{list-style:none;counter-reset:t;columns:2;column-gap:40px}
+.toc li{counter-increment:t;padding:7px 0;font-size:14.5px;border-bottom:1px dashed var(--line);break-inside:avoid}
+.toc li::before{content:counter(t,decimal-leading-zero);color:var(--gold);font-weight:600;margin-right:12px;font-size:13px}
+
+.section{margin-bottom:54px;page-break-inside:avoid}
+.sec-head{display:flex;align-items:baseline;gap:16px;margin-bottom:22px;border-bottom:2px solid var(--navy);padding-bottom:12px}
+.sec-kicker{font-family:'Cormorant Garamond',serif;font-size:40px;font-weight:700;color:var(--gold);line-height:1}
+.sec-title{font-family:'Cormorant Garamond',serif;font-size:30px;font-weight:600;color:var(--navy);line-height:1.1}
+.sec-title small{display:block;font-family:'Jost';font-size:12px;font-weight:400;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-top:3px}
+
+p.lead{font-size:16px;color:var(--muted);margin-bottom:20px}
+p.txt{font-size:15px;color:var(--ink);margin-bottom:14px}
+p.txt b{color:var(--navy);font-weight:500}
+
+/* stat strip */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:24px 0}
+.stat{background:var(--navy);color:#fff;border-radius:12px;padding:20px;text-align:center}
+.stat .n{font-family:'Cormorant Garamond',serif;font-size:36px;font-weight:700;color:var(--gold);line-height:1}
+.stat .l{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#9fadc4;margin-top:6px}
+
+/* feature grid */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.tile{background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:20px 22px}
+.tile h4{font-family:'Cormorant Garamond',serif;font-size:19px;color:var(--navy);font-weight:600;margin-bottom:8px;display:flex;align-items:center;gap:9px}
+.tile h4 .ic{width:30px;height:30px;background:var(--gold-grad);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;color:var(--navy);flex-shrink:0}
+.tile ul{list-style:none}
+.tile ul li{position:relative;padding:3px 0 3px 18px;font-size:13.5px;color:var(--ink)}
+.tile ul li::before{content:"";position:absolute;left:0;top:11px;width:6px;height:6px;background:var(--gold);border-radius:50%}
+
+ul.bullets{list-style:none;margin:8px 0}
+ul.bullets li{position:relative;padding:6px 0 6px 24px;font-size:15px}
+ul.bullets li::before{content:"\2713";position:absolute;left:0;top:6px;color:var(--green);font-weight:700}
+ul.bullets li b{color:var(--navy);font-weight:500}
+
+/* tech table */
+.tt{width:100%;border-collapse:collapse;margin-top:10px}
+.tt th{background:var(--navy);color:var(--gold-light);text-align:left;padding:11px 16px;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;font-weight:500}
+.tt td{padding:11px 16px;border-bottom:1px solid var(--line);font-size:14px;vertical-align:top}
+.tt tr:nth-child(even) td{background:var(--bg)}
+.tt td:first-child{font-weight:500;color:var(--navy);white-space:nowrap}
+code{font-family:'Consolas',monospace;background:#eef1f6;border:1px solid var(--line);border-radius:5px;padding:1px 7px;font-size:12.5px;color:#b9770f}
+
+/* schema cards */
+.schema{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;margin-top:12px}
+.tbl{background:#fff;border:1px solid var(--line);border-radius:11px;overflow:hidden}
+.tbl .hd{background:var(--navy-mid);color:var(--gold-light);padding:9px 14px;font-size:13px;font-weight:500;letter-spacing:.5px;display:flex;justify-content:space-between;align-items:center}
+.tbl .hd .badge{font-size:9px;background:var(--gold);color:var(--navy);padding:2px 7px;border-radius:10px;letter-spacing:1px;font-weight:600}
+.tbl ul{list-style:none;padding:8px 14px}
+.tbl ul li{font-size:12.5px;padding:2.5px 0;color:var(--muted);font-family:'Consolas',monospace}
+.tbl.new .hd{background:#0e8a5f}
+.tbl.new .hd .badge{background:#fff;color:#0e8a5f}
+
+/* phase timeline */
+.timeline{position:relative;margin-top:16px;padding-left:34px}
+.timeline::before{content:"";position:absolute;left:11px;top:6px;bottom:6px;width:2px;background:var(--gold)}
+.tl{position:relative;padding:0 0 22px 8px}
+.tl::before{content:"";position:absolute;left:-29px;top:4px;width:16px;height:16px;background:#fff;border:3px solid var(--gold);border-radius:50%}
+.tl.done::before{background:var(--green);border-color:var(--green)}
+.tl h4{font-family:'Cormorant Garamond',serif;font-size:19px;color:var(--navy);font-weight:600}
+.tl .st{font-size:11px;letter-spacing:1px;text-transform:uppercase;font-weight:500;padding:2px 9px;border-radius:12px;margin-left:8px}
+.st-done{background:#eafaf3;color:#0e8a5f}
+.st-plan{background:#fff4e0;color:#b9770f}
+.tl p{font-size:13.5px;color:var(--muted);margin-top:3px}
+
+/* callout */
+.callout{background:var(--navy);color:#dde4ef;border-radius:14px;padding:26px 30px;margin:24px 0}
+.callout h4{font-family:'Cormorant Garamond',serif;font-size:22px;color:var(--gold);margin-bottom:10px;font-weight:600}
+.callout p{font-size:14.5px;color:#c4cdde}
+.callout ul{list-style:none;margin-top:10px}
+.callout ul li{position:relative;padding:4px 0 4px 22px;font-size:14px;color:#dde4ef}
+.callout ul li::before{content:"\2192";position:absolute;left:0;color:var(--gold);font-weight:700}
+
+footer{background:var(--navy);color:#7d8aa0;padding:30px 64px;font-size:12.5px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;align-items:center}
+footer b{color:var(--gold);font-family:'Cormorant Garamond',serif;font-size:16px}
+
+@media print{
+  body{background:#fff}
+  .page{box-shadow:none;max-width:100%}
+  .section{page-break-inside:avoid}
+  .cover::before,.cover::after{display:none}
+  @page{margin:13mm}
+}
+@media(max-width:720px){
+  .cover,.body,footer{padding-left:28px;padding-right:28px}
+  .cover h1{font-size:42px}
+  .stats,.grid2{grid-template-columns:1fr 1fr}
+  .toc ol{columns:1}
+  .cover-meta{flex-wrap:wrap;gap:22px}
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- COVER -->
+  <header class="cover">
+    <div class="brand-row">
+      <div class="brand-mark">HK</div>
+      <div class="brand-name">HK Builders &amp; Developers<span>Customer Relationship Management</span></div>
+    </div>
+    <div class="eyebrow">Project Dossier</div>
+    <h1>CRM Platform<br><em>Full Project Insights</em></h1>
+    <p>A complete view of the system — what has been built, the technology and security behind it, the data architecture, and the full roadmap for the next expansion phase.</p>
+    <div class="cover-meta">
+      <div>Client<strong>HK Builders</strong></div>
+      <div>Platform<strong>PHP 8.2 · MySQL</strong></div>
+      <div>Live At<strong>/crm</strong></div>
+      <div>Revised<strong>24 Jun 2026</strong></div>
+    </div>
+  </header>
+  <div class="rule"></div>
+
+  <main class="body">
+
+    <!-- TOC -->
+    <div class="toc">
+      <h3>Contents</h3>
+      <ol>
+        <li>Executive Summary</li>
+        <li>Technology &amp; Architecture</li>
+        <li>Security Foundation</li>
+        <li>What's Already Built</li>
+        <li>Data Architecture</li>
+        <li>Expansion Scope — "What I Understood"</li>
+        <li>New Data Model (Planned)</li>
+        <li>Development Roadmap</li>
+        <li>Open Decisions</li>
+      </ol>
+    </div>
+
+    <!-- 1 Executive -->
+    <section class="section">
+      <div class="sec-head"><div class="sec-kicker">01</div><div class="sec-title">Executive Summary<small>The big picture</small></div></div>
+      <p class="lead">The HK Builders CRM is a secure, custom-built sales platform that turns raw leads into booked clients — and now grows into a full operations system covering teams, agent performance, and company accounts.</p>
+      <p class="txt">The first release delivered a complete <b>lead-to-deal pipeline</b>: admins add leads (manually or by CSV), agents claim them from a shared pool, work them through pipeline stages, and close them. Everything is tracked, audited, and reportable. It is live, mobile-responsive, and hosted on the company domain.</p>
+      <p class="txt">The next phase expands the CRM from a lead tool into a <b>business management platform</b> — richer lead &amp; client records, detailed agent profiles, a team/sales-manager hierarchy, a full accounts module (salaries, commissions, expenses, immature-file tracking), and professional printable reports.</p>
+      <div class="stats">
+        <div class="stat"><div class="n">35</div><div class="l">Files Built</div></div>
+        <div class="stat"><div class="n">8</div><div class="l">DB Tables</div></div>
+        <div class="stat"><div class="n">2</div><div class="l">User Roles</div></div>
+        <div class="stat"><div class="n">100%</div><div class="l">Mobile Ready</div></div>
+      </div>
+    </section>
+
+    <!-- 2 Tech -->
+    <section class="section">
+      <div class="sec-head"><div class="sec-kicker">02</div><div class="sec-title">Technology &amp; Architecture<small>How it's built</small></div></div>
+      <table class="tt">
+        <tr><th>Layer</th><th>Choice</th><th>Why</th></tr>
+        <tr><td>Language</td><td>PHP 8.2</td><td>Modern, fast, runs on any standard host (Hostinger)</td></tr>
+        <tr><td>Database</td><td>MySQL 8 (InnoDB)</td><td>Transactions &amp; foreign keys for data integrity</td></tr>
+        <tr><td>Pattern</td><td>Custom lightweight MVC</td><td>No framework bloat — full control, easy to host</td></tr>
+        <tr><td>Data access</td><td>PDO + prepared statements</td><td>Zero raw queries — immune to SQL injection</td></tr>
+        <tr><td>Routing</td><td>Front controller + <code>.htaccess</code></td><td>Clean URLs, single secure entry point</td></tr>
+        <tr><td>Styling</td><td>Hand-built design system</td><td>HK brand: navy &amp; gold, Cormorant + Jost fonts</td></tr>
+        <tr><td>Hosting</td><td>Hostinger shared</td><td>Live at <code>hkbuildersanddevelopers.com/crm</code></td></tr>
+      </table>
+      <p class="txt" style="margin-top:16px">A single <code>APP_ROOT</code> constant lets the exact same codebase run locally (XAMPP) and on production with no edits — it auto-detects its environment.</p>
+    </section>
+
+    <!-- 3 Security -->
+    <section class="section">
+      <div class="sec-head"><div class="sec-kicker">03</div><div class="sec-title">Security Foundation<small>Built in, not bolted on</small></div></div>
+      <div class="grid2">
+        <div class="tile"><h4><span class="ic">&#128272;</span>Access &amp; Identity</h4><ul>
+          <li>Bcrypt password hashing (cost 12)</li>
+          <li>Role-based access — admin vs agent</li>
+          <li>Session fixation prevention on login</li>
+          <li>"Remember me" — hashed, rotating tokens</li>
+        </ul></div>
+        <div class="tile"><h4><span class="ic">&#128737;</span>Attack Defence</h4><ul>
+          <li>CSRF token on every form</li>
+          <li>Brute-force lockout (5 tries / 15 min)</li>
+          <li>All output escaped — no XSS</li>
+          <li>Prepared statements — no SQL injection</li>
+        </ul></div>
+        <div class="tile"><h4><span class="ic">&#128221;</span>Accountability</h4><ul>
+          <li>Audit log of every sensitive action</li>
+          <li>Login success / fail / block tracking</li>
+          <li>Full activity timeline per lead</li>
+          <li>Soft delete — nothing is truly lost</li>
+        </ul></div>
+        <div class="tile"><h4><span class="ic">&#9881;</span>Hardening</h4><ul>
+          <li>Secure HTTP headers set</li>
+          <li>Server fingerprint stripped</li>
+          <li>Upload validation (CSV only, size capped)</li>
+          <li>Errors hidden in production</li>
+        </ul></div>
+      </div>
+    </section>
+
+    <!-- 4 Built -->
+    <section class="section">
+      <div class="sec-head"><div class="sec-kicker">04</div><div class="sec-title">What's Already Built<small>Live today</small></div></div>
+      <div class="grid2">
+        <div class="tile"><h4><span class="ic">&#128100;</span>Admin Panel</h4><ul>
+          <li>Dashboard with live stats</li>
+          <li>Add leads manually or via CSV import</li>
+          <li>Full lead list — filter, search, paginate</li>
+          <li>Lead detail with activity timeline</li>
+          <li>Reassign / unassign / soft-delete leads</li>
+          <li>Agent management — create, suspend, reset</li>
+          <li>Reports — performance, sources, trends, export</li>
+          <li>Audit log viewer</li>
+        </ul></div>
+        <div class="tile"><h4><span class="ic">&#127919;</span>Agent Portal</h4><ul>
+          <li>Personal dashboard + follow-up reminders</li>
+          <li>Browse the shared unclaimed lead pool</li>
+          <li>Claim leads — atomic, no double-claims</li>
+          <li>"My Leads" with filters</li>
+          <li>Update status with notes</li>
+          <li>Schedule &amp; complete follow-ups</li>
+          <li>Change own password</li>
+        </ul></div>
+      </div>
+      <div class="callout">
+        <h4>The signature feature — atomic lead claiming</h4>
+        <p>When agents share a lead pool, two agents could grab the same lead at the same instant. The system prevents this at the database level: a claim only succeeds if the lead is still unassigned, so a lead can never be double-claimed. Fair, race-proof, and invisible to the user.</p>
+      </div>
+    </section>
+
+    <!-- 5 Data arch -->
+    <section class="section">
+      <div class="sec-head"><div class="sec-kicker">05</div><div class="sec-title">Data Architecture<small>Current 8 tables</small></div></div>
+      <div class="schema">
+        <div class="tbl"><div class="hd">users <span class="badge">CORE</span></div><ul><li>name, email</li><li>password (bcrypt)</li><li>role, status</li><li>lockout fields</li></ul></div>
+        <div class="tbl"><div class="hd">leads <span class="badge">CORE</span></div><ul><li>name, phone, email</li><li>source, status, priority</li><li>assigned_to, claimed_at</li><li>soft delete</li></ul></div>
+        <div class="tbl"><div class="hd">lead_statuses</div><ul><li>name, color</li><li>sort_order</li><li>is_closed flag</li></ul></div>
+        <div class="tbl"><div class="hd">lead_sources</div><ul><li>name</li><li>(FB, Google, Referral…)</li></ul></div>
+        <div class="tbl"><div class="hd">lead_activities</div><ul><li>type, note</li><li>meta (JSON)</li><li>full timeline</li></ul></div>
+        <div class="tbl"><div class="hd">follow_ups</div><ul><li>scheduled_at</li><li>note, is_done</li><li>per agent</li></ul></div>
+        <div class="tbl"><div class="hd">import_batches</div><ul><li>filename</li><li>rows / imported</li><li>skipped count</li></ul></div>
+        <div class="tbl"><div class="hd">audit_log</div><ul><li>action, target</li><li>ip, user_agent</li><li>timestamp</li></ul></div>
+      </div>
+    </section>
+
+    <!-- 6 What I understood -->
+    <section class="section">
+      <div class="sec-head"><div class="sec-kicker">06</div><div class="sec-title">Expansion Scope<small>"What I understood"</small></div></div>
+      <p class="lead">The exact requirements captured for the next build cycle.</p>
+
+      <div class="grid2">
+        <div class="tile"><h4><span class="ic">&#128203;</span>Richer Lead Records</h4><ul>
+          <li>Add: address, project, investment amount</li>
+          <li>Add: unit, category</li>
+          <li>Make every field optional</li>
+          <li>Accept phone-only leads</li>
+        </ul></div>
+        <div class="tile"><h4><span class="ic">&#127968;</span>Client Records (post-close)</h4><ul>
+          <li>Unit no, block, booking amount</li>
+          <li>Category, project, contact</li>
+          <li>File status: mature / immature</li>
+          <li>Created when a lead is Won</li>
+        </ul></div>
+        <div class="tile"><h4><span class="ic">&#128188;</span>Agent Profiles</h4><ul>
+          <li>Contact no, address, CNIC</li>
+          <li>Guardian no, email</li>
+          <li>Designation</li>
+        </ul></div>
+        <div class="tile"><h4><span class="ic">&#128202;</span>Agent Detail Page</h4><ul>
+          <li>"View Details" on Agents &amp; Reports</li>
+          <li>Count of every status</li>
+          <li>Interested / rejected / closings</li>
+          <li>Month filter · printable</li>
+        </ul></div>
+        <div class="tile"><h4><span class="ic">&#128101;</span>Teams &amp; Sales Managers</h4><ul>
+          <li>Team A / B / C with a leader</li>
+          <li>Agents grouped under managers</li>
+          <li>Separate team stats page</li>
+          <li>Sales &amp; earnings per team</li>
+        </ul></div>
+        <div class="tile"><h4><span class="ic">&#128176;</span>Accounts Panel</h4><ul>
+          <li>Salaries &amp; commissions (paid/unpaid)</li>
+          <li>Marketing &amp; office expenses</li>
+          <li>Income — date-wise filters</li>
+          <li>Immature files → pending commission</li>
+        </ul></div>
+      </div>
+
+      <div class="callout">
+        <h4>The immature-file concept</h4>
+        <p>If a client's down payment is, say, 6 lakh but the file closes at 3 lakh, it's an <b style="color:#fff">immature file</b>. The agent's rebate/commission stays <b style="color:#fff">pending</b> — and the system records <b style="color:#fff">why</b> the payment is due:</p>
+        <ul>
+          <li>The file is immature (under-funded), or</li>
+          <li>We currently don't have the funds to pay out.</li>
+        </ul>
+      </div>
+
+      <ul class="bullets" style="margin-top:18px">
+        <li><b>Professional printing</b> — every agent report, team report, and full company report prints cleanly on HK Builders letterhead.</li>
+        <li><b>Agents page stats</b> — a summary bar showing number of agents, active/suspended, total leads &amp; closings.</li>
+      </ul>
+    </section>
+
+    <!-- 7 New data model -->
+    <section class="section">
+      <div class="sec-head"><div class="sec-kicker">07</div><div class="sec-title">New Data Model<small>Planned tables</small></div></div>
+      <p class="txt">Existing tables get new columns; these brand-new tables get added:</p>
+      <div class="schema">
+        <div class="tbl new"><div class="hd">clients <span class="badge">NEW</span></div><ul><li>unit_no, block</li><li>booking_amount</li><li>file_status</li><li>lead_id, agent_id</li></ul></div>
+        <div class="tbl new"><div class="hd">teams <span class="badge">NEW</span></div><ul><li>name (Team A…)</li><li>sales_manager_id</li></ul></div>
+        <div class="tbl new"><div class="hd">team_members <span class="badge">NEW</span></div><ul><li>team_id</li><li>agent_id</li></ul></div>
+        <div class="tbl new"><div class="hd">salaries <span class="badge">NEW</span></div><ul><li>base + commission</li><li>month, is_paid</li><li>paid_at</li></ul></div>
+        <div class="tbl new"><div class="hd">expenses <span class="badge">NEW</span></div><ul><li>category</li><li>amount, date</li><li>marketing/office</li></ul></div>
+        <div class="tbl new"><div class="hd">client_payments <span class="badge">NEW</span></div><ul><li>expected vs paid</li><li>due_date</li><li>pending_reason</li></ul></div>
+      </div>
+      <p class="txt" style="margin-top:16px"><b>Extended columns:</b> <code>leads</code> gains address/project/investment/unit/category; <code>users</code> gains phone/address/cnic/guardian/designation; the role list extends to include <code>sales_manager</code>.</p>
+    </section>
+
+    <!-- 8 Roadmap -->
+    <section class="section">
+      <div class="sec-head"><div class="sec-kicker">08</div><div class="sec-title">Development Roadmap<small>Order of work</small></div></div>
+      <div class="timeline">
+        <div class="tl done"><h4>Phases 1–7 — Core CRM<span class="st st-done">Done · Live</span></h4><p>Auth, admin panel, agent portal, CSV import, reporting, security, deployment.</p></div>
+        <div class="tl"><h4>Phase 8 — Schema &amp; Optional Fields<span class="st st-plan">Next</span></h4><p>Extended lead/client/agent fields; phone-only leads. Everything depends on this.</p></div>
+        <div class="tl"><h4>Phase 9 — Agent Detail Page<span class="st st-plan">Planned</span></h4><p>Per-agent stats, every status count, month filter, printable.</p></div>
+        <div class="tl"><h4>Phase 10 — Teams &amp; Sales Managers<span class="st st-plan">Planned</span></h4><p>Team hierarchy, separate team stats page, earnings per team.</p></div>
+        <div class="tl"><h4>Phase 11 — Clients &amp; Won-to-Client Flow<span class="st st-plan">Planned</span></h4><p>Promote Won leads into client records with booking details.</p></div>
+        <div class="tl"><h4>Phase 12 — Accounts Panel<span class="st st-plan">Planned</span></h4><p>Salaries, commissions, expenses, income, immature-file tracking.</p></div>
+        <div class="tl"><h4>Phase 13 — Professional Print Reports<span class="st st-plan">Planned</span></h4><p>Letterhead reports across agents, teams, accounts.</p></div>
+      </div>
+    </section>
+
+    <!-- 9 Decisions -->
+    <section class="section">
+      <div class="sec-head"><div class="sec-kicker">09</div><div class="sec-title">Open Decisions<small>Needed before Phase 8</small></div></div>
+      <table class="tt">
+        <tr><th>#</th><th>Decision</th><th>Impacts</th></tr>
+        <tr><td>1</td><td>Commission — fixed % of booking, or manual per deal?</td><td>Accounts calculations</td></tr>
+        <tr><td>2</td><td>What triggers an "immature file" — a payment threshold, or manual flag?</td><td>Commission-pending logic</td></tr>
+        <tr><td>3</td><td>Can a Sales Manager also work leads, or only view team stats?</td><td>Roles &amp; permissions</td></tr>
+        <tr><td>4</td><td>Can an agent be in multiple teams, or strictly one?</td><td>Team membership design</td></tr>
+        <tr><td>5</td><td>For phone-only leads — show "Unknown" or the phone number as name?</td><td>Lead list display</td></tr>
+        <tr><td>6</td><td>Client payments — single booking amount, or installments?</td><td>Payments table depth</td></tr>
+      </table>
+    </section>
+
+  </main>
+
+  <footer>
+    <div><b>HK Builders &amp; Developers</b> &nbsp;·&nbsp; CRM Project Insights</div>
+    <div>Generated 24 June 2026 &nbsp;·&nbsp; Confidential — Internal Use</div>
+  </footer>
+</div>
+</body>
+</html>
