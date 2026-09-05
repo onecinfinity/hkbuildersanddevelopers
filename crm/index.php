@@ -48,6 +48,13 @@ if ($section === '') {
     exit;
 }
 
+if ($section === 'admin' && $action === 'accounts') {
+    Security::requireAdmin();
+    require_once APP_ROOT . '/app/controllers/AccountsController.php';
+    (new AccountsController())->accounts($param);
+    exit;
+}
+
 if ($section === 'admin') {
     Security::requireAdmin();
     require_once APP_ROOT . '/app/controllers/AdminController.php';
