@@ -48,6 +48,23 @@ if ($section === '') {
     exit;
 }
 
+// Notification count — AJAX endpoint, no layout, works for both admin and agent
+if ($action === 'notif-count' && in_array($section, ['admin', 'agent'], true)) {
+    Security::requireLogin();
+    header('Content-Type: application/json');
+    require_once APP_ROOT . '/app/models/Lead.php';
+    $lead = new Lead();
+    $agId = ($_SESSION['user_role'] ?? '') === 'admin' ? null : (int)$_SESSION['user_id'];
+    try {
+        $c    = $agId === null ? $lead->getAllFollowUpCounts() : $lead->getFollowUpCounts($agId);
+        $soon = $lead->getSoonFollowUpCount($agId, 30);
+        echo json_encode(['overdue' => (int)$c['overdue'], 'soon' => (int)$soon]);
+    } catch (\Throwable $e) {
+        echo json_encode(['overdue' => 0, 'soon' => 0]);
+    }
+    exit;
+}
+
 if ($section === 'admin' && $action === 'accounts') {
     Security::requireAdmin();
     require_once APP_ROOT . '/app/controllers/AccountsController.php';
