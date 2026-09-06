@@ -55,6 +55,13 @@ if ($section === 'admin' && $action === 'accounts') {
     exit;
 }
 
+if ($section === 'admin' && $action === 'builders') {
+    Security::requireAdmin();
+    require_once APP_ROOT . '/app/controllers/BuildersController.php';
+    (new BuildersController())->handle($param, $sub);
+    exit;
+}
+
 if ($section === 'admin') {
     Security::requireAdmin();
     require_once APP_ROOT . '/app/controllers/AdminController.php';
