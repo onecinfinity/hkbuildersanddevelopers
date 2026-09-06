@@ -1,8 +1,11 @@
 <?php
 Security::requireAdmin();
 require_once __DIR__ . '/../../models/Lead.php';
+require_once __DIR__ . '/../../models/Accounts.php';
 
 $lead          = new Lead();
+$_acc          = new Accounts();
+$commStats     = $_acc->getCommissionStats();
 $stats         = $lead->getDashboardStats();
 $recent        = $lead->getAll(['limit' => 10]);
 try {
@@ -79,6 +82,43 @@ ob_start();
         <div class="stat-label">Lost</div>
     </a>
 </div>
+
+<!-- Commission chips -->
+<?php if (!empty($commStats)): ?>
+<?php $pkr = fn($v) => 'PKR ' . number_format((float)$v, 0); ?>
+<div style="display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-bottom:28px">
+    <span style="font-size:12px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:.5px;margin-right:4px">Commissions</span>
+    <a href="<?= APP_URL ?>/admin/accounts/commission?maturity_status=mature" style="text-decoration:none">
+        <div style="display:flex;align-items:center;gap:8px;background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.25);border-radius:20px;padding:5px 14px">
+            <span style="width:8px;height:8px;border-radius:50%;background:#16a34a;flex-shrink:0"></span>
+            <span style="font-size:12px;font-weight:700;color:#16a34a">Mature</span>
+            <span style="font-size:13px;font-weight:700;color:var(--text)"><?= (int)($commStats['mature_count'] ?? 0) ?></span>
+            <span style="font-size:11px;color:var(--text-muted)"><?= $pkr($commStats['total_commission'] ?? 0) ?></span>
+        </div>
+    </a>
+    <a href="<?= APP_URL ?>/admin/accounts/commission?maturity_status=immature" style="text-decoration:none">
+        <div style="display:flex;align-items:center;gap:8px;background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.25);border-radius:20px;padding:5px 14px">
+            <span style="width:8px;height:8px;border-radius:50%;background:#d97706;flex-shrink:0"></span>
+            <span style="font-size:12px;font-weight:700;color:#d97706">Immature</span>
+            <span style="font-size:13px;font-weight:700;color:var(--text)"><?= (int)($commStats['immature_count'] ?? 0) ?></span>
+        </div>
+    </a>
+    <a href="<?= APP_URL ?>/admin/accounts/commission?payment_status=paid" style="text-decoration:none">
+        <div style="display:flex;align-items:center;gap:8px;background:rgba(99,102,241,.08);border:1px solid rgba(99,102,241,.25);border-radius:20px;padding:5px 14px">
+            <span style="font-size:12px;font-weight:700;color:#6366f1">Paid</span>
+            <span style="font-size:13px;font-weight:700;color:var(--text)"><?= (int)($commStats['paid_count'] ?? 0) ?></span>
+            <span style="font-size:11px;color:var(--text-muted)"><?= $pkr($commStats['total_paid'] ?? 0) ?></span>
+        </div>
+    </a>
+    <a href="<?= APP_URL ?>/admin/accounts/commission?payment_status=pending" style="text-decoration:none">
+        <div style="display:flex;align-items:center;gap:8px;background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.25);border-radius:20px;padding:5px 14px">
+            <span style="font-size:12px;font-weight:700;color:#dc2626">Pending</span>
+            <span style="font-size:13px;font-weight:700;color:var(--text)"><?= (int)($commStats['pending_count'] ?? 0) ?></span>
+            <span style="font-size:11px;color:var(--text-muted)"><?= $pkr($commStats['total_remaining'] ?? 0) ?></span>
+        </div>
+    </a>
+</div>
+<?php endif; ?>
 
 <!-- Recent Leads -->
 <div class="section-header">
