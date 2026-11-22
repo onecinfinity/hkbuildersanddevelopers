@@ -756,7 +756,7 @@
         </div>
       `).join('');
 
-      // Scroll-reveal cascade — each item rises into view as it scrolls in
+      // Scroll-reveal cascade: each item rises into view as it scrolls in
       const galleryObs = new IntersectionObserver((entries,obs)=>{
         entries.forEach(en=>{
           if(en.isIntersecting){
