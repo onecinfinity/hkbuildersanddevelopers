@@ -843,36 +843,7 @@
 
     // Satisfied clients gallery (static fallback)
     function getStaticClientGallery() {
-      return [
-        {caption:'Satisfied Client',sub:'HK Builders & Developers',image:'/assets/images/satisfiedclients/1.jpeg'},
-        {caption:'Satisfied Client',sub:'HK Builders & Developers',image:'/assets/images/satisfiedclients/2.jpeg'},
-        {caption:'Satisfied Client',sub:'HK Builders & Developers',image:'/assets/images/satisfiedclients/3.jpeg'},
-        {caption:'Satisfied Client',sub:'HK Builders & Developers',image:'/assets/images/satisfiedclients/4.jpeg'},
-        {caption:'Satisfied Client',sub:'HK Builders & Developers',image:'/assets/images/satisfiedclients/5.jpeg'},
-        {caption:'Satisfied Client',sub:'HK Builders & Developers',image:'/assets/images/satisfiedclients/6.jpeg'},
-        {caption:'Satisfied Client',sub:'HK Builders & Developers',image:'/assets/images/satisfiedclients/7.jpeg'},
-        {caption:'Satisfied Client',sub:'HK Builders & Developers',image:'/assets/images/satisfiedclients/8.jpeg'},
-        {caption:'Satisfied Client',sub:'HK Builders & Developers',image:'/assets/images/satisfiedclients/9.jpeg'},
-        {caption:'Satisfied Client',sub:'HK Builders & Developers',image:'/assets/images/satisfiedclients/10.jpeg'},
-        {caption:'Satisfied Client',sub:'HK Builders & Developers',image:'/assets/images/satisfiedclients/11.jpeg'},
-        {caption:'Satisfied Client',sub:'HK Builders & Developers',image:'/assets/images/satisfiedclients/12.jpeg'},
-        {caption:'Satisfied Client',sub:'HK Builders & Developers',image:'/assets/images/satisfiedclients/13.jpeg'},
-        {caption:'Satisfied Client',sub:'HK Builders & Developers',image:'/assets/images/satisfiedclients/14.jpeg'},
-        {caption:'Satisfied Client',sub:'HK Builders & Developers',image:'/assets/images/satisfiedclients/15.jpeg'},
-        {caption:'Satisfied Client',sub:'HK Builders & Developers',image:'/assets/images/satisfiedclients/16.jpeg'},
-        {caption:'Satisfied Client',sub:'HK Builders & Developers',image:'/assets/images/satisfiedclients/17.jpeg'},
-        {caption:'Satisfied Client',sub:'HK Builders & Developers',image:'/assets/images/satisfiedclients/18.jpeg'},
-        {caption:'Satisfied Client',sub:'HK Builders & Developers',image:'/assets/images/satisfiedclients/19.jpeg'},
-        {caption:'Satisfied Client',sub:'HK Builders & Developers',image:'/assets/images/satisfiedclients/20.jpeg'},
-        {caption:'Satisfied Client',sub:'HK Builders & Developers',image:'/assets/images/satisfiedclients/21.jpeg'},
-        {caption:'Satisfied Client',sub:'HK Builders & Developers',image:'/assets/images/satisfiedclients/22.jpeg'},
-        {caption:'Satisfied Client',sub:'HK Builders & Developers',image:'/assets/images/satisfiedclients/23.jpeg'},
-        {caption:'Satisfied Client',sub:'HK Builders & Developers',image:'/assets/images/satisfiedclients/24.jpeg'},
-        {caption:'Satisfied Client',sub:'HK Builders & Developers',image:'/assets/images/satisfiedclients/25.jpeg'},
-        {caption:'Satisfied Client',sub:'HK Builders & Developers',image:'/assets/images/satisfiedclients/26.jpeg'},
-        {caption:'Satisfied Client',sub:'HK Builders & Developers',image:'/assets/images/satisfiedclients/27.jpeg'},
-        {caption:'Satisfied Client',sub:'HK Builders & Developers',image:'/assets/images/satisfiedclients/28.jpeg'}
-      ];
+      return [];
     }
 
     function loadClientGallery() {
@@ -925,7 +896,7 @@
       ).join('');
     }
 
-    // Client photos hidden for now (2026-11-22). To show them: set this to true and remove the hidden attribute from the section.
+    // Client photos removed from the public site (2026-11-22). Restore steps are in CLAUDE.md section 5.
     const SHOW_CLIENT_PHOTOS = false;
     if (SHOW_CLIENT_PHOTOS) renderClientGallery(loadClientGallery());
 

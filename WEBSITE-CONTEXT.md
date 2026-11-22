@@ -58,7 +58,7 @@ The website shares its luxury aesthetic with the CRM, using a consistent corpora
   3. *Falaknaz Hills View* (Falaknaz Group: Scenic Living)
   4. *Falaknaz Overseas Block* (Falaknaz Group: Expat-Focused Residential)
 - **Founder Spotlight:** "The Visionary Behind HK", Hunain Azmat Khan, with Meet the Board and Speak With Us buttons.
-- **Satisfied Clients Photo Gallery:** hidden since 2026-11-22 (see section 5).
+- **Satisfied Clients Photo Gallery:** removed from the public site on 2026-11-22 (see section 5).
 - **Client Reviews & Testimonials:** 5-star gold ratings with written client feedback quotes.
 - **Global Footer:** 4-column layout including mission statement, quick navigation links, marketed projects, direct contact details, and copyright.
 
@@ -95,7 +95,7 @@ Each major project has an independent landing page tailored for targeted ad traf
 - **Proof & Trust:** "Stories of Trust & Delivery" hero banner.
 - **Featured Client Story:** written review, centred, with no photo while client photos are hidden.
 - **Testimonials:** six written reviews.
-- **Handover Gallery:** hidden since 2026-11-22. Its data is inline in the page script (`clients-gallery.json` is not loaded by any page).
+- **Handover Gallery:** hidden, with no photo data in the page.
 
 ### F. Contact Us (`/contact/`)
 - **Hero Banner:** "Get in Touch: Let's Talk Property".
@@ -114,9 +114,7 @@ Each major project has an independent landing page tailored for targeted ad traf
 | File / Folder | Purpose |
 |---|---|
 | `assets/js/projects.json` | Master project catalog (slug, name, developer, location, payment plans, features) |
-| `assets/js/clients-gallery.json` | Client testimonials, buyer pictures, purchased projects, review text |
 | `assets/images/projects/` | Project photography folders: `united-palm-green/`, `falaknaz-hills-view/`, `Falaknaz-overseas-block/`, `Falaknaz-wonder-city/` |
-| `assets/images/satisfiedclients/` | 28 client and handover photos, not shown on any page since 2026-11-22 |
 | `assets/images/leadership/` | Leadership portraits, original posters, Board page share image |
 | `assets/css/leadership.css` | Founder section, leader cards, Board page, poster lightbox |
 | `assets/css/loader.css` | Splash screen styles and keyframe animations |
@@ -136,8 +134,8 @@ Each major project has an independent landing page tailored for targeted ad traf
 3. **Mobile Responsiveness:**
    - Grid cards collapse cleanly from 4 columns to 2 columns on tablets, and 1 column on phones (< 768px).
    - Touch targets for phone calling (`tel:`) and WhatsApp chat (`wa.me`) are prominent for mobile users.
-4. **Client Photos Hidden:**
-   - To restore on Home, About and Clients: set `SHOW_CLIENT_PHOTOS` to `true` and remove `hidden` from the gallery section. On Clients also remove `no-photo` from `.fs-inner` and `hidden` from its first column.
-   - The files can still be opened by direct URL until they are blocked or removed.
+4. **Client Photos Removed:**
+   - The photos, image archive and gallery JSON are out of the repo, and `.htaccess` returns 410 Gone for those paths. Do not block them in `robots.txt`.
+   - Restore steps and the private backup location are in `CLAUDE.md` section 5.
 5. **No Build Step:**
    - Direct edits to HTML, CSS, and JSON files take immediate effect without compilation or bundling.

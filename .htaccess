@@ -5,8 +5,14 @@ Options -Indexes
   Require all denied
 </FilesMatch>
 
-# Force www redirect
+# Client photos are permanently gone from the public site: 410 tells search engines to drop them.
+# Do not block these paths in robots.txt, or Google cannot see the 410.
 RewriteEngine On
+RewriteRule ^assets/images/satisfiedclients(/|$) - [G,L,NC]
+RewriteRule ^assets/images\.zip$ - [G,L,NC]
+RewriteRule ^assets/js/clients-gallery\.json$ - [G,L,NC]
+
+# Force www redirect
 RewriteCond %{HTTP_HOST} !^www\. [NC]
 RewriteRule ^ https://www.%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
