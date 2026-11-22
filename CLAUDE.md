@@ -2,7 +2,9 @@
 
 The complete context for this project. Claude Code loads this file automatically when the repo folder is opened, so any laptop starts with the same knowledge. Keep it current: when something important changes (new module, new migration, new rule), update this file in the same commit.
 
-Last full review: 2026-10-27 (before moving to a new laptop).
+Last full review: 2026-10-27 (before moving to a new laptop). Last updated: 2026-11-22.
+
+A linked Obsidian map of this project is in the vault at `C:\Users\dell\Documents\Obsidian Vault\HK Builders\` (start at `HK Builders Map.md` or `HK Builders Map.canvas`). Update it when a module, page or major decision changes.
 
 ---
 
@@ -141,9 +143,10 @@ Build steps are in section 9a.
 ```
 /                         website root (deployed to public_html)
   index.html              home page
-  about/ clients/ contact/ projects/ project/        pages (each folder has index.html)
+  about/ board-of-directors/ clients/ contact/ projects/ project/        pages (each folder has index.html)
   falaknaz-hills-view/ falaknaz-overseas-block/ falaknaz-wonder-city/ united-palm-greens/   project landing pages
   assets/css/loader.css   page loader styles
+  assets/css/leadership.css   founder, leader cards, Board page, poster lightbox
   assets/js/loader.js     page loader script (included on every page)
   assets/js/projects.json        project data (project/?id=<id> renders from it)
   assets/js/clients-gallery.json satisfied-clients gallery data
@@ -183,6 +186,7 @@ mobile-app/               HK CRM Android app (Capacitor), see section 9a; web ac
 - **Contact page:** Web3Forms (`fetch('https://api.web3forms.com/submit')`), WhatsApp links (`wa.me/923252208153`), and a Google Maps iframe pointing at United Palm Greens.
 - Design: navy and gold, the same palette as the CRM; the page loader is shared by every page.
 - **Leadership** (added 2026-11-14): `/board-of-directors/` page plus a founder spotlight on Home and About (About also shows the three leader cards). Styles in `assets/css/leadership.css` (the only shared stylesheet; every other style is inline per page). Portraits in `assets/images/leadership/` (`<slug>-480/720/960.webp` + `-720.jpg`, 4:5, cut from the client's posters with the baked-in text removed; `og-board-of-directors.jpg` is the share image; the original posters are also served as `<slug>-poster-*` for the Brand Portraits gallery and lightbox on the Board page). Board: **Hunain Azmat Khan**, Founder & Chairman (the main person); **Shayan Azmat Khan**, Chief Financial Officer; **Tahnan Azmat Khan**, Chief Operating Officer. Their text comes from the client's posters. "Leadership" is in the nav, mobile menu and footer of every page; a small media query on every page keeps the 6 nav links on one line between 1025 and 1320px.
+- **Satisfied client photos are hidden (owner, 2026-11-22).** No page shows or requests `assets/images/satisfiedclients/`. Hidden: the "Real Families" gallery on Home and About, and the Handover Gallery plus the featured story photo on `/clients/`. The written reviews, the `/clients/` page and its menu links stay. The 28 files and the gallery data are kept. To restore: on `index.html`, `about/index.html` and `clients/index.html` set `SHOW_CLIENT_PHOTOS` to `true` and remove `hidden` from the gallery section; on `/clients/` also remove `no-photo` from `.fs-inner` and `hidden` from its first column. This only hides them on the pages: the files can still be opened by direct URL until they are blocked or removed.
 - Every page's `body` has `overflow-x:hidden`; Home, About and Contact have elements a little wider than 320px that it clips (older, not from the leadership work).
 
 ---
@@ -338,7 +342,7 @@ mobile-app/               HK CRM Android app (Capacitor), see section 9a; web ac
 
 ---
 
-## 13. Recent history (Sept to Oct 2026)
+## 13. Recent history (Sept to Nov 2026)
 
 - Modal forms scroll properly everywhere; global print reset; print buttons on report pages.
 - Contact page map now points at United Palm Greens.
@@ -350,6 +354,8 @@ mobile-app/               HK CRM Android app (Capacitor), see section 9a; web ac
 - 2026-10-19, phase 3: agent location sharing while logged in (top bar badge), admin Agent Locations map with live positions and daily routes.
 - 2026-10-25, phase 4: HK CRM Android app (APK 1.0): background location service, required permissions screen, exact talk time from the phone call log, navy and gold icon.
 - 2026-10-25: `/crm/` answered 403 on the live server (root `DirectoryIndex index.html`), so the app showed its offline page; fixed in `crm/.htaccess` and deployed.
+- 2026-11-14: founder spotlight on Home and About, new Board of Directors page, Leadership link on every page, original posters in a gallery and lightbox, poster name corrected to Hunain Azmat Khan.
+- 2026-11-22: satisfied client photos hidden across the site (reversible, see section 5); Obsidian project map created.
 - **Mobile app plan (owner approved 2026-10-18):** 1) calls and talk time (done), 2) lead distribution (done): Auto Distribute splits unassigned leads equally between active agents (admin: all agents, sales manager: own team), plus manual bulk assign; the pool and claiming stay, 3) agent location every few minutes the whole time an agent is logged in, any hour (owner confirmed), admin map (OpenStreetMap) (done 2026-10-19), 4) Android APK (Capacitor) wrapping the live CRM with background location and call-log sync for exact talk time (built 2026-10-25, see 9a). The APK is shared directly with agents, not through the Play Store.
 
 ---
@@ -360,4 +366,6 @@ mobile-app/               HK CRM Android app (Capacitor), see section 9a; web ac
 2. **Android app 1.0 not yet confirmed on a real phone.** After the 403 fix the owner should reopen the app (Try again). Then check: the 4 permission steps, the location notification, the agent staying on the admin map with the phone locked for 10 minutes, and exact talk time after a Call-button call. Fix anything found in version 1.1.
 3. App 1.1 (next time the APK is rebuilt anyway): change the offline page wording from "No internet connection" to something like "Could not open the CRM", since it also shows for server errors.
 4. iPhone: decision pending (see 9a).
-5. Idea: link leads and clients to builder projects (`builder_id`, `project_id`) so a converted client can become a unit automatically.
+5. Satisfied client photos: hidden on the pages, but still reachable by direct URL and in git history. Owner to decide when to bring them back, or whether to block the folder.
+6. The UPG location on the website still says Surjani Town (`united-palm-greens/index.html`, `assets/js/projects.json`); Al Waheed confirmed Scheme 43, Survey No. 416, Deh Jam Chakro.
+7. Idea: link leads and clients to builder projects (`builder_id`, `project_id`) so a converted client can become a unit automatically.

@@ -595,6 +595,7 @@
     /* Loading state for dynamic content */
     .dynamic-loading{opacity:0.3;pointer-events:none;}
   
+    .clients-section[hidden]~.testimonials-strip{border-top:1px solid rgba(201,168,76,0.12);}
     /* Nav fit for 6 links on small laptops */
     @media(min-width:1025px) and (max-width:1320px){nav,nav.scrolled{padding-left:32px;padding-right:32px;}.nav-links{gap:24px;}.nav-links a{letter-spacing:1.6px;}.nav-cta{padding:12px 24px;}}
   </style>
@@ -916,7 +917,7 @@
   </section>
 
     <!-- SATISFIED CLIENTS, Marquee Image Gallery -->
-  <section class="clients-section">
+  <section class="clients-section" hidden>
     <div class="clients-header">
       <div>
         <div class="section-eyebrow reveal"><div class="section-eyebrow-line"></div><span>Satisfied Clients</span></div>
@@ -1205,7 +1206,9 @@
   const heroPhoto = document.getElementById('heroPhoto');
 
   // Satisfied Clients gallery - render static data immediately (no JSON fetch)
-  renderClientGallery(staticClientGallery);
+  // Client photos hidden for now (2026-11-22). To show them: set this to true and remove the hidden attribute from the section.
+  const SHOW_CLIENT_PHOTOS = false;
+  if (SHOW_CLIENT_PHOTOS) renderClientGallery(staticClientGallery);
 
   observeReveal();
   setCursorHover();
